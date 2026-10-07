@@ -21,7 +21,6 @@ img{max-width:100%;display:block}
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-thumb{background:#c3ceda;border-radius:10px}
 
-/* TOAST */
 #toastWrap{position:fixed;top:78px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:360px}
 .toast{background:#fff;border-radius:11px;padding:13px 15px;box-shadow:0 22px 60px rgba(15,23,42,.2);border-left:4px solid var(--blue);display:flex;gap:11px;align-items:flex-start;font-size:13px;pointer-events:auto;animation:slideIn .3s;min-width:260px}
 @keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
@@ -32,7 +31,6 @@ img{max-width:100%;display:block}
 .toast .tbody{flex:1;min-width:0}
 .toast .tbody b{display:block;font-size:12.5px;color:var(--navy);margin-bottom:2px}
 
-/* MODAL */
 #modalBackdrop{position:fixed;inset:0;background:rgba(11,37,69,.55);backdrop-filter:blur(3px);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px}
 #modalBackdrop.show{display:flex;animation:fade .2s}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -43,7 +41,6 @@ img{max-width:100%;display:block}
 .modal-body{padding:22px}
 .modal-foot{padding:14px 22px;border-top:1px solid var(--line2);display:flex;gap:9px;justify-content:flex-end;position:sticky;bottom:0;background:#fff;border-radius:0 0 16px 16px}
 
-/* PROGRESS */
 #progressOverlay{position:fixed;inset:0;background:rgba(11,37,69,.72);backdrop-filter:blur(4px);z-index:9500;display:none;align-items:center;justify-content:center;padding:20px}
 #progressOverlay.show{display:flex}
 .progress-card{background:#fff;border-radius:16px;padding:30px;width:min(440px,100%);text-align:center;box-shadow:0 22px 60px rgba(15,23,42,.2)}
@@ -54,7 +51,6 @@ img{max-width:100%;display:block}
 .progress-card .count{font-family:var(--ff);font-size:15px;font-weight:800;color:var(--navy)}
 .progress-card .count span{color:var(--muted);font-weight:600;font-size:13px}
 
-/* LOGIN */
 #loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 12% 18%,rgba(200,155,60,.2),transparent 45%),radial-gradient(circle at 88% 82%,rgba(23,105,170,.4),transparent 50%),linear-gradient(135deg,#050d1a 0,#0b2545 40%,#13315c 70%,#0b2545 100%)}
 .login-card{width:min(470px,100%);background:#fff;border-radius:22px;padding:38px 34px 26px;box-shadow:0 30px 80px rgba(0,0,0,.45);text-align:center;animation:rise .65s}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
@@ -75,7 +71,6 @@ img{max-width:100%;display:block}
 .designer{margin-top:24px;padding-top:16px;border-top:1px solid var(--line2);font-size:10.5px;color:var(--muted2);letter-spacing:1.6px;font-weight:700}
 .designer strong{display:block;color:var(--navy);font-size:14px;margin-top:4px;letter-spacing:.6px}
 
-/* APP */
 #app{display:none;min-height:100vh;flex-direction:column}
 .topbar{height:66px;background:linear-gradient(90deg,var(--navy),var(--navy2));color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:40;box-shadow:0 2px 14px rgba(11,37,69,.28);border-bottom:3px solid var(--gold)}
 .brand{display:flex;align-items:center;gap:12px;font-weight:800;min-width:0}
@@ -89,19 +84,15 @@ img{max-width:100%;display:block}
 .top-actions button{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);padding:8px 13px;border-radius:8px;cursor:pointer;font-weight:600;font-size:12.5px}
 .top-actions button:hover{background:rgba(255,255,255,.18)}
 .layout{display:flex;min-height:calc(100vh - 66px);flex:1}
-
-/* SIDEBAR */
 .sidebar{width:252px;background:#fff;border-right:1px solid var(--line);padding:16px 14px;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:66px;height:calc(100vh - 66px);overflow-y:auto}
 .sidebar .section-label{font-size:10px;font-weight:800;color:var(--muted2);letter-spacing:1.4px;margin:12px 8px 6px;text-transform:uppercase}
 .navbtn{width:100%;text-align:left;background:transparent;border:0;padding:11px 12px;border-radius:9px;color:#475569;margin-bottom:3px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:10px;font-size:13.5px}
-.navbtn .ico{width:26px;height:26px;border-radius:7px;background:#eef3f9;color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;font-weight:800}
+.navbtn .ico{width:26px;height:26px;border-radius:7px;background:#eef3f9;color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;font-weight:800}
 .navbtn:hover{background:#f2f7fc;color:var(--navy)}
 .navbtn.active{background:linear-gradient(135deg,#eaf2f9,#dfebf6);color:var(--navy);font-weight:800}
 .navbtn.active .ico{background:var(--navy);color:var(--gold2)}
 .sidebar-footer{margin-top:auto;padding:12px;background:#f5f8fb;border-radius:10px;font-size:11px;color:var(--muted);line-height:1.6;border:1px solid var(--line)}
 .sidebar-footer b{color:var(--navy)}
-
-/* CONTENT */
 .content{padding:24px;flex:1;min-width:0;overflow-x:hidden}
 .page{display:none}
 .page.active{display:block;animation:fadeUp .3s}
@@ -119,7 +110,7 @@ img{max-width:100%;display:block}
 .stat.slate::before{background:linear-gradient(180deg,#64748b,#94a3b8)}
 .stat .n{font-size:30px;font-weight:900;color:var(--navy);line-height:1.1}
 .stat small{color:var(--muted);font-size:12px;font-weight:600;display:block;margin-top:2px}
-.stat .ico{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:10px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--navy)}
+.stat .ico{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:10px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--navy)}
 .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
 .panel h3{margin:0 0 14px;color:var(--navy);font-size:15px;font-weight:800}
 .panel .hint{color:var(--muted);font-size:12.5px;margin:-6px 0 14px;line-height:1.6}
@@ -174,20 +165,21 @@ tbody tr:hover{background:#fafcfe}
 .mini-4{background:linear-gradient(120deg,#f8fbff,#fff);border:6px solid #0b2545;color:#0b2545}
 .mini-5{background:#fafafa;border:5px solid #4a4a4a;color:#222}
 
-/* CERTIFICATE - A4 LANDSCAPE 297 x 210 mm @ 96dpi = 1123 x 794 */
 .certificate-stage{background:repeating-conic-gradient(#dfe5ec 0% 25%,#e8edf3 0% 50%) 50%/24px 24px;padding:22px;border-radius:14px;overflow:auto;border:1px solid var(--line)}
 .cert-print-wrap{display:flex;justify-content:center}
 .certificate{width:1123px;height:794px;position:relative;background:#fff;margin:auto;overflow:hidden;font-family:var(--ff);color:#1a2b3c;flex-shrink:0;box-shadow:0 14px 40px rgba(11,37,69,.22)}
-.cert-school-name{font-family:'Times New Roman',Georgia,serif;font-size:36px;font-weight:900;letter-spacing:1.5px;line-height:1.1;text-align:center;margin:0;font-style:italic}
-.cert-address{font-family:var(--fs);font-size:13px;text-align:center;letter-spacing:.6px;margin-top:6px;font-weight:600}
-.cert-motto{font-family:var(--ff);font-style:italic;font-size:15px;text-align:center;margin-top:4px}
-.cert-title{font-family:var(--fs);font-size:30px;font-weight:900;letter-spacing:5px;text-align:center;text-transform:uppercase;margin:0 0 6px}
-.cert-lead{font-family:var(--ff);font-style:italic;font-size:17px;text-align:center;margin:6px 0 4px;color:#334}
+
+/* Certificate text */
+.cert-school-name{font-family:'Times New Roman',Georgia,serif;font-size:38px;font-weight:900;letter-spacing:1.5px;line-height:1.1;text-align:center;margin:0;font-style:italic}
+.cert-address{font-family:var(--fs);font-size:14px;text-align:center;letter-spacing:.6px;margin-top:8px;font-weight:700}
+.cert-motto{font-family:var(--ff);font-style:italic;font-size:16px;text-align:center;margin-top:5px;font-weight:600}
+.cert-title{font-family:var(--fs);font-size:28px;font-weight:900;letter-spacing:4px;text-align:center;text-transform:uppercase;margin:0;line-height:1.15}
+.cert-lead{font-family:var(--ff);font-style:italic;font-size:17px;text-align:center;margin:8px 0 4px;color:#334}
 .cert-name{font-family:var(--fs);font-size:30px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;text-align:center;margin:6px auto;padding:2px 30px 6px;width:max-content;max-width:88%;line-height:1.1}
-.cert-body{font-family:var(--ff);font-style:italic;font-size:15.5px;line-height:1.5;max-width:820px;margin:6px auto 0;text-align:center;color:#26343f}
+.cert-body{font-family:var(--ff);font-style:italic;font-size:15px;line-height:1.55;max-width:870px;margin:8px auto 0;text-align:center;color:#26343f}
 .cert-body b{font-style:normal;font-weight:800}
-.competences-head{font-family:var(--ff);font-style:italic;font-weight:700;font-size:16px;margin:12px 0 8px}
-.package-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 34px;padding:0 8px}
+.competences-head{font-family:var(--ff);font-style:italic;font-weight:700;font-size:16px;margin:14px 0 8px}
+.package-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 40px;padding:0 8px}
 .package-item{display:flex;align-items:center;gap:11px;min-width:0}
 .pkg-icon{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(11,37,69,.08);box-shadow:0 1px 2px rgba(11,37,69,.05)}
 .pkg-icon svg{width:17px;height:17px}
@@ -200,6 +192,7 @@ tbody tr:hover{background:#fafcfe}
 .pkg-icon.c5{background:linear-gradient(135deg,#fde7ee,#f8c8d7);color:#b02f5c}
 .pkg-icon.c6{background:linear-gradient(135deg,#e5f1fd,#c8e0f8);color:#0b4f9c}
 .pkg-icon.c7{background:linear-gradient(135deg,#e6f7f8,#c4ebee);color:#0d6d76}
+
 .cert-footer{position:absolute;left:54px;right:54px;bottom:22px;display:flex;justify-content:space-between;align-items:flex-end}
 .sig{width:250px;text-align:center;font-family:var(--fs)}
 .sig .sig-img{height:50px;max-width:210px;object-fit:contain;display:block;margin:0 auto -6px}
@@ -211,20 +204,59 @@ tbody tr:hover{background:#fafcfe}
 .center-slot .badge-c small{display:block;font-size:8px;letter-spacing:1.6px;opacity:.9;font-weight:700}
 .qr-slot{position:absolute;left:54px;bottom:22px;width:78px;height:78px;background:#fff;padding:3px;border:1px solid #e2e8f0;border-radius:6px;box-shadow:0 2px 8px rgba(11,37,69,.08)}
 .qr-slot img{width:100%;height:100%;display:block}
-.cert-top-row{display:grid;grid-template-columns:135px 1fr 135px;gap:14px;align-items:start;margin-bottom:4px}
-.cert-logo-box{width:135px;height:150px;border:2px solid rgba(11,37,69,.85);border-radius:6px;background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 2px 6px rgba(11,37,69,.06)}
-.cert-logo-box img{max-width:100%;max-height:100%;object-fit:contain}
-.cert-logo-box.placeholder{background:linear-gradient(135deg,#0b2545,#1769aa);color:#e6c66b;font-family:var(--fs);font-weight:900;font-size:34px;border-color:#c89b3c}
-.cert-photo-box{width:135px;height:150px;border:2px solid rgba(11,37,69,.85);border-radius:6px;background:#f8fafc;padding:3px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 2px 6px rgba(11,37,69,.06);justify-self:end}
-.cert-photo-box img{width:100%;height:100%;object-fit:cover}
-.cert-photo-box.placeholder{flex-direction:column;gap:6px;color:#94a3b8;font-family:var(--fs);font-size:11px;letter-spacing:.6px;text-align:center}
-.cert-photo-box.placeholder .ico{font-size:26px;opacity:.6;font-weight:900}
-.cert-head-center{min-width:0;text-align:center;padding-top:4px}
+
+/* NEW CERTIFICATE LAYOUT -------------------------------------- */
+/* Top block: school name, address, motto (centered, full width)  */
+.cert-top-block{text-align:center;margin-bottom:6px}
+
+/* Second row: logo (left, no border) | title (center) | photo (right, no border) */
+.cert-mid-row{display:grid;grid-template-columns:150px 1fr 150px;gap:20px;align-items:center;margin:10px 0 6px}
+
+/* Logo - clean, no border, subtle shadow only */
+.cert-logo-clean{width:150px;height:150px;display:flex;align-items:center;justify-content:center}
+.cert-logo-clean img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 2px 5px rgba(11,37,69,.15))}
+.cert-logo-clean.placeholder{
+  background:linear-gradient(135deg,#0b2545,#1769aa);color:#e6c66b;
+  font-family:var(--fs);font-weight:900;font-size:38px;letter-spacing:1px;
+  border-radius:50%;box-shadow:0 4px 12px rgba(11,37,69,.2);
+}
+
+/* Photo - clean rounded frame, background blends nicely */
+.cert-photo-clean{
+  width:150px;height:150px;
+  display:flex;align-items:center;justify-content:center;
+  justify-self:end;
+  position:relative;
+}
+.cert-photo-clean img{
+  max-width:100%;max-height:100%;
+  width:auto;height:auto;
+  object-fit:contain;
+  border-radius:14px;
+  background:transparent;
+  filter:drop-shadow(0 3px 8px rgba(11,37,69,.18));
+}
+.cert-photo-clean.placeholder{
+  width:130px;height:150px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#f8fafc,#eef2f7);
+  color:#94a3b8;font-family:var(--fs);font-size:11px;letter-spacing:.8px;
+  text-align:center;flex-direction:column;gap:6px;
+  box-shadow:0 3px 8px rgba(11,37,69,.08),inset 0 0 0 1px rgba(11,37,69,.06);
+}
+.cert-photo-clean.placeholder .ico{font-size:28px;opacity:.55;font-weight:900;color:#cbd5e1}
+
+/* CENTER title area */
+.cert-title-block{text-align:center;min-width:0;padding:0 6px}
+.cert-title-block .cert-title{margin:0 0 4px}
+
+/* Adjust content area padding so nothing collides with footer/QR */
+.cert-content-pad{padding:0 40px}
 
 /* TEMPLATE 1 - CLASSIC (matches sample) */
 .tpl1{background:#f2a877;padding:0}
 .tpl1 .cert-green{position:absolute;inset:14px;background:linear-gradient(135deg,#3fae3f,#2f9a2f)}
-.tpl1 .cert-paper{position:absolute;inset:24px;background:#fff;padding:16px 42px 18px;overflow:hidden}
+.tpl1 .cert-paper{position:absolute;inset:24px;background:#fff;padding:14px 42px 14px;overflow:hidden}
 .tpl1 .cert-paper::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 30%,rgba(63,174,63,.06),transparent 40%),radial-gradient(circle at 85% 70%,rgba(242,168,119,.06),transparent 40%),repeating-radial-gradient(circle at 50% 50%,transparent 0 34px,rgba(63,174,63,.025) 34px 35px)}
 .tpl1 .corner-tri{position:absolute;width:0;height:0;z-index:2}
 .tpl1 .corner-tri.tl{top:0;left:0;border-top:52px solid #3fae3f;border-right:52px solid transparent}
@@ -239,7 +271,7 @@ tbody tr:hover{background:#fafcfe}
 
 /* TEMPLATE 2 - PREMIUM GOLD */
 .tpl2{background:linear-gradient(180deg,#fffef9,#fff9ec);padding:22px}
-.tpl2 .cert-inner{position:absolute;inset:22px;border:3px solid #c89b3c;padding:16px 42px 18px}
+.tpl2 .cert-inner{position:absolute;inset:22px;border:3px solid #c89b3c;padding:14px 42px}
 .tpl2 .cert-inner::before{content:"";position:absolute;inset:8px;border:1px solid #c89b3c;pointer-events:none}
 .tpl2 .cert-school-name{color:#8a6516;text-shadow:1px 1px 0 #fff,2px 2px 0 rgba(200,155,60,.22)}
 .tpl2 .cert-address{color:#6b4e14}
@@ -251,7 +283,7 @@ tbody tr:hover{background:#fafcfe}
 
 /* TEMPLATE 3 - PROFESSIONAL BLUE */
 .tpl3{background:linear-gradient(135deg,#f9fcff 0%,#eef6fd 100%);padding:22px}
-.tpl3 .cert-inner{position:absolute;inset:22px;border:2px solid #1769aa;padding:16px 42px 18px}
+.tpl3 .cert-inner{position:absolute;inset:22px;border:2px solid #1769aa;padding:14px 42px}
 .tpl3 .cert-inner::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:14px;background:linear-gradient(90deg,#0f4c81,#1769aa 45%,#1c7ed6 45%,#1c7ed6 70%,#0b2545 70%)}
 .tpl3 .cert-inner::after{content:"";position:absolute;bottom:-2px;left:-2px;right:-2px;height:14px;background:linear-gradient(90deg,#0b2545 30%,#1c7ed6 30%,#1c7ed6 55%,#1769aa 55%,#0f4c81)}
 .tpl3 .cert-school-name{color:#0f4c81}
@@ -264,7 +296,7 @@ tbody tr:hover{background:#fafcfe}
 
 /* TEMPLATE 4 - MODERN INSTITUTIONAL */
 .tpl4{background:linear-gradient(120deg,#f8fbff,#fff);padding:22px}
-.tpl4 .cert-inner{position:absolute;inset:22px;border:2px solid #0b2545;padding:16px 42px 18px}
+.tpl4 .cert-inner{position:absolute;inset:22px;border:2px solid #0b2545;padding:14px 42px}
 .tpl4 .cert-inner::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:16px;background:linear-gradient(90deg,#0b2545 62%,#c89b3c 62%)}
 .tpl4 .cert-inner::after{content:"";position:absolute;bottom:-2px;left:-2px;right:-2px;height:16px;background:linear-gradient(90deg,#c89b3c 38%,#0b2545 38%)}
 .tpl4 .cert-school-name{color:#0b2545}
@@ -276,7 +308,7 @@ tbody tr:hover{background:#fafcfe}
 
 /* TEMPLATE 5 - FORMAL MONOCHROME */
 .tpl5{background:#fdfdfd;padding:22px}
-.tpl5 .cert-inner{position:absolute;inset:24px;border:3px solid #333;padding:16px 42px 18px}
+.tpl5 .cert-inner{position:absolute;inset:24px;border:3px solid #333;padding:14px 42px}
 .tpl5 .cert-inner::before{content:"";position:absolute;inset:7px;border:1px solid #777;pointer-events:none}
 .tpl5 .cert-school-name{color:#111}
 .tpl5 .cert-address{color:#333}
@@ -292,12 +324,10 @@ tbody tr:hover{background:#fafcfe}
 .img-preview img{max-height:52px;object-fit:contain}
 .img-preview.empty::before{content:"No image uploaded";color:#94a3b8;font-size:11.5px}
 
-/* RESPONSIVE */
 @media(max-width:1180px){.cards{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:950px){.sidebar{display:none}.cards{grid-template-columns:repeat(2,1fr)}.template-grid{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.content{padding:14px}}
 @media(max-width:600px){.cards{grid-template-columns:1fr}.template-grid{grid-template-columns:1fr}.topbar{padding:0 10px}.brand-text small{display:none}.top-actions .pill{display:none}}
 
-/* PRINT - A4 LANDSCAPE */
 @media print{
   @page{size:A4 landscape;margin:0}
   body{background:#fff!important;margin:0;padding:0}
@@ -314,7 +344,6 @@ tbody tr:hover{background:#fafcfe}
 
 <div id="toastWrap"></div>
 
-<!-- LOGIN -->
 <section id="loginPage">
   <div class="login-card">
     <div id="loginCrest" class="login-crest">RA</div>
@@ -332,7 +361,6 @@ tbody tr:hover{background:#fafcfe}
   </div>
 </section>
 
-<!-- APP -->
 <section id="app">
   <header class="topbar">
     <div class="brand">
@@ -366,7 +394,6 @@ tbody tr:hover{background:#fafcfe}
     </aside>
 
     <main class="content">
-
       <section id="dashboard" class="page active">
         <div class="page-head">
           <h1 class="page-title">Certificate Dashboard</h1>
@@ -384,9 +411,9 @@ tbody tr:hover{background:#fafcfe}
           <h3>Certificate Programme</h3>
           <div class="grid2">
             <div><b style="color:#0b2545">S.4 - 2023-2026</b>
-              <p class="subtitle" style="margin-top:6px">All seven ICT packages including <b>Web Designing</b>.</p></div>
+              <p class="subtitle" style="margin-top:6px">Four-year ICT training including <b>Web Designing</b>.</p></div>
             <div><b style="color:#8a6516">S.6 - 2024-2026</b>
-              <p class="subtitle" style="margin-top:6px">Six ICT packages. <b>Web Designing excluded</b>.</p></div>
+              <p class="subtitle" style="margin-top:6px">Two-year ICT training. <b>Web Designing excluded</b>.</p></div>
           </div>
           <div class="notice blue" style="margin-top:14px">
             <b>Date of Award</b> is recorded automatically as the date on which the certificate is generated.
@@ -587,7 +614,6 @@ tbody tr:hover{background:#fafcfe}
           <div class="actions"><button class="btn red" onclick="factoryReset()">Factory Reset (Delete Everything)</button></div>
         </div>
       </section>
-
     </main>
   </div>
 </section>
@@ -604,16 +630,13 @@ tbody tr:hover{background:#fafcfe}
 </div>
 
 <script>
-/* ============================================================
-   STATE
-   ============================================================ */
 var LS = {
-  settings:'rubongiSettings_v3',
-  learners:'rubongiLearners_v3',
-  template:'rubongiTemplate_v3',
-  generated:'rubongiGenerated_v3',
-  counter:'rubongiCounter_v3',
-  auth:'rubongiAuth_v3'
+  settings:'rubongiSettings_v4',
+  learners:'rubongiLearners_v4',
+  template:'rubongiTemplate_v4',
+  generated:'rubongiGenerated_v4',
+  counter:'rubongiCounter_v4',
+  auth:'rubongiAuth_v4'
 };
 
 var DEFAULTS = {
@@ -642,9 +665,6 @@ var generatedCount = Number(localStorage.getItem(LS.generated) || 0);
 var certCounter = load(LS.counter, {S4:{}, S6:{}});
 var auth = load(LS.auth, {user:"admin", passHash: simpleHash("admin")});
 
-/* ============================================================
-   UTILITIES
-   ============================================================ */
 function $(id){return document.getElementById(id)}
 function load(key, fb){
   try{
@@ -671,9 +691,7 @@ function safe(s){ return String(s||"").replace(/[^a-z0-9_-]+/gi,"_").replace(/^_
 function todayLong(){ return new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}); }
 function todayISO(){ return new Date().toISOString().slice(0,10); }
 function uid(){ return 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
-function debounce(fn, ms){ ms=ms||200; var t; return function(){ var a=arguments, self=this; clearTimeout(t); t=setTimeout(function(){ fn.apply(self,a); }, ms); }; }
 
-/* TOAST */
 function toast(type, title, msg, duration){
   duration = duration || 4200;
   var el = document.createElement('div');
@@ -688,7 +706,6 @@ function toast(type, title, msg, duration){
   }, duration);
 }
 
-/* MODAL */
 function openModal(html){ $('modalBox').innerHTML = html; $('modalBackdrop').classList.add('show'); }
 function closeModal(){ $('modalBackdrop').classList.remove('show'); $('modalBox').innerHTML = ''; }
 document.getElementById('modalBackdrop').addEventListener('click', function(e){ if(e.target.id === 'modalBackdrop') closeModal(); });
@@ -701,7 +718,6 @@ function confirmDialog(title, msg, onConfirm, confirmLabel, danger){
   $('confirmBtn').onclick = function(){ closeModal(); onConfirm(); };
 }
 
-/* PROGRESS */
 function showProgress(title, sub){
   $('progressTitle').textContent = title;
   $('progressSub').textContent = sub || 'Please wait...';
@@ -716,7 +732,6 @@ function updateProgress(done, total){
 }
 function hideProgress(){ setTimeout(function(){ $('progressOverlay').classList.remove('show'); }, 200); }
 
-/* LOGIN */
 function attemptLogin(){
   var u = $('loginUser').value.trim();
   var p = $('loginPass').value;
@@ -745,7 +760,6 @@ function logout(){
   }, 'Sign Out');
 }
 
-/* PASSWORD */
 function openPasswordModal(){
   openModal('<div class="modal-head"><h3>Change Password</h3><button onclick="closeModal()">X</button></div>'+
     '<div class="modal-body"><div class="field"><label>Current Password</label><input id="pwCurrent" type="password"></div>'+
@@ -767,10 +781,9 @@ function changePassword(){
   toast('success','Password updated','Your new password has been saved.');
 }
 
-/* NAV */
 var navBtns = document.querySelectorAll('.navbtn');
-for(var i=0;i<navBtns.length;i++){
-  navBtns[i].addEventListener('click', function(){
+for(var ni=0; ni<navBtns.length; ni++){
+  navBtns[ni].addEventListener('click', function(){
     var all = document.querySelectorAll('.navbtn');
     for(var j=0;j<all.length;j++) all[j].classList.remove('active');
     this.classList.add('active');
@@ -815,7 +828,6 @@ function refreshStats(){
   if($('learnerCount')) $('learnerCount').textContent = learners.length;
 }
 
-/* LEARNERS */
 function addLearner(){
   var name = $('lname').value.trim();
   var cls  = $('lclass').value;
@@ -941,7 +953,6 @@ function clearAllLearners(){
   }, 'Delete All', true);
 }
 
-/* EXCEL */
 function downloadTemplate(){
   try{
     var rows = [
@@ -995,7 +1006,6 @@ function importExcel(e){
   e.target.value = '';
 }
 
-/* SETTINGS */
 function loadSettingsForm(){
   $('setSchool').value = settings.school;
   $('setAddress').value = settings.address;
@@ -1051,7 +1061,6 @@ function resetSettings(){
   },'Restore',true);
 }
 
-/* TEMPLATE */
 function selectTemplate(n){
   selectedTemplate = Number(n);
   localStorage.setItem(LS.template, selectedTemplate);
@@ -1064,7 +1073,6 @@ function selectTemplate(n){
   renderTemplatePreview(); renderPreview();
 }
 
-/* PACKAGE ICONS - inline SVG, no emoji */
 function packageIconData(name){
   var b = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">';
   var icons = {
@@ -1087,9 +1095,20 @@ function packagesFor(cls){
   if(cls === 'S.4') p.push(WEB_DESIGNING);
   return p.concat(PACKAGES_TAIL);
 }
-function periodFor(cls){ return cls === 'S.4' ? '2023-2026' : '2024-2026'; }
+function periodFor(cls){ return cls === 'S.4' ? '2023 - 2026' : '2024 - 2026'; }
 
-/* QR */
+/* The two distinct body paragraphs the user requested */
+function bodyTextFor(cls){
+  if(cls === 'S.4'){
+    return 'Has successfully completed a four-year competence-based training program in ICT '+
+           '(Senior 1 to Senior 4) 2023 - 2026 and has demonstrated proficiency and '+
+           'satisfactory participation in the following core competencies.';
+  }
+  return 'Having undergone a rigorous two-year competence-based training in Information and '+
+         'Communication Technology (2024 - 2026), the bearer has successfully demonstrated '+
+         'active participation and practical competency in the following key areas.';
+}
+
 function qrDataURL(text){
   return new Promise(function(resolve, reject){
     try{
@@ -1116,16 +1135,34 @@ function qrTextFor(learner){
   ].join('\n');
 }
 
-/* CERTIFICATE BUILD */
+/* ============================================================
+   CERTIFICATE BUILDER  (new layout)
+   Rows:
+     1) School name (centered, top)
+     2) Address (centered)
+     3) Motto (centered)
+     4) Logo (left, no border)  |  Title (center)  |  Photo (right, no border)
+     5) This is to certify that
+     6) Learner name
+     7) Body paragraph (S.4 or S.6)
+     8) Competences achieved
+     9) Two-column packages with icons
+    10) Footer signatures
+    11) QR bottom-left
+   ============================================================ */
 function buildCertificateHTML(learner){
   return new Promise(function(resolve){
     var tpl = selectedTemplate;
+
+    /* Logo - no border, clean */
     var logoBlock = settings.logo
-      ? '<div class="cert-logo-box"><img src="'+settings.logo+'" alt="Logo"></div>'
-      : '<div class="cert-logo-box placeholder">RA</div>';
+      ? '<div class="cert-logo-clean"><img src="'+settings.logo+'" alt="Logo"></div>'
+      : '<div class="cert-logo-clean placeholder">RA</div>';
+
+    /* Photo - clean rounded, no hard border, drop shadow only */
     var photoBlock = learner.photo
-      ? '<div class="cert-photo-box"><img src="'+learner.photo+'" alt="Photo"></div>'
-      : '<div class="cert-photo-box placeholder"><div class="ico">U</div><div>PHOTO</div></div>';
+      ? '<div class="cert-photo-clean"><img src="'+learner.photo+'" alt="Photo"></div>'
+      : '<div class="cert-photo-clean placeholder"><div class="ico">U</div><div>PHOTO</div></div>';
 
     var hodSig = settings.hodSig ? '<img class="sig-img" src="'+settings.hodSig+'" alt="">' : '<div style="height:50px"></div>';
     var headSig = settings.headSig ? '<img class="sig-img" src="'+settings.headSig+'" alt="">' : '<div style="height:50px"></div>';
@@ -1146,40 +1183,59 @@ function buildCertificateHTML(learner){
         '<div class="pkg-text"><span class="pkg-num">'+roman[i]+'.</span> '+escapeHtml(p)+'</div></div>';
     }).join('');
 
-    var paperOpen = tpl === 1
+    var paperOpen = (tpl === 1)
       ? '<div class="cert-green"></div><div class="cert-paper"><div class="corner-tri tl"></div><div class="corner-tri br"></div>'
       : '<div class="cert-inner">';
 
-    // Render certificate with QR placeholder first, then fill QR as data URL
+    var body = bodyTextFor(learner.class);
+
     function finish(qrImg){
       resolve(
         '<div class="certificate tpl'+tpl+'">'+paperOpen+
-        '<div class="cert-top-row">'+logoBlock+'<div class="cert-head-center"></div>'+photoBlock+'</div>'+
-        '<div class="cert-school-name">'+escapeHtml(settings.school)+'</div>'+
-        '<div class="cert-address">'+escapeHtml(settings.address)+' &nbsp;&bull;&nbsp; Tel: '+escapeHtml(settings.tel)+'</div>'+
-        '<div class="cert-motto">"'+escapeHtml(settings.motto || 'Victory is Our Challenge')+'"</div>'+
-        '<div style="height:8px"></div>'+
-        '<div class="cert-title">'+escapeHtml(settings.title)+'</div>'+
+
+        /* ROW 1-3: School name, address, motto at the TOP (centered, full width) */
+        '<div class="cert-top-block">'+
+          '<div class="cert-school-name">'+escapeHtml(settings.school)+'</div>'+
+          '<div class="cert-address">'+escapeHtml(settings.address)+' &nbsp;&bull;&nbsp; TEL: '+escapeHtml(settings.tel)+'</div>'+
+          '<div class="cert-motto">"'+escapeHtml(settings.motto || 'Victory is Our Challenge')+'"</div>'+
+        '</div>'+
+
+        /* ROW 4: Logo (left, no border) | Title (center) | Photo (right, no border) */
+        '<div class="cert-mid-row">'+
+          logoBlock+
+          '<div class="cert-title-block">'+
+            '<div class="cert-title">'+escapeHtml(settings.title)+'</div>'+
+          '</div>'+
+          photoBlock+
+        '</div>'+
+
+        /* ROW 5-7: Lead, name, body */
         '<div class="cert-lead">This is to certify that</div>'+
         '<div class="cert-name">'+escapeHtml(learner.name)+'</div>'+
-        '<div class="cert-body">Has successfully completed a four year competence based training in <b>ICT</b> for <b>'+learner.class+'</b> and has demonstrated satisfactory participation in the following competence areas.</div>'+
+        '<div class="cert-body">'+escapeHtml(body)+'</div>'+
+
+        /* ROW 8-9: Competences */
         '<div class="competences-head">Competences achieved:-</div>'+
         '<div class="package-grid">'+packageHTML+'</div>'+
+
+        /* ROW 10-11: Footer + QR */
         '<div class="cert-footer">'+
           '<div class="sig">'+hodSig+'<div class="sigline">HOD ICT</div>'+hodName+'</div>'+
           centerSlot+
           '<div class="sig">'+headSig+'<div class="sigline">HEAD TEACHER</div>'+headName+'</div>'+
-        '</div>'+qrImg+
+        '</div>'+
+        qrImg+
+
         '</div></div>'
       );
     }
+
     qrDataURL(qrTextFor(learner)).then(function(url){
       finish('<div class="qr-slot"><img src="'+url+'" alt="QR"></div>');
     }).catch(function(){ finish(''); });
   });
 }
 
-/* PREVIEW */
 function renderTemplatePreview(){
   var demo = learners[0] || { id:'demo', name:'ABOTH ALICE SHALOM', class:'S.4', index:'U1896/015', photo:'', certNo:'RA/ICT/S4/2026/001' };
   var target = $('templatePreview'); if(!target) return;
@@ -1221,7 +1277,6 @@ function renderGeneratePage(){
   refreshStats(); renderPreview();
 }
 
-/* RENDER TO CANVAS */
 function renderCertificateToCanvas(learner){
   return buildCertificateHTML(learner).then(function(html){
     var holder = document.createElement('div');
@@ -1239,7 +1294,6 @@ function renderCertificateToCanvas(learner){
   });
 }
 
-/* PDF / ZIP */
 function generateSelectedPDF(){
   var id = $('previewLearner').value;
   var learner = learners.find(function(x){ return x.id===id; });
@@ -1324,7 +1378,6 @@ function generateAllZIP(){
   step();
 }
 
-/* PRINT */
 function printAll(){
   if(!learners.length) return toast('warn','No learners','Add or import learners first.');
   showProgress('Preparing print','Rendering ' + learners.length + ' certificate(s)...');
@@ -1353,7 +1406,6 @@ function printAll(){
   step();
 }
 
-/* BACKUP */
 function updateStorageStatus(){
   var el = $('storageStatus'); if(!el) return;
   var usedKB = 0;
@@ -1369,7 +1421,7 @@ function exportData(){
   try{
     var payload = {
       app: "Rubongi Army SS - ICT Certificate Management System",
-      exportedAt: new Date().toISOString(), version: 3,
+      exportedAt: new Date().toISOString(), version: 4,
       settings: settings, learners: learners, selectedTemplate: selectedTemplate,
       generatedCount: generatedCount, certCounter: certCounter
     };
@@ -1418,7 +1470,6 @@ function factoryReset(){
   }, 'Erase Everything', true);
 }
 
-/* BOOTSTRAP */
 (function boot(){
   if(settings.logo) $('loginCrest').innerHTML = '<img src="'+settings.logo+'" alt="">';
   if(sessionStorage.getItem('rubongiLoggedIn') === '1') enterApp();
