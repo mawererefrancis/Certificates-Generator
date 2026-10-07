@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rubongi Army SS - ICT Certificate Management System</title>
+
+<!-- External browser libraries; the application itself remains one HTML file. -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+<style>
+*{box-sizing:border-box}
+:root{
+ --navy:#102a43;--blue:#1769aa;--gold:#c89b3c;--light:#f4f7fb;
+ --green:#16805c;--red:#c0392b;--text:#263238;--muted:#64748b;
+}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:var(--text)}
+button,input,select{font:inherit}
+.hidden{display:none!important}
+
+/* LOGIN */
+#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;
+ background:linear-gradient(135deg,#071a2e,#164e77 55%,#c89b3c);padding:20px}
+.login-card{width:min(440px,100%);background:#fff;border-radius:22px;padding:34px;
+ box-shadow:0 25px 70px rgba(0,0,0,.28);text-align:center}
+.login-logo{width:92px;height:92px;border-radius:50%;object-fit:contain;border:4px solid #eee;background:#fff;margin-bottom:10px}
+.login-card h1{margin:5px 0;color:var(--navy);font-size:24px}
+.login-card h2{margin:4px 0 18px;color:var(--gold);font-size:14px;letter-spacing:1px}
+.login-card p{color:var(--muted);font-size:13px;line-height:1.5}
+.login-card input{width:100%;padding:13px;border:1px solid #d5dce5;border-radius:10px;margin:8px 0}
+.primary{background:var(--navy);color:white;border:0;padding:12px 18px;border-radius:10px;cursor:pointer;font-weight:700}
+.primary:hover{background:#17466d}
+.designer{margin-top:22px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#7b8794}
+.designer strong{display:block;color:var(--navy);font-size:14px;margin-top:3px}
+
+/* APP */
+#app{display:none;min-height:100vh}
+.topbar{height:68px;background:var(--navy);color:#fff;display:flex;align-items:center;
+ justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800}
+.brand img{width:42px;height:42px;border-radius:50%;background:#fff;object-fit:contain}
+.top-actions{display:flex;gap:8px;align-items:center}
+.top-actions button{background:#ffffff16;color:#fff;border:1px solid #ffffff2b;padding:9px 13px;border-radius:8px;cursor:pointer}
+.layout{display:flex;min-height:calc(100vh - 68px)}
+.sidebar{width:245px;background:#fff;border-right:1px solid #e1e7ee;padding:16px;flex-shrink:0}
+.navbtn{width:100%;text-align:left;background:transparent;border:0;padding:12px;border-radius:9px;
+ color:#475569;margin-bottom:5px;cursor:pointer;font-weight:600}
+.navbtn.active,.navbtn:hover{background:#eaf2f9;color:var(--navy)}
+.content{padding:22px;flex:1;min-width:0}
+.page{display:none}.page.active{display:block}
+.page-title{font-size:25px;color:var(--navy);margin:0 0 5px}
+.subtitle{color:var(--muted);margin:0 0 20px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{background:#fff;border:1px solid #e1e7ee;border-radius:14px;padding:18px}
+.stat .n{font-size:30px;font-weight:800;color:var(--navy)}.stat small{color:var(--muted)}
+.panel{background:#fff;border:1px solid #e1e7ee;border-radius:14px;padding:18px;margin-bottom:18px}
+.panel h3{margin-top:0;color:var(--navy)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+label{display:block;font-weight:700;font-size:13px;color:#475569;margin-bottom:6px}
+input[type=text],input[type=date],input[type=password],input[type=file],select{
+ width:100%;padding:11px;border:1px solid #cfd8e3;border-radius:9px;background:#fff}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.btn{border:0;border-radius:9px;padding:10px 14px;cursor:pointer;font-weight:700}
+.btn.blue{background:#1769aa;color:#fff}.btn.green{background:#16805c;color:#fff}
+.btn.gold{background:#c89b3c;color:#fff}.btn.gray{background:#e9eef4;color:#334155}.btn.red{background:#c0392b;color:#fff}
+.notice{padding:12px 14px;border-radius:9px;background:#fff8e7;border-left:4px solid var(--gold);color:#5f4b1d;font-size:13px}
+.table-wrap{overflow:auto;border:1px solid #e1e7ee;border-radius:10px}
+table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:10px;border-bottom:1px solid #e8edf2;text-align:left;font-size:13px}th{background:#f5f7fa;color:#334155}
+.thumb{width:42px;height:52px;object-fit:cover;border-radius:5px;border:1px solid #ccd5df}
+.badge{padding:4px 8px;border-radius:20px;font-size:11px;font-weight:800;background:#e9f3fb;color:#1769aa}
+.template-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.template-card{border:2px solid #e0e6ed;border-radius:12px;padding:10px;cursor:pointer;background:#fff}
+.template-card.selected{border-color:var(--gold);box-shadow:0 0 0 3px #c89b3c22}
+.template-mini{height:135px;border-radius:5px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-family:Georgia,serif}
+.t1{background:#fff;border:8px double #183b56;color:#183b56}.t2{background:#fffdf5;border:8px solid #c89b3c;color:#5b4616}.t3{background:#f8fbff;border:7px double #1769aa;color:#1769aa}.t4{background:linear-gradient(120deg,#f8fbff,#fff);border:7px solid #102a43;color:#102a43}.t5{background:#fafafa;border:6px solid #555;color:#222}
+
+/* CERTIFICATE */
+.certificate-stage{background:#dfe5ec;padding:20px;border-radius:14px;overflow:auto}
+.certificate{
+ width:1123px;height:794px;position:relative;background:#fff;margin:auto;overflow:hidden;
+ font-family:Georgia,"Times New Roman",serif;color:#172b3a;box-shadow:0 8px 30px #0002;
+}
+.cert-inner{position:absolute;inset:30px;border:4px solid #183b56;padding:36px 50px;text-align:center}
+.cert-template-2 .cert-inner{border:8px solid #c89b3c;background:#fffdf6}
+.cert-template-3 .cert-inner{border:5px double #1769aa;background:#f8fbff}
+.cert-template-4 .cert-inner{border:5px solid #102a43;background:linear-gradient(120deg,#f9fcff,#fff)}
+.cert-template-5 .cert-inner{border:4px solid #555}
+.cert-logo{position:absolute;top:38px;left:50px;width:90px;height:90px;object-fit:contain}
+.cert-photo{position:absolute;top:42px;right:52px;width:112px;height:132px;object-fit:cover;border:3px solid #183b56;padding:3px;background:#fff}
+.cert-school{font-size:28px;font-weight:800;letter-spacing:1px;margin-top:4px}
+.cert-address{font-family:Arial,sans-serif;font-size:13px;margin-top:4px}
+.cert-title{font-size:31px;font-weight:800;letter-spacing:4px;margin:28px 0 15px;color:#9a721c}
+.cert-sub{font-family:Arial,sans-serif;font-size:15px}
+.cert-name{font-size:38px;font-weight:800;text-transform:uppercase;margin:16px auto 10px;border-bottom:2px solid #9a721c;padding:0 35px 8px;width:max-content;max-width:80%}
+.cert-body{font-family:Arial,sans-serif;font-size:15px;line-height:1.55;max-width:830px;margin:auto}
+.package-title{font-size:14px;font-weight:800;margin:17px 0 7px;letter-spacing:1px}
+.package-list{font-family:Arial,sans-serif;font-size:13px;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;max-width:900px;margin:auto}
+.package-list span{border:1px solid #c7d0da;padding:5px 9px;border-radius:5px;background:#f7f9fb}
+.cert-footer{position:absolute;left:70px;right:70px;bottom:48px;display:flex;justify-content:space-between;align-items:end;font-family:Arial,sans-serif}
+.sig{width:220px;text-align:center;font-size:12px;font-weight:800}
+.sig img{height:45px;max-width:190px;object-fit:contain;display:block;margin:0 auto -2px}
+.sigline{border-top:1px solid #333;padding-top:6px}
+.cert-meta{font-size:11px;color:#566575;margin-top:14px}
+.qr{width:58px;height:58px;position:absolute;right:65px;bottom:125px}
+.template-chip{display:inline-block;padding:4px 8px;background:#edf3f8;border-radius:12px;font:11px Arial;color:#455a64}
+
+/* responsive */
+@media(max-width:950px){
+ .sidebar{display:none}.cards{grid-template-columns:repeat(2,1fr)}
+ .template-grid{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}
+ .content{padding:14px}
+}
+@media(max-width:550px){.cards{grid-template-columns:1fr}.template-grid{grid-template-columns:1fr}.topbar{padding:0 10px}.brand span{display:none}}
+@media print{
+ body *{visibility:hidden!important}
+ #certificatePreview,#certificatePreview *{visibility:visible!important}
+ #certificatePreview{position:absolute;left:0;top:0}
+}
+</style>
+</head>
+<body>
+
+<section id="loginPage">
+ <div class="login-card">
+   <img id="loginLogo" class="login-logo" alt="School Logo">
+   <h1>Rubongi Army Secondary School</h1>
+   <h2>ICT CERTIFICATE MANAGEMENT SYSTEM</h2>
+   <p>Professional certificate preparation, preview and batch generation for ICT course completion.</p>
+   <input id="loginUser" type="text" placeholder="Username">
+   <input id="loginPass" type="password" placeholder="Password">
+   <button class="primary" style="width:100%;margin-top:8px" onclick="login()">Sign In</button>
+   <div class="designer">SYSTEM DESIGNER<strong>MAWERERE FRANCIS</strong></div>
+ </div>
+</section>
+
+<section id="app">
+ <header class="topbar">
+   <div class="brand"><img id="topLogo" alt=""><span>Rubongi Army SS — ICT Certificates</span></div>
+   <div class="top-actions">
+     <span id="todayLabel"></span>
+     <button onclick="logout()">Logout</button>
+   </div>
+ </header>
+ <div class="layout">
+  <aside class="sidebar">
+   <button class="navbtn active" data-page="dashboard">📊 Dashboard</button>
+   <button class="navbtn" data-page="learners">👨‍🎓 Learners</button>
+   <button class="navbtn" data-page="templates">🎨 Templates</button>
+   <button class="navbtn" data-page="settings">⚙️ School Settings</button>
+   <button class="navbtn" data-page="generate">🖨️ Generate Certificates</button>
+   <div style="margin-top:25px;padding:12px;background:#f5f8fb;border-radius:10px;font-size:11px;color:#64748b;line-height:1.5">
+    <b>Landscape only</b><br>
+    S.4: 2023–2026<br>
+    S.6: 2024–2026<br><br>
+    Award date is automatically set to the date of generation.
+   </div>
+  </aside>
+
+  <main class="content">
+   <!-- DASHBOARD -->
+   <section id="dashboard" class="page active">
+    <h1 class="page-title">Certificate Dashboard</h1>
+    <p class="subtitle">Manage ICT course completion certificates for Rubongi Army Secondary School.</p>
+    <div class="cards">
+      <div class="stat"><div class="n" id="totalLearners">0</div><small>Total Learners</small></div>
+      <div class="stat"><div class="n" id="s4Count">0</div><small>S.4 Learners</small></div>
+      <div class="stat"><div class="n" id="s6Count">0</div><small>S.6 Learners</small></div>
+      <div class="stat"><div class="n" id="generatedCount">0</div><small>Generated Certificates</small></div>
+    </div>
+    <div class="panel" style="margin-top:18px">
+      <h3>Certificate Programme</h3>
+      <div class="grid2">
+       <div><b>S.4 — 2023–2026</b><p class="subtitle">Includes Web Designing and all other ICT packages.</p></div>
+       <div><b>S.6 — 2024–2026</b><p class="subtitle">Includes all packages except Web Designing.</p></div>
+      </div>
+      <div class="notice">The <b>Date of Award</b> is automatically recorded as the date on which the certificate is generated. Certificates are designed for <b>A4 landscape</b> printing.</div>
+    </div>
+   </section>
+
+   <!-- LEARNERS -->
+   <section id="learners" class="page">
+    <h1 class="page-title">Learner Register</h1>
+    <p class="subtitle">Add learners individually or import a list from Excel.</p>
+    <div class="panel">
+      <h3>Add Learner</h3>
+      <div class="grid3">
+       <div><label>Full Name *</label><input id="lname" type="text" placeholder="e.g. JOHN PETER OKELLO"></div>
+       <div><label>Class *</label><select id="lclass"><option value="S.4">S.4</option><option value="S.6">S.6</option></select></div>
+       <div><label>Admission / Index No.</label><input id="lindex" type="text" placeholder="Optional"></div>
+      </div>
+      <div style="margin-top:12px"><label>Passport Photo</label><input id="lphoto" type="file" accept="image/*"></div>
+      <div class="actions"><button class="btn blue" onclick="addLearner()">Add Learner</button><button class="btn gray" onclick="clearLearnerForm()">Clear</button></div>
+    </div>
+    <div class="panel">
+      <h3>Import Learners from Excel</h3>
+      <p class="subtitle">Recommended columns: <b>Name, Class, AdmissionNo</b>. Photo filenames can optionally be included in a <b>Photo</b> column, but browser security means photos must still be selected/uploaded through the system.</p>
+      <input id="excelFile" type="file" accept=".xlsx,.xls,.csv" onchange="importExcel(event)">
+      <div class="actions"><button class="btn gray" onclick="downloadTemplate()">Download Excel Template</button><button class="btn red" onclick="clearAllLearners()">Delete All Learners</button></div>
+    </div>
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+       <h3 style="margin:0">Registered Learners</h3>
+       <input id="searchLearners" style="max-width:280px" type="text" placeholder="Search learner..." oninput="renderLearners()">
+      </div>
+      <div class="table-wrap" style="margin-top:12px">
+       <table><thead><tr><th>#</th><th>Photo</th><th>Name</th><th>Class</th><th>Admission/Index</th><th>Certificate No.</th><th>Actions</th></tr></thead>
+       <tbody id="learnerTable"></tbody></table>
+      </div>
+    </div>
+   </section>
+
+   <!-- TEMPLATES -->
+   <section id="templates" class="page">
+    <h1 class="page-title">Certificate Templates</h1>
+    <p class="subtitle">All templates are A4 landscape. Choose a design and preview it with your current learner.</p>
+    <div class="template-grid">
+      <div class="template-card selected" data-template="1" onclick="selectTemplate(1)">
+       <div class="template-mini t1">CLASSIC<br>ACADEMIC</div><b>Classic Academic</b><p class="subtitle">Traditional double-border school certificate.</p>
+      </div>
+      <div class="template-card" data-template="2" onclick="selectTemplate(2)">
+       <div class="template-mini t2">PREMIUM<br>GOLD</div><b>Premium Gold</b><p class="subtitle">Elegant gold-accent certificate.</p>
+      </div>
+      <div class="template-card" data-template="3" onclick="selectTemplate(3)">
+       <div class="template-mini t3">PROFESSIONAL<br>BLUE</div><b>Professional Blue</b><p class="subtitle">Clean technology-inspired appearance.</p>
+      </div>
+      <div class="template-card" data-template="4" onclick="selectTemplate(4)">
+       <div class="template-mini t4">MODERN<br>INSTITUTIONAL</div><b>Modern Institutional</b><p class="subtitle">Formal modern institutional style.</p>
+      </div>
+      <div class="template-card" data-template="5" onclick="selectTemplate(5)">
+       <div class="template-mini t5">FORMAL<br>MONOCHROME</div><b>Formal Monochrome</b><p class="subtitle">Simple, serious and printer-friendly.</p>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:18px">
+      <h3>Live Preview</h3>
+      <div id="templatePreview" class="certificate-stage"></div>
+    </div>
+   </section>
+
+   <!-- SETTINGS -->
+   <section id="settings" class="page">
+    <h1 class="page-title">School & Certificate Settings</h1>
+    <p class="subtitle">These details appear automatically on every certificate.</p>
+    <div class="panel">
+      <div class="grid2">
+       <div><label>School Name</label><input id="setSchool" type="text"></div>
+       <div><label>Postal Address</label><input id="setAddress" type="text"></div>
+       <div><label>Telephone</label><input id="setTel" type="text"></div>
+       <div><label>Certificate Title</label><input id="setTitle" type="text"></div>
+       <div><label>HOD ICT Name</label><input id="setHod" type="text" placeholder="Enter HOD ICT name"></div>
+       <div><label>Head Teacher Name</label><input id="setHead" type="text" placeholder="Enter Head Teacher name"></div>
+      </div>
+      <div class="grid2" style="margin-top:12px">
+       <div><label>School Logo</label><input id="setLogo" type="file" accept="image/*" onchange="saveImageSetting(event,'logo')"></div>
+       <div><label>HOD ICT Signature</label><input id="setHodSig" type="file" accept="image/*" onchange="saveImageSetting(event,'hodSig')"></div>
+       <div><label>Head Teacher Signature</label><input id="setHeadSig" type="file" accept="image/*" onchange="saveImageSetting(event,'headSig')"></div>
+       <div><label>School Stamp (optional)</label><input id="setStamp" type="file" accept="image/*" onchange="saveImageSetting(event,'stamp')"></div>
+      </div>
+      <div class="actions"><button class="btn green" onclick="saveSettings()">Save Settings</button><button class="btn gray" onclick="resetSettings()">Restore Default School Details</button></div>
+    </div>
+    <div class="panel">
+      <h3>ICT Packages</h3>
+      <div class="notice"><b>S.4:</b> Data Management & Sharing, Word Processing, Electronic Presentation, Electronic Spreadsheet, Web Designing, Software Management, ICT Safety & Environment.<br><br><b>S.6:</b> Data Management & Sharing, Word Processing, Electronic Presentation, Electronic Spreadsheet, Software Management, ICT Safety & Environment. Web Designing is automatically excluded.</div>
+    </div>
+   </section>
+
+   <!-- GENERATE -->
+   <section id="generate" class="page">
+    <h1 class="page-title">Generate Certificates</h1>
+    <p class="subtitle">Choose a template, preview a learner, then generate certificates individually or in batch.</p>
+    <div class="panel">
+      <div class="grid3">
+       <div><label>Template</label><select id="genTemplate" onchange="selectTemplate(Number(this.value))"><option value="1">Classic Academic</option><option value="2">Premium Gold</option><option value="3">Professional Blue</option><option value="4">Modern Institutional</option><option value="5">Formal Monochrome</option></select></div>
+       <div><label>Preview Learner</label><select id="previewLearner" onchange="renderPreview()"></select></div>
+       <div><label>Batch</label><div style="padding:11px;background:#f5f8fb;border-radius:9px"><b id="batchInfo">0</b> certificates ready</div></div>
+      </div>
+      <div class="actions">
+       <button class="btn blue" onclick="generateSelectedPDF()">Generate Selected PDF</button>
+       <button class="btn green" onclick="generateAllPDF()">Generate ALL Certificates PDF</button>
+       <button class="btn gold" onclick="generateAllZIP()">Download ALL Certificates ZIP</button>
+       <button class="btn gray" onclick="window.print()">Print Preview</button>
+      </div>
+      <div class="notice" style="margin-top:12px">The award date is taken from the <b>current date when generation begins</b>. All generated certificates are A4 landscape.</div>
+    </div>
+    <div id="certificatePreview" class="certificate-stage"></div>
+   </section>
+  </main>
+ </div>
+</section>
+
+<script>
+const DEFAULTS={
+ school:"Rubongi Army Secondary School",
+ address:"P.O. Box 698, Tororo",
+ tel:"0454445131 / 0782651148",
+ title:"CERTIFICATE OF COMPLETION",
+ hod:"",
+ head:"",
+ logo:"",
+ hodSig:"",
+ headSig:"",
+ stamp:""
+};
+let settings=JSON.parse(localStorage.getItem("rubongiCertSettings")||"null")||DEFAULTS;
+let learners=JSON.parse(localStorage.getItem("rubongiCertLearners")||"[]");
+let selectedTemplate=Number(localStorage.getItem("rubongiCertTemplate")||1);
+let generatedCount=Number(localStorage.getItem("rubongiGeneratedCount")||0);
+
+function $(id){return document.getElementById(id)}
+function saveData(){localStorage.setItem("rubongiCertLearners",JSON.stringify(learners));updateStats()}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function today(){
+ const d=new Date();
+ return d.toLocaleDateString("en-GB",{day:"2-digit",month:"long",year:"numeric"});
+}
+function login(){
+ const u=$("loginUser").value.trim(),p=$("loginPass").value;
+ if((u==="admin"&&p==="admin")||(u.toLowerCase()==="mawerere"&&p==="1234")){
+   $("loginPage").style.display="none";$("app").style.display="block";initApp();
+ }else alert("Invalid login. Default login: admin / admin");
+}
+function logout(){location.reload()}
+$("loginPass").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+
+document.querySelectorAll(".navbtn").forEach(b=>b.addEventListener("click",()=>{
+ document.querySelectorAll(".navbtn").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$(b.dataset.page).classList.add("active");
+ if(b.dataset.page==="templates")renderTemplatePreview();
+ if(b.dataset.page==="generate")renderGeneratePage();
+}));
+
+function initApp(){
+ loadSettingsForm(); updateStats(); renderLearners(); selectTemplate(selectedTemplate);
+ $("todayLabel").textContent=today();
+ if(settings.logo){$("topLogo").src=settings.logo;$("loginLogo").src=settings.logo}
+ renderGeneratePage();
+}
+function updateStats(){
+ $("totalLearners").textContent=learners.length;
+ $("s4Count").textContent=learners.filter(x=>x.class==="S.4").length;
+ $("s6Count").textContent=learners.filter(x=>x.class==="S.6").length;
+ $("generatedCount").textContent=generatedCount;
+ if($("batchInfo"))$("batchInfo").textContent=learners.length;
+}
+function certNo(l){
+ const prefix=l.class==="S.4"?"S4":"S6";
+ const year=new Date().getFullYear();
+ if(l.certNo)return l.certNo;
+ const same=learners.filter(x=>x.class===l.class).indexOf(l)+1;
+ return `RA/ICT/${prefix}/${year}/${String(same).padStart(3,"0")}`;
+}
+function addLearner(){
+ const name=$("lname").value.trim();
+ if(!name){alert("Enter the learner's full name.");return}
+ const file=$("lphoto").files[0];
+ const obj={id:Date.now()+Math.random(),name,class:$("lclass").value,index:$("lindex").value.trim(),photo:"",certNo:""};
+ if(file){const r=new FileReader();r.onload=()=>{obj.photo=r.result;learners.push(obj);saveData();renderLearners();clearLearnerForm();};r.readAsDataURL(file)}
+ else{learners.push(obj);saveData();renderLearners();clearLearnerForm()}
+}
+function clearLearnerForm(){$("lname").value="";$("lindex").value="";$("lphoto").value=""}
+function renderLearners(){
+ const q=($("searchLearners")?.value||"").toLowerCase();
+ const rows=learners.filter(x=>(x.name+" "+x.class+" "+x.index).toLowerCase().includes(q));
+ $("learnerTable").innerHTML=rows.map((l,i)=>`
+ <tr><td>${i+1}</td><td>${l.photo?`<img class="thumb" src="${l.photo}">`:"—"}</td>
+ <td><b>${escapeHtml(l.name)}</b></td><td><span class="badge">${l.class}</span></td><td>${escapeHtml(l.index||"—")}</td>
+ <td>${certNo(l)}</td><td><button class="btn gray" onclick="editLearner('${l.id}')">Edit</button>
+ <button class="btn red" onclick="deleteLearner('${l.id}')">Delete</button></td></tr>`).join("")||`<tr><td colspan="7" style="text-align:center;padding:25px;color:#64748b">No learners registered yet.</td></tr>`;
+}
+function deleteLearner(id){if(confirm("Delete this learner?")){learners=learners.filter(x=>String(x.id)!==String(id));saveData();renderLearners();renderGeneratePage()}}
+function editLearner(id){
+ const l=learners.find(x=>String(x.id)===String(id));if(!l)return;
+ const n=prompt("Learner name:",l.name);if(n===null)return;
+ const c=prompt("Class (S.4 or S.6):",l.class);if(c!=="S.4"&&c!=="S.6"){alert("Class must be S.4 or S.6");return}
+ const idx=prompt("Admission / Index No.:",l.index||"");
+ l.name=n.trim()||l.name;l.class=c;l.index=idx??l.index;saveData();renderLearners();renderGeneratePage()
+}
+function clearAllLearners(){if(confirm("Delete ALL learners? This cannot be undone.")){learners=[];saveData();renderLearners();renderGeneratePage()}}
+function importExcel(e){
+ const file=e.target.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=ev=>{
+  try{
+   const wb=XLSX.read(ev.target.result,{type:"array"}),ws=wb.Sheets[wb.SheetNames[0]],data=XLSX.utils.sheet_to_json(ws,{defval:""});
+   let added=0;
+   data.forEach(r=>{
+    const keys=Object.keys(r);const get=(names)=>{let k=keys.find(x=>names.includes(x.toLowerCase().replace(/[^a-z]/g,"")));return k?r[k]:""};
+    const name=String(get(["name","learnername","fullname","studentname"])).trim();
+    let cl=String(get(["class","level"])).trim().toUpperCase().replace("S4","S.4").replace("S6","S.6");
+    if(name&&(cl==="S.4"||cl==="S.6")){learners.push({id:Date.now()+Math.random(),name,class:cl,index:String(get(["admissionno","admissionnumber","index","indexno"])).trim(),photo:"",certNo:""});added++}
+   });
+   saveData();renderLearners();renderGeneratePage();alert(`Imported ${added} learner(s). Please upload photos individually where required.`);
+  }catch(err){alert("Could not read the Excel file. Use the supplied template.");}
+ };
+ reader.readAsArrayBuffer(file);e.target.value=""
+}
+function downloadTemplate(){
+ const ws=XLSX.utils.json_to_sheet([{Name:"JOHN PETER OKELLO",Class:"S.4",AdmissionNo:"001",Photo:"john.jpg"},{Name:"MARY AKOTH",Class:"S.6",AdmissionNo:"002",Photo:"mary.jpg"}]);
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Learners");XLSX.writeFile(wb,"Rubongi_ICT_Certificate_Learners_Template.xlsx")
+}
+
+function selectTemplate(n){
+ selectedTemplate=n;localStorage.setItem("rubongiCertTemplate",n);
+ document.querySelectorAll(".template-card").forEach(c=>c.classList.toggle("selected",Number(c.dataset.template)===n));
+ if($("genTemplate"))$("genTemplate").value=n;
+ renderTemplatePreview();renderPreview()
+}
+function packages(cl){
+ const p=["Data Management & Sharing","Word Processing","Electronic Presentation","Electronic Spreadsheet"];
+ if(cl==="S.4")p.push("Web Designing");
+ p.push("Software Management","ICT Safety & Environment");return p;
+}
+function buildCertificate(l){
+ const tpl=selectedTemplate;
+ const photo=l.photo?`<img class="cert-photo" src="${l.photo}" alt="Photo">`:"<div class='cert-photo' style='display:flex;align-items:center;justify-content:center;font:11px Arial;color:#777'>PHOTO</div>";
+ const logo=settings.logo?`<img class="cert-logo" src="${settings.logo}" alt="Logo">`:"";
+ const hodSig=settings.hodSig?`<img src="${settings.hodSig}" alt="HOD signature">`:"<div style='height:45px'></div>";
+ const headSig=settings.headSig?`<img src="${settings.headSig}" alt="Head Teacher signature">`:"<div style='height:45px'></div>";
+ const stamp=settings.stamp?`<img src="${settings.stamp}" style="position:absolute;right:290px;bottom:45px;width:75px;height:75px;object-fit:contain;opacity:.75">`:"";
+ const qrId=`qr-${String(l.id).replace(/\./g,"")}`;
+ const pkgs=packages(l.class).map(x=>`<span>${x}</span>`).join("");
+ const period=l.class==="S.4"?"2023–2026":"2024–2026";
+ return `<div class="certificate cert-template-${tpl}">
+  <div class="cert-inner">
+   ${logo}${photo}
+   <div class="cert-school">${escapeHtml(settings.school)}</div>
+   <div class="cert-address">${escapeHtml(settings.address)} &nbsp; | &nbsp; Tel: ${escapeHtml(settings.tel)}</div>
+   <div class="cert-title">${escapeHtml(settings.title)}</div>
+   <div class="cert-sub">This is to certify that</div>
+   <div class="cert-name">${escapeHtml(l.name)}</div>
+   <div class="cert-body">has successfully completed the prescribed <b>ICT Course</b> for <b>${l.class}</b> during the period <b>${period}</b> and has demonstrated satisfactory participation in the listed ICT course packages.</div>
+   <div class="package-title">ICT COURSE PACKAGES</div>
+   <div class="package-list">${pkgs}</div>
+   <div class="cert-meta">Certificate No.: <b>${certNo(l)}</b> &nbsp; | &nbsp; Date of Award: <b>${today()}</b>${l.index?` &nbsp; | &nbsp; Admission/Index: <b>${escapeHtml(l.index)}</b>`:""}</div>
+   <canvas id="${qrId}" class="qr"></canvas>
+   ${stamp}
+   <div class="cert-footer">
+    <div class="sig">${hodSig}<div class="sigline">HOD ICT${settings.hod?` — ${escapeHtml(settings.hod)}`:""}</div></div>
+    <div class="sig">${headSig}<div class="sigline">HEAD TEACHER${settings.head?` — ${escapeHtml(settings.head)}`:""}</div></div>
+   </div>
+  </div>
+ </div>`;
+}
+function renderTemplatePreview(){
+ const l=learners[0]||{id:"demo",name:"SAMPLE LEARNER",class:"S.4",index:"001",photo:""};
+ $("templatePreview").innerHTML=buildCertificate(l);makeQR(l,"templatePreview")
+}
+function renderGeneratePage(){
+ const sel=$("previewLearner");if(!sel)return;
+ sel.innerHTML=learners.map(l=>`<option value="${l.id}">${escapeHtml(l.name)} — ${l.class}</option>`).join("")||`<option value="">No learners registered</option>`;
+ if(learners.length)sel.value=learners[0].id;
+ renderPreview();updateStats()
+}
+function renderPreview(){
+ const id=$("previewLearner")?.value,l=learners.find(x=>String(x.id)===String(id))||learners[0];
+ if(!l){$("certificatePreview").innerHTML="<div style='padding:40px;text-align:center'>Add learners to preview certificates.</div>";return}
+ $("certificatePreview").innerHTML=buildCertificate(l);makeQR(l,"certificatePreview")
+}
+function makeQR(l,containerId){
+ setTimeout(()=>{
+  const c=document.querySelector(`#${containerId} canvas.qr`);if(!c)return;
+  const data=`Rubongi Army Secondary School|ICT Certificate|${certNo(l)}|${l.name}|${l.class}|Awarded ${today()}`;
+  if(window.QRCode)QRCode.toCanvas(c,data,{width:58,margin:1,errorCorrectionLevel:"M"},()=>{});
+ },50)
+}
+function loadSettingsForm(){
+ $("setSchool").value=settings.school;$("setAddress").value=settings.address;$("setTel").value=settings.tel;
+ $("setTitle").value=settings.title;$("setHod").value=settings.hod;$("setHead").value=settings.head;
+}
+function saveSettings(){
+ settings.school=$("setSchool").value.trim()||DEFAULTS.school;settings.address=$("setAddress").value.trim()||DEFAULTS.address;
+ settings.tel=$("setTel").value.trim()||DEFAULTS.tel;settings.title=$("setTitle").value.trim()||DEFAULTS.title;
+ settings.hod=$("setHod").value.trim();settings.head=$("setHead").value.trim();
+ localStorage.setItem("rubongiCertSettings",JSON.stringify(settings));loadSettingsForm();
+ if(settings.logo){$("topLogo").src=settings.logo;$("loginLogo").src=settings.logo}
+ alert("School settings saved.");renderTemplatePreview();renderGeneratePage()
+}
+function resetSettings(){if(confirm("Restore default school details? Uploaded logos/signatures will also be cleared.")){settings={...DEFAULTS};localStorage.setItem("rubongiCertSettings",JSON.stringify(settings));loadSettingsForm();alert("Defaults restored.")}}
+function saveImageSetting(e,key){
+ const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{settings[key]=r.result;localStorage.setItem("rubongiCertSettings",JSON.stringify(settings));renderTemplatePreview();renderPreview()};r.readAsDataURL(f)
+}
+async function canvasForLearner(l){
+ const holder=document.createElement("div");holder.style.position="fixed";holder.style.left="-20000px";holder.style.top="0";holder.innerHTML=buildCertificate(l);document.body.appendChild(holder);
+ makeQR(l,holder.id||"");
+ await new Promise(r=>setTimeout(r,160));
+ const canvas=await html2canvas(holder.firstElementChild,{scale:2,useCORS:true,backgroundColor:"#fff"});
+ holder.remove();return canvas
+}
+async function generateSelectedPDF(){
+ const id=$("previewLearner").value,l=learners.find(x=>String(x.id)===String(id));if(!l)return alert("Select a learner.");
+ const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
+ const c=await canvasForLearner(l);pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,297,210);pdf.save(`${safe(l.name)}_ICT_Certificate.pdf`);
+ generatedCount++;localStorage.setItem("rubongiGeneratedCount",generatedCount);updateStats()
+}
+async function generateAllPDF(){
+ if(!learners.length)return alert("Add learners first.");
+ const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
+ for(let i=0;i<learners.length;i++){
+  if(i)pdf.addPage();const c=await canvasForLearner(learners[i]);pdf.addImage(c.toDataURL("image/jpeg",.94),"JPEG",0,0,297,210)
+ }
+ pdf.save(`Rubongi_Army_SS_ICT_Certificates_${new Date().getFullYear()}.pdf`);
+ generatedCount+=learners.length;localStorage.setItem("rubongiGeneratedCount",generatedCount);updateStats();alert(`Generated ${learners.length} certificates in one PDF.`)
+}
+async function generateAllZIP(){
+ if(!learners.length)return alert("Add learners first.");
+ const zip=new JSZip();
+ for(let i=0;i<learners.length;i++){
+  const l=learners[i],c=await canvasForLearner(l),data=c.toDataURL("image/png").split(",")[1];
+  zip.file(`${String(i+1).padStart(3,"0")}_${safe(l.name)}_${l.class}.png`,data,{base64:true})
+ }
+ const blob=await zip.generateAsync({type:"blob"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`Rubongi_Army_SS_ICT_Certificates_${new Date().getFullYear()}.zip`;a.click();
+ generatedCount+=learners.length;localStorage.setItem("rubongiGeneratedCount",generatedCount);updateStats();alert(`Downloaded ${learners.length} certificate images in a ZIP file.`)
+}
+function safe(s){return String(s).replace(/[^a-z0-9_-]+/gi,"_").replace(/^_+|_+$/g,"")||"certificate"}
+</script>
+</body>
+</html>
