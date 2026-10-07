@@ -21,7 +21,7 @@ img{max-width:100%;display:block}
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-thumb{background:#c3ceda;border-radius:10px}
 
-#toastWrap{position:fixed;top:78px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:360px}
+#toastWrap{position:fixed;top:78px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:380px}
 .toast{background:#fff;border-radius:11px;padding:13px 15px;box-shadow:0 22px 60px rgba(15,23,42,.2);border-left:4px solid var(--blue);display:flex;gap:11px;align-items:flex-start;font-size:13px;pointer-events:auto;animation:slideIn .3s;min-width:260px}
 @keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
 .toast.success{border-left-color:var(--green)}
@@ -169,7 +169,6 @@ tbody tr:hover{background:#fafcfe}
 .cert-print-wrap{display:flex;justify-content:center}
 .certificate{width:1123px;height:794px;position:relative;background:#fff;margin:auto;overflow:hidden;font-family:var(--ff);color:#1a2b3c;flex-shrink:0;box-shadow:0 14px 40px rgba(11,37,69,.22)}
 
-/* Certificate text */
 .cert-school-name{font-family:'Times New Roman',Georgia,serif;font-size:38px;font-weight:900;letter-spacing:1.5px;line-height:1.1;text-align:center;margin:0;font-style:italic}
 .cert-address{font-family:var(--fs);font-size:14px;text-align:center;letter-spacing:.6px;margin-top:8px;font-weight:700}
 .cert-motto{font-family:var(--ff);font-style:italic;font-size:16px;text-align:center;margin-top:5px;font-weight:600}
@@ -205,55 +204,19 @@ tbody tr:hover{background:#fafcfe}
 .qr-slot{position:absolute;left:54px;bottom:22px;width:78px;height:78px;background:#fff;padding:3px;border:1px solid #e2e8f0;border-radius:6px;box-shadow:0 2px 8px rgba(11,37,69,.08)}
 .qr-slot img{width:100%;height:100%;display:block}
 
-/* NEW CERTIFICATE LAYOUT -------------------------------------- */
-/* Top block: school name, address, motto (centered, full width)  */
 .cert-top-block{text-align:center;margin-bottom:6px}
-
-/* Second row: logo (left, no border) | title (center) | photo (right, no border) */
 .cert-mid-row{display:grid;grid-template-columns:150px 1fr 150px;gap:20px;align-items:center;margin:10px 0 6px}
-
-/* Logo - clean, no border, subtle shadow only */
 .cert-logo-clean{width:150px;height:150px;display:flex;align-items:center;justify-content:center}
 .cert-logo-clean img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 2px 5px rgba(11,37,69,.15))}
-.cert-logo-clean.placeholder{
-  background:linear-gradient(135deg,#0b2545,#1769aa);color:#e6c66b;
-  font-family:var(--fs);font-weight:900;font-size:38px;letter-spacing:1px;
-  border-radius:50%;box-shadow:0 4px 12px rgba(11,37,69,.2);
-}
-
-/* Photo - clean rounded frame, background blends nicely */
-.cert-photo-clean{
-  width:150px;height:150px;
-  display:flex;align-items:center;justify-content:center;
-  justify-self:end;
-  position:relative;
-}
-.cert-photo-clean img{
-  max-width:100%;max-height:100%;
-  width:auto;height:auto;
-  object-fit:contain;
-  border-radius:14px;
-  background:transparent;
-  filter:drop-shadow(0 3px 8px rgba(11,37,69,.18));
-}
-.cert-photo-clean.placeholder{
-  width:130px;height:150px;
-  border-radius:14px;
-  background:linear-gradient(180deg,#f8fafc,#eef2f7);
-  color:#94a3b8;font-family:var(--fs);font-size:11px;letter-spacing:.8px;
-  text-align:center;flex-direction:column;gap:6px;
-  box-shadow:0 3px 8px rgba(11,37,69,.08),inset 0 0 0 1px rgba(11,37,69,.06);
-}
+.cert-logo-clean.placeholder{background:linear-gradient(135deg,#0b2545,#1769aa);color:#e6c66b;font-family:var(--fs);font-weight:900;font-size:38px;letter-spacing:1px;border-radius:50%;box-shadow:0 4px 12px rgba(11,37,69,.2)}
+.cert-photo-clean{width:150px;height:150px;display:flex;align-items:center;justify-content:center;justify-self:end;position:relative}
+.cert-photo-clean img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:14px;background:transparent;filter:drop-shadow(0 3px 8px rgba(11,37,69,.18))}
+.cert-photo-clean.placeholder{width:130px;height:150px;border-radius:14px;background:linear-gradient(180deg,#f8fafc,#eef2f7);color:#94a3b8;font-family:var(--fs);font-size:11px;letter-spacing:.8px;text-align:center;flex-direction:column;gap:6px;box-shadow:0 3px 8px rgba(11,37,69,.08),inset 0 0 0 1px rgba(11,37,69,.06)}
 .cert-photo-clean.placeholder .ico{font-size:28px;opacity:.55;font-weight:900;color:#cbd5e1}
-
-/* CENTER title area */
 .cert-title-block{text-align:center;min-width:0;padding:0 6px}
 .cert-title-block .cert-title{margin:0 0 4px}
-
-/* Adjust content area padding so nothing collides with footer/QR */
 .cert-content-pad{padding:0 40px}
 
-/* TEMPLATE 1 - CLASSIC (matches sample) */
 .tpl1{background:#f2a877;padding:0}
 .tpl1 .cert-green{position:absolute;inset:14px;background:linear-gradient(135deg,#3fae3f,#2f9a2f)}
 .tpl1 .cert-paper{position:absolute;inset:24px;background:#fff;padding:14px 42px 14px;overflow:hidden}
@@ -269,7 +232,6 @@ tbody tr:hover{background:#fafcfe}
 .tpl1 .competences-head{color:#e91e63}
 .tpl1 .cert-name::after{content:"";display:block;height:2px;width:76%;margin:6px auto 0;background:linear-gradient(90deg,transparent,#c8102e,transparent);border-radius:2px}
 
-/* TEMPLATE 2 - PREMIUM GOLD */
 .tpl2{background:linear-gradient(180deg,#fffef9,#fff9ec);padding:22px}
 .tpl2 .cert-inner{position:absolute;inset:22px;border:3px solid #c89b3c;padding:14px 42px}
 .tpl2 .cert-inner::before{content:"";position:absolute;inset:8px;border:1px solid #c89b3c;pointer-events:none}
@@ -281,7 +243,6 @@ tbody tr:hover{background:#fafcfe}
 .tpl2 .competences-head{color:#a37e26}
 .tpl2 .sig .sigline{border-top-color:#8a6516}
 
-/* TEMPLATE 3 - PROFESSIONAL BLUE */
 .tpl3{background:linear-gradient(135deg,#f9fcff 0%,#eef6fd 100%);padding:22px}
 .tpl3 .cert-inner{position:absolute;inset:22px;border:2px solid #1769aa;padding:14px 42px}
 .tpl3 .cert-inner::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:14px;background:linear-gradient(90deg,#0f4c81,#1769aa 45%,#1c7ed6 45%,#1c7ed6 70%,#0b2545 70%)}
@@ -294,7 +255,6 @@ tbody tr:hover{background:#fafcfe}
 .tpl3 .competences-head{color:#1769aa}
 .tpl3 .sig .sigline{border-top-color:#0f4c81}
 
-/* TEMPLATE 4 - MODERN INSTITUTIONAL */
 .tpl4{background:linear-gradient(120deg,#f8fbff,#fff);padding:22px}
 .tpl4 .cert-inner{position:absolute;inset:22px;border:2px solid #0b2545;padding:14px 42px}
 .tpl4 .cert-inner::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:16px;background:linear-gradient(90deg,#0b2545 62%,#c89b3c 62%)}
@@ -306,7 +266,6 @@ tbody tr:hover{background:#fafcfe}
 .tpl4 .cert-name{color:#0b2545;border-bottom:2px solid #c89b3c;padding-bottom:6px}
 .tpl4 .competences-head{color:#c89b3c}
 
-/* TEMPLATE 5 - FORMAL MONOCHROME */
 .tpl5{background:#fdfdfd;padding:22px}
 .tpl5 .cert-inner{position:absolute;inset:24px;border:3px solid #333;padding:14px 42px}
 .tpl5 .cert-inner::before{content:"";position:absolute;inset:7px;border:1px solid #777;pointer-events:none}
@@ -320,8 +279,9 @@ tbody tr:hover{background:#fafcfe}
 .tpl5 .sig .sigline{border-top-color:#333}
 .tpl5 .center-slot .badge-c{background:linear-gradient(135deg,#555,#222)!important}
 
-.img-preview{margin-top:8px;padding:8px;border:1px dashed #d5dce5;border-radius:8px;background:#f9fbfd;min-height:52px;display:flex;align-items:center;justify-content:center}
+.img-preview{margin-top:8px;padding:8px;border:1px dashed #d5dce5;border-radius:8px;background:#f9fbfd;min-height:52px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
 .img-preview img{max-height:52px;object-fit:contain}
+.img-preview .sz{font-size:10.5px;color:#64748b;font-weight:600}
 .img-preview.empty::before{content:"No image uploaded";color:#94a3b8;font-size:11.5px}
 
 @media(max-width:1180px){.cards{grid-template-columns:repeat(3,1fr)}}
@@ -571,6 +531,7 @@ tbody tr:hover{background:#fafcfe}
         </div>
         <div class="panel">
           <h3>Uploads</h3>
+          <p class="hint">Images are automatically compressed to save browser storage space.</p>
           <div class="grid2">
             <div><label>School Logo</label><input type="file" accept="image/*" onchange="saveImageSetting(event,'logo')"><div id="prevLogo" class="img-preview"></div></div>
             <div><label>School Stamp (optional)</label><input type="file" accept="image/*" onchange="saveImageSetting(event,'stamp')"><div id="prevStamp" class="img-preview"></div></div>
@@ -611,7 +572,11 @@ tbody tr:hover{background:#fafcfe}
         <div class="panel">
           <h3>Storage Status</h3>
           <div id="storageStatus" class="notice"></div>
-          <div class="actions"><button class="btn red" onclick="factoryReset()">Factory Reset (Delete Everything)</button></div>
+          <p class="hint" style="margin-top:12px">If storage gets close to full, export your data first, then delete learners or reduce photos.</p>
+          <div class="actions">
+            <button class="btn gray" onclick="updateStorageStatus()">Refresh Status</button>
+            <button class="btn red" onclick="factoryReset()">Factory Reset (Delete Everything)</button>
+          </div>
         </div>
       </section>
     </main>
@@ -631,12 +596,12 @@ tbody tr:hover{background:#fafcfe}
 
 <script>
 var LS = {
-  settings:'rubongiSettings_v4',
-  learners:'rubongiLearners_v4',
-  template:'rubongiTemplate_v4',
-  generated:'rubongiGenerated_v4',
-  counter:'rubongiCounter_v4',
-  auth:'rubongiAuth_v4'
+  settings:'rubongiSettings_v5',
+  learners:'rubongiLearners_v5',
+  template:'rubongiTemplate_v5',
+  generated:'rubongiGenerated_v5',
+  counter:'rubongiCounter_v5',
+  auth:'rubongiAuth_v5'
 };
 
 var DEFAULTS = {
@@ -665,6 +630,9 @@ var generatedCount = Number(localStorage.getItem(LS.generated) || 0);
 var certCounter = load(LS.counter, {S4:{}, S6:{}});
 var auth = load(LS.auth, {user:"admin", passHash: simpleHash("admin")});
 
+/* ============================================================
+   BASIC HELPERS
+   ============================================================ */
 function $(id){return document.getElementById(id)}
 function load(key, fb){
   try{
@@ -672,10 +640,6 @@ function load(key, fb){
     if(!raw) return typeof fb === 'object' ? JSON.parse(JSON.stringify(fb)) : fb;
     return JSON.parse(raw);
   }catch(e){ console.warn('Load error', key, e); return typeof fb === 'object' ? JSON.parse(JSON.stringify(fb)) : fb; }
-}
-function save(key, value){
-  try{ localStorage.setItem(key, JSON.stringify(value)); return true; }
-  catch(e){ toast('error','Storage full','Could not save data. Export your data and free browser storage.'); return false; }
 }
 function simpleHash(str){
   var h = 5381;
@@ -692,6 +656,78 @@ function todayLong(){ return new Date().toLocaleDateString("en-GB",{day:"numeric
 function todayISO(){ return new Date().toISOString().slice(0,10); }
 function uid(){ return 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
+/* ============================================================
+   IMAGE COMPRESSION
+   Resizes and re-encodes uploaded images so they fit easily in
+   browser storage (localStorage is limited to about 5 MB).
+   ============================================================ */
+function compressImage(file, maxW, maxH, quality){
+  return new Promise(function(resolve, reject){
+    if(!file) return reject(new Error('No file'));
+    var reader = new FileReader();
+    reader.onerror = function(){ reject(new Error('Could not read file')); };
+    reader.onload = function(){
+      var img = new Image();
+      img.onerror = function(){ reject(new Error('Not a valid image')); };
+      img.onload = function(){
+        var w = img.width || maxW;
+        var h = img.height || maxH;
+        var ratio = Math.min(maxW / w, maxH / h, 1);
+        var nw = Math.max(1, Math.round(w * ratio));
+        var nh = Math.max(1, Math.round(h * ratio));
+        var canvas = document.createElement('canvas');
+        canvas.width = nw;
+        canvas.height = nh;
+        var ctx = canvas.getContext('2d');
+        // White background so PNG transparency does not become black in JPEG
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, nw, nh);
+        ctx.drawImage(img, 0, 0, nw, nh);
+        try{
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        }catch(e){ reject(e); }
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* Approximate KB size of a data-URL string when stored */
+function dataUrlKB(dataUrl){
+  if(!dataUrl) return 0;
+  var i = dataUrl.indexOf(',');
+  var b64 = i >= 0 ? dataUrl.slice(i + 1) : dataUrl;
+  return Math.round((b64.length * 3 / 4) / 1024);
+}
+
+/* ============================================================
+   QUOTA-AWARE SAVE
+   Shows a friendly message when the browser storage limit is hit.
+   ============================================================ */
+function save(key, value){
+  try{
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  }catch(e){
+    var isQuota = e && (
+      e.name === 'QuotaExceededError' ||
+      e.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+      e.code === 22 || e.code === 1014
+    );
+    if(isQuota){
+      toast('error','Browser storage is full',
+        'Go to Backup & Restore and export your data. Then delete some learners or reduce photo sizes and try again.', 9000);
+    }else{
+      toast('error','Could not save data','Your browser blocked storage. Check privacy settings.');
+    }
+    return false;
+  }
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
 function toast(type, title, msg, duration){
   duration = duration || 4200;
   var el = document.createElement('div');
@@ -706,6 +742,9 @@ function toast(type, title, msg, duration){
   }, duration);
 }
 
+/* ============================================================
+   MODAL
+   ============================================================ */
 function openModal(html){ $('modalBox').innerHTML = html; $('modalBackdrop').classList.add('show'); }
 function closeModal(){ $('modalBackdrop').classList.remove('show'); $('modalBox').innerHTML = ''; }
 document.getElementById('modalBackdrop').addEventListener('click', function(e){ if(e.target.id === 'modalBackdrop') closeModal(); });
@@ -718,6 +757,9 @@ function confirmDialog(title, msg, onConfirm, confirmLabel, danger){
   $('confirmBtn').onclick = function(){ closeModal(); onConfirm(); };
 }
 
+/* ============================================================
+   PROGRESS
+   ============================================================ */
 function showProgress(title, sub){
   $('progressTitle').textContent = title;
   $('progressSub').textContent = sub || 'Please wait...';
@@ -732,6 +774,9 @@ function updateProgress(done, total){
 }
 function hideProgress(){ setTimeout(function(){ $('progressOverlay').classList.remove('show'); }, 200); }
 
+/* ============================================================
+   LOGIN
+   ============================================================ */
 function attemptLogin(){
   var u = $('loginUser').value.trim();
   var p = $('loginPass').value;
@@ -781,6 +826,9 @@ function changePassword(){
   toast('success','Password updated','Your new password has been saved.');
 }
 
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
 var navBtns = document.querySelectorAll('.navbtn');
 for(var ni=0; ni<navBtns.length; ni++){
   navBtns[ni].addEventListener('click', function(){
@@ -828,6 +876,9 @@ function refreshStats(){
   if($('learnerCount')) $('learnerCount').textContent = learners.length;
 }
 
+/* ============================================================
+   LEARNERS
+   ============================================================ */
 function addLearner(){
   var name = $('lname').value.trim();
   var cls  = $('lclass').value;
@@ -835,21 +886,32 @@ function addLearner(){
   var file = $('lphoto').files[0];
   if(!name){ toast('warn','Name required','Please enter the learner full name.'); return; }
   if(cls !== 'S.4' && cls !== 'S.6'){ toast('warn','Invalid class','Class must be S.4 or S.6.'); return; }
-  function finalize(photoData){
+
+  function store(photoData){
     var learner = { id: uid(), name: name, class: cls, index: idx, photo: photoData || '', certNo: '', createdAt: new Date().toISOString() };
     learner.certNo = assignCertNo(learner);
     learners.push(learner);
     if(save(LS.learners, learners)){
       refreshStats(); renderLearners(); renderGeneratePage(); clearLearnerForm();
-      toast('success','Learner added', name + ' (' + cls + ') was added to the register.');
+      var msg = name + ' (' + cls + ') was added to the register.';
+      if(photoData) msg += ' Photo: ' + dataUrlKB(photoData) + ' KB.';
+      toast('success','Learner added', msg);
+    }else{
+      learners.pop();
     }
   }
+
   if(file){
-    var r = new FileReader();
-    r.onload = function(){ finalize(r.result); };
-    r.onerror = function(){ toast('error','Photo error','Could not read the photo file.'); finalize(''); };
-    r.readAsDataURL(file);
-  } else { finalize(''); }
+    // 320 x 420 at quality 0.72 -> roughly 15-30 KB per passport photo
+    compressImage(file, 320, 420, 0.72)
+      .then(store)
+      .catch(function(){
+        toast('warn','Photo skipped','Could not process the photo. Saving learner without it.');
+        store('');
+      });
+  } else {
+    store('');
+  }
 }
 function clearLearnerForm(){ $('lname').value=''; $('lindex').value=''; $('lphoto').value=''; }
 
@@ -882,8 +944,9 @@ function renderLearners(){
     var photo = l.photo
       ? '<img class="thumb" src="'+l.photo+'" alt="">'
       : '<div class="thumb placeholder">U</div>';
+    var sz = l.photo ? ' <span style="font-size:10px;color:#94a3b8">'+dataUrlKB(l.photo)+'KB</span>' : '';
     return '<tr><td>'+(i+1)+'</td><td>'+photo+'</td>'+
-      '<td><b>'+escapeHtml(l.name)+'</b></td>'+
+      '<td><b>'+escapeHtml(l.name)+'</b>'+sz+'</td>'+
       '<td><span class="badge '+(l.class==='S.4'?'s4':'s6')+'">'+l.class+'</span></td>'+
       '<td>'+escapeHtml(l.index||'-')+'</td>'+
       '<td style="font-size:12px;color:#475569">'+escapeHtml(l.certNo||'-')+'</td>'+
@@ -915,23 +978,28 @@ function saveLearnerEdit(id){
   if(!name){ toast('warn','Name required','Please enter the learner name.'); return; }
   if(cls !== 'S.4' && cls !== 'S.6'){ toast('warn','Invalid class','Class must be S.4 or S.6.'); return; }
   l.name=name; l.class=cls; l.index=idx; l.certNo=certNo || l.certNo;
-  save(LS.learners, learners);
-  closeModal(); renderLearners(); renderGeneratePage(); renderPreview();
-  toast('success','Learner updated','Changes have been saved.');
+  if(save(LS.learners, learners)){
+    closeModal(); renderLearners(); renderGeneratePage(); renderPreview();
+    toast('success','Learner updated','Changes have been saved.');
+  }
 }
 function uploadPhoto(id){
   var l = learners.find(function(x){ return x.id===id; }); if(!l) return;
   var input = document.createElement('input'); input.type='file'; input.accept='image/*';
   input.onchange = function(e){
     var f = e.target.files[0]; if(!f) return;
-    var r = new FileReader();
-    r.onload = function(){
-      l.photo = r.result;
-      save(LS.learners, learners);
-      renderLearners(); renderPreview();
-      toast('success','Photo updated', 'Photo set for ' + l.name + '.');
-    };
-    r.readAsDataURL(f);
+    compressImage(f, 320, 420, 0.72).then(function(dataUrl){
+      var old = l.photo;
+      l.photo = dataUrl;
+      if(save(LS.learners, learners)){
+        renderLearners(); renderPreview();
+        toast('success','Photo updated', l.name + ' - ' + dataUrlKB(dataUrl) + ' KB');
+      }else{
+        l.photo = old;
+      }
+    }).catch(function(){
+      toast('error','Photo error','Could not process that image.');
+    });
   };
   input.click();
 }
@@ -939,20 +1007,26 @@ function deleteLearner(id){
   var l = learners.find(function(x){ return x.id===id; }); if(!l) return;
   confirmDialog('Delete learner?', 'Remove "' + l.name + '" (' + l.class + ') from the register? This cannot be undone.', function(){
     learners = learners.filter(function(x){ return x.id!==id; });
-    save(LS.learners, learners);
-    refreshStats(); renderLearners(); renderGeneratePage();
-    toast('success','Deleted', l.name + ' was removed.');
+    if(save(LS.learners, learners)){
+      refreshStats(); renderLearners(); renderGeneratePage();
+      toast('success','Deleted', l.name + ' was removed.');
+    }
   }, 'Delete', true);
 }
 function clearAllLearners(){
   if(!learners.length) return toast('warn','Nothing to delete','The register is already empty.');
   confirmDialog('Delete ALL learners?', 'This will permanently remove all ' + learners.length + ' learners. Settings, logo and signatures will be kept.', function(){
-    learners = []; save(LS.learners, learners);
-    refreshStats(); renderLearners(); renderGeneratePage();
-    toast('success','Register cleared','All learners have been removed.');
+    learners = [];
+    if(save(LS.learners, learners)){
+      refreshStats(); renderLearners(); renderGeneratePage();
+      toast('success','Register cleared','All learners have been removed.');
+    }
   }, 'Delete All', true);
 }
 
+/* ============================================================
+   EXCEL
+   ============================================================ */
 function downloadTemplate(){
   try{
     var rows = [
@@ -994,9 +1068,10 @@ function importExcel(e){
         learner.certNo = assignCertNo(learner);
         learners.push(learner); added++;
       });
-      save(LS.learners, learners);
-      refreshStats(); renderLearners(); renderGeneratePage();
-      toast('success','Import complete', added + ' learner(s) imported.' + (skipped ? ' ' + skipped + ' row(s) skipped.' : ''));
+      if(save(LS.learners, learners)){
+        refreshStats(); renderLearners(); renderGeneratePage();
+        toast('success','Import complete', added + ' learner(s) imported.' + (skipped ? ' ' + skipped + ' row(s) skipped.' : ''));
+      }
     }catch(err){
       console.error(err);
       toast('error','Invalid file','Could not read this file. Please use the provided Excel template.');
@@ -1006,6 +1081,9 @@ function importExcel(e){
   e.target.value = '';
 }
 
+/* ============================================================
+   SETTINGS
+   ============================================================ */
 function loadSettingsForm(){
   $('setSchool').value = settings.school;
   $('setAddress').value = settings.address;
@@ -1015,14 +1093,20 @@ function loadSettingsForm(){
   $('setBadge').value = settings.badge || '';
   $('setHod').value = settings.hod;
   $('setHead').value = settings.head;
-  function setPrev(id, src){
-    var el = $(id); el.innerHTML = src ? '<img src="'+src+'" alt="">' : '';
-    if(src) el.classList.remove('empty'); else el.classList.add('empty');
+  function setPrev(id, src, label){
+    var el = $(id);
+    if(src){
+      el.innerHTML = '<img src="'+src+'" alt=""><span class="sz">' + (label||'') + ' ' + dataUrlKB(src) + ' KB</span>';
+      el.classList.remove('empty');
+    }else{
+      el.innerHTML = '';
+      el.classList.add('empty');
+    }
   }
-  setPrev('prevLogo', settings.logo);
-  setPrev('prevStamp', settings.stamp);
-  setPrev('prevHodSig', settings.hodSig);
-  setPrev('prevHeadSig', settings.headSig);
+  setPrev('prevLogo', settings.logo, 'Logo');
+  setPrev('prevStamp', settings.stamp, 'Stamp');
+  setPrev('prevHodSig', settings.hodSig, 'Signature');
+  setPrev('prevHeadSig', settings.headSig, 'Signature');
 }
 function saveSettings(){
   settings.school  = $('setSchool').value.trim()  || DEFAULTS.school;
@@ -1040,16 +1124,28 @@ function saveSettings(){
 }
 function saveImageSetting(e, key){
   var f = e.target.files[0]; if(!f) return;
-  if(f.size > 1.6 * 1024 * 1024) toast('warn','Image too large','Please use an image under 1.5 MB for reliable storage.');
-  var r = new FileReader();
-  r.onload = function(){
-    settings[key] = r.result;
+  var cfg = {
+    logo:    { w: 500, h: 500, q: 0.85 },
+    stamp:   { w: 400, h: 400, q: 0.80 },
+    hodSig:  { w: 600, h: 220, q: 0.80 },
+    headSig: { w: 600, h: 220, q: 0.80 }
+  }[key] || { w: 500, h: 500, q: 0.80 };
+
+  compressImage(f, cfg.w, cfg.h, cfg.q).then(function(dataUrl){
+    var old = settings[key];
+    settings[key] = dataUrl;
     if(save(LS.settings, settings)){
-      loadSettingsForm(); refreshBranding(); renderTemplatePreview(); renderPreview();
-      toast('success','Image saved', key + ' updated.');
+      loadSettingsForm();
+      refreshBranding();
+      renderTemplatePreview();
+      renderPreview();
+      toast('success','Image saved', key + ' - ' + dataUrlKB(dataUrl) + ' KB');
+    }else{
+      settings[key] = old;
     }
-  };
-  r.readAsDataURL(f);
+  }).catch(function(){
+    toast('error','Image error','Could not process that image.');
+  });
   e.target.value = '';
 }
 function resetSettings(){
@@ -1061,6 +1157,9 @@ function resetSettings(){
   },'Restore',true);
 }
 
+/* ============================================================
+   TEMPLATE SELECTION
+   ============================================================ */
 function selectTemplate(n){
   selectedTemplate = Number(n);
   localStorage.setItem(LS.template, selectedTemplate);
@@ -1073,6 +1172,9 @@ function selectTemplate(n){
   renderTemplatePreview(); renderPreview();
 }
 
+/* ============================================================
+   PACKAGE ICONS
+   ============================================================ */
 function packageIconData(name){
   var b = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">';
   var icons = {
@@ -1097,7 +1199,7 @@ function packagesFor(cls){
 }
 function periodFor(cls){ return cls === 'S.4' ? '2023 - 2026' : '2024 - 2026'; }
 
-/* The two distinct body paragraphs the user requested */
+/* Body text differs for S.4 vs S.6 */
 function bodyTextFor(cls){
   if(cls === 'S.4'){
     return 'Has successfully completed a four-year competence-based training program in ICT '+
@@ -1109,6 +1211,9 @@ function bodyTextFor(cls){
          'active participation and practical competency in the following key areas.';
 }
 
+/* ============================================================
+   QR CODE
+   ============================================================ */
 function qrDataURL(text){
   return new Promise(function(resolve, reject){
     try{
@@ -1136,30 +1241,16 @@ function qrTextFor(learner){
 }
 
 /* ============================================================
-   CERTIFICATE BUILDER  (new layout)
-   Rows:
-     1) School name (centered, top)
-     2) Address (centered)
-     3) Motto (centered)
-     4) Logo (left, no border)  |  Title (center)  |  Photo (right, no border)
-     5) This is to certify that
-     6) Learner name
-     7) Body paragraph (S.4 or S.6)
-     8) Competences achieved
-     9) Two-column packages with icons
-    10) Footer signatures
-    11) QR bottom-left
+   CERTIFICATE BUILDER
    ============================================================ */
 function buildCertificateHTML(learner){
   return new Promise(function(resolve){
     var tpl = selectedTemplate;
 
-    /* Logo - no border, clean */
     var logoBlock = settings.logo
       ? '<div class="cert-logo-clean"><img src="'+settings.logo+'" alt="Logo"></div>'
       : '<div class="cert-logo-clean placeholder">RA</div>';
 
-    /* Photo - clean rounded, no hard border, drop shadow only */
     var photoBlock = learner.photo
       ? '<div class="cert-photo-clean"><img src="'+learner.photo+'" alt="Photo"></div>'
       : '<div class="cert-photo-clean placeholder"><div class="ico">U</div><div>PHOTO</div></div>';
@@ -1192,15 +1283,11 @@ function buildCertificateHTML(learner){
     function finish(qrImg){
       resolve(
         '<div class="certificate tpl'+tpl+'">'+paperOpen+
-
-        /* ROW 1-3: School name, address, motto at the TOP (centered, full width) */
         '<div class="cert-top-block">'+
           '<div class="cert-school-name">'+escapeHtml(settings.school)+'</div>'+
           '<div class="cert-address">'+escapeHtml(settings.address)+' &nbsp;&bull;&nbsp; TEL: '+escapeHtml(settings.tel)+'</div>'+
           '<div class="cert-motto">"'+escapeHtml(settings.motto || 'Victory is Our Challenge')+'"</div>'+
         '</div>'+
-
-        /* ROW 4: Logo (left, no border) | Title (center) | Photo (right, no border) */
         '<div class="cert-mid-row">'+
           logoBlock+
           '<div class="cert-title-block">'+
@@ -1208,24 +1295,17 @@ function buildCertificateHTML(learner){
           '</div>'+
           photoBlock+
         '</div>'+
-
-        /* ROW 5-7: Lead, name, body */
         '<div class="cert-lead">This is to certify that</div>'+
         '<div class="cert-name">'+escapeHtml(learner.name)+'</div>'+
         '<div class="cert-body">'+escapeHtml(body)+'</div>'+
-
-        /* ROW 8-9: Competences */
         '<div class="competences-head">Competences achieved:-</div>'+
         '<div class="package-grid">'+packageHTML+'</div>'+
-
-        /* ROW 10-11: Footer + QR */
         '<div class="cert-footer">'+
           '<div class="sig">'+hodSig+'<div class="sigline">HOD ICT</div>'+hodName+'</div>'+
           centerSlot+
           '<div class="sig">'+headSig+'<div class="sigline">HEAD TEACHER</div>'+headName+'</div>'+
         '</div>'+
         qrImg+
-
         '</div></div>'
       );
     }
@@ -1236,6 +1316,9 @@ function buildCertificateHTML(learner){
   });
 }
 
+/* ============================================================
+   PREVIEW
+   ============================================================ */
 function renderTemplatePreview(){
   var demo = learners[0] || { id:'demo', name:'ABOTH ALICE SHALOM', class:'S.4', index:'U1896/015', photo:'', certNo:'RA/ICT/S4/2026/001' };
   var target = $('templatePreview'); if(!target) return;
@@ -1277,6 +1360,9 @@ function renderGeneratePage(){
   refreshStats(); renderPreview();
 }
 
+/* ============================================================
+   RENDER TO CANVAS
+   ============================================================ */
 function renderCertificateToCanvas(learner){
   return buildCertificateHTML(learner).then(function(html){
     var holder = document.createElement('div');
@@ -1294,6 +1380,9 @@ function renderCertificateToCanvas(learner){
   });
 }
 
+/* ============================================================
+   PDF / ZIP GENERATION
+   ============================================================ */
 function generateSelectedPDF(){
   var id = $('previewLearner').value;
   var learner = learners.find(function(x){ return x.id===id; });
@@ -1378,6 +1467,9 @@ function generateAllZIP(){
   step();
 }
 
+/* ============================================================
+   PRINT
+   ============================================================ */
 function printAll(){
   if(!learners.length) return toast('warn','No learners','Add or import learners first.');
   showProgress('Preparing print','Rendering ' + learners.length + ' certificate(s)...');
@@ -1406,22 +1498,35 @@ function printAll(){
   step();
 }
 
+/* ============================================================
+   BACKUP / RESTORE
+   ============================================================ */
 function updateStorageStatus(){
   var el = $('storageStatus'); if(!el) return;
   var usedKB = 0;
-  try{ for(var k in localStorage){ if(localStorage.hasOwnProperty(k)) usedKB += (localStorage[k] || '').length / 1024; } }catch(e){}
+  var detail = [];
+  try{
+    for(var k in localStorage){
+      if(localStorage.hasOwnProperty(k)){
+        var kb = (localStorage[k] || '').length / 1024;
+        usedKB += kb;
+        if(kb > 5) detail.push(k + ': ' + kb.toFixed(1) + ' KB');
+      }
+    }
+  }catch(e){}
   var limit = 5120;
   var pct = Math.min(100, (usedKB/limit)*100);
   el.className = 'notice ' + (pct > 80 ? 'red' : pct > 60 ? '' : 'green');
   el.innerHTML = '<b>Storage used:</b> ' + usedKB.toFixed(1) + ' KB of ~5120 KB (' + pct.toFixed(1) + '%)' +
     '<br><b>Learners:</b> ' + learners.length + ' &nbsp; <b>Generated:</b> ' + generatedCount +
-    (pct > 80 ? '<br>Browser storage is running low. Export your data.' : '');
+    (detail.length ? '<br><br><b>Largest entries:</b><br>' + detail.join('<br>') : '') +
+    (pct > 80 ? '<br><br>Storage is running low. Export your data first, then reduce photos or delete learners.' : '');
 }
 function exportData(){
   try{
     var payload = {
       app: "Rubongi Army SS - ICT Certificate Management System",
-      exportedAt: new Date().toISOString(), version: 4,
+      exportedAt: new Date().toISOString(), version: 5,
       settings: settings, learners: learners, selectedTemplate: selectedTemplate,
       generatedCount: generatedCount, certCounter: certCounter
     };
@@ -1470,6 +1575,9 @@ function factoryReset(){
   }, 'Erase Everything', true);
 }
 
+/* ============================================================
+   BOOTSTRAP
+   ============================================================ */
 (function boot(){
   if(settings.logo) $('loginCrest').innerHTML = '<img src="'+settings.logo+'" alt="">';
   if(sessionStorage.getItem('rubongiLoggedIn') === '1') enterApp();
