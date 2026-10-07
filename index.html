@@ -3,616 +3,308 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rubongi Army SS — ICT Certificate Management System</title>
+<title>Rubongi Army SS - ICT Certificate Management System</title>
 <meta name="author" content="MAWERERE FRANCIS">
-
-<!-- Libraries (application remains a single HTML file) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-
 <style>
-/* ============================================================
-   DESIGN TOKENS
-   ============================================================ */
-:root{
-  --navy:#0b2545; --navy-2:#13315c; --navy-3:#1c3f6e;
-  --blue:#1769aa; --blue-2:#1c7ed6;
-  --gold:#c89b3c; --gold-2:#e6c66b; --gold-3:#8a6516;
-  --cream:#fffdf6;
-  --light:#f4f7fb; --line:#e2e8f0; --line-2:#eef2f7;
-  --text:#1e293b; --muted:#64748b; --muted-2:#94a3b8;
-  --green:#0f9d58; --red:#c0392b;
-  --radius:12px;
-  --shadow-sm:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
-  --shadow:0 4px 16px rgba(15,23,42,.08);
-  --shadow-lg:0 22px 60px rgba(15,23,42,.20);
-  --font-ui:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
-  --font-serif:Georgia,'Times New Roman',serif;
-}
+:root{--navy:#0b2545;--navy2:#13315c;--blue:#1769aa;--blue2:#1c7ed6;--gold:#c89b3c;--gold2:#e6c66b;--line:#e2e8f0;--line2:#eef2f7;--text:#1e293b;--muted:#64748b;--muted2:#94a3b8;--green:#0f9d58;--red:#c0392b;--fs:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;--ff:Georgia,'Times New Roman',serif}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{
-  font-family:var(--font-ui); background:#eef2f7; color:var(--text);
-  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
-}
+body{font-family:var(--fs);background:#eef2f7;color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
 img{max-width:100%;display:block}
 .hidden{display:none!important}
-a{color:var(--blue);text-decoration:none}
-
 ::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#c3ceda;border-radius:10px;border:2px solid transparent;background-clip:padding-box}
-::-webkit-scrollbar-thumb:hover{background:#94a3b8;background-clip:padding-box}
+::-webkit-scrollbar-thumb{background:#c3ceda;border-radius:10px}
 
-/* ============================================================
-   TOAST
-   ============================================================ */
-#toastWrap{
-  position:fixed;top:78px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;
-  pointer-events:none;max-width:360px;
-}
-.toast{
-  background:#fff;border-radius:11px;padding:13px 15px;box-shadow:var(--shadow-lg);
-  border-left:4px solid var(--blue);display:flex;gap:11px;align-items:flex-start;
-  font-size:13px;color:var(--text);pointer-events:auto;
-  animation:slideIn .3s cubic-bezier(.2,.8,.3,1);min-width:260px;
-}
+/* TOAST */
+#toastWrap{position:fixed;top:78px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:360px}
+.toast{background:#fff;border-radius:11px;padding:13px 15px;box-shadow:0 22px 60px rgba(15,23,42,.2);border-left:4px solid var(--blue);display:flex;gap:11px;align-items:flex-start;font-size:13px;pointer-events:auto;animation:slideIn .3s;min-width:260px}
 @keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
 .toast.success{border-left-color:var(--green)}
 .toast.error{border-left-color:var(--red)}
 .toast.warn{border-left-color:var(--gold)}
-.toast .tico{font-size:18px;line-height:1}
+.toast .tico{font-size:16px;font-weight:900;line-height:1}
 .toast .tbody{flex:1;min-width:0}
 .toast .tbody b{display:block;font-size:12.5px;color:var(--navy);margin-bottom:2px}
 
-/* ============================================================
-   MODAL
-   ============================================================ */
-#modalBackdrop{
-  position:fixed;inset:0;background:rgba(11,37,69,.55);backdrop-filter:blur(3px);
-  z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;
-}
-#modalBackdrop.show{display:flex;animation:fade .2s ease}
+/* MODAL */
+#modalBackdrop{position:fixed;inset:0;background:rgba(11,37,69,.55);backdrop-filter:blur(3px);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px}
+#modalBackdrop.show{display:flex;animation:fade .2s}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.modal{
-  background:#fff;border-radius:16px;width:min(560px,100%);max-height:90vh;overflow:auto;
-  box-shadow:var(--shadow-lg);animation:pop .28s cubic-bezier(.2,.8,.3,1);
-}
-@keyframes pop{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
-.modal-head{
-  padding:18px 22px;border-bottom:1px solid var(--line-2);
-  display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;
-  border-radius:16px 16px 0 0;
-}
+.modal{background:#fff;border-radius:16px;width:min(560px,100%);max-height:90vh;overflow:auto;box-shadow:0 22px 60px rgba(15,23,42,.2)}
+.modal-head{padding:18px 22px;border-bottom:1px solid var(--line2);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;border-radius:16px 16px 0 0}
 .modal-head h3{margin:0;color:var(--navy);font-size:16px;font-weight:800}
-.modal-head button{
-  background:#f1f5f9;border:0;width:30px;height:30px;border-radius:8px;cursor:pointer;
-  color:#475569;font-size:16px;font-weight:700;
-}
+.modal-head button{background:#f1f5f9;border:0;width:30px;height:30px;border-radius:8px;cursor:pointer;color:#475569;font-size:16px;font-weight:700}
 .modal-body{padding:22px}
-.modal-foot{
-  padding:14px 22px;border-top:1px solid var(--line-2);display:flex;gap:9px;justify-content:flex-end;
-  position:sticky;bottom:0;background:#fff;border-radius:0 0 16px 16px;
-}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--line2);display:flex;gap:9px;justify-content:flex-end;position:sticky;bottom:0;background:#fff;border-radius:0 0 16px 16px}
 
-/* ============================================================
-   PROGRESS OVERLAY
-   ============================================================ */
-#progressOverlay{
-  position:fixed;inset:0;background:rgba(11,37,69,.72);backdrop-filter:blur(4px);
-  z-index:9500;display:none;align-items:center;justify-content:center;padding:20px;
-}
-#progressOverlay.show{display:flex;animation:fade .2s ease}
-.progress-card{
-  background:#fff;border-radius:16px;padding:30px;width:min(440px,100%);
-  box-shadow:var(--shadow-lg);text-align:center;
-}
+/* PROGRESS */
+#progressOverlay{position:fixed;inset:0;background:rgba(11,37,69,.72);backdrop-filter:blur(4px);z-index:9500;display:none;align-items:center;justify-content:center;padding:20px}
+#progressOverlay.show{display:flex}
+.progress-card{background:#fff;border-radius:16px;padding:30px;width:min(440px,100%);text-align:center;box-shadow:0 22px 60px rgba(15,23,42,.2)}
 .progress-card h3{margin:0 0 6px;color:var(--navy);font-size:17px}
 .progress-card .sub{color:var(--muted);font-size:12.5px;margin-bottom:20px}
-.progress-bar{
-  height:10px;background:#eef2f7;border-radius:20px;overflow:hidden;margin-bottom:10px;
-}
-.progress-bar .bar{
-  height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-2));
-  width:0%;transition:width .25s ease;border-radius:20px;
-}
-.progress-card .count{
-  font-family:var(--font-serif);font-size:15px;font-weight:800;color:var(--navy);
-}
+.progress-bar{height:10px;background:#eef2f7;border-radius:20px;overflow:hidden;margin-bottom:10px}
+.progress-bar .bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));width:0;transition:width .25s;border-radius:20px}
+.progress-card .count{font-family:var(--ff);font-size:15px;font-weight:800;color:var(--navy)}
 .progress-card .count span{color:var(--muted);font-weight:600;font-size:13px}
 
-/* ============================================================
-   LOGIN
-   ============================================================ */
-#loginPage{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:20px;position:relative;overflow:hidden;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(200,155,60,.20), transparent 45%),
-    radial-gradient(circle at 88% 82%, rgba(23,105,170,.40), transparent 50%),
-    linear-gradient(135deg,#050d1a 0%,#0b2545 40%,#13315c 70%,#0b2545 100%);
-}
-#loginPage::before{
-  content:"";position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
-  background-size:44px 44px;pointer-events:none;
-}
-#loginPage::after{
-  content:"";position:absolute;width:600px;height:600px;border-radius:50%;
-  border:2px dashed rgba(200,155,60,.18);top:-220px;right:-220px;
-  animation:spin 60s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.login-card{
-  position:relative;z-index:2;width:min(470px,100%);
-  background:#fff;border-radius:22px;padding:38px 34px 26px;
-  box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.06);
-  text-align:center;animation:rise .65s cubic-bezier(.2,.8,.3,1);
-}
+/* LOGIN */
+#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 12% 18%,rgba(200,155,60,.2),transparent 45%),radial-gradient(circle at 88% 82%,rgba(23,105,170,.4),transparent 50%),linear-gradient(135deg,#050d1a 0,#0b2545 40%,#13315c 70%,#0b2545 100%)}
+.login-card{width:min(470px,100%);background:#fff;border-radius:22px;padding:38px 34px 26px;box-shadow:0 30px 80px rgba(0,0,0,.45);text-align:center;animation:rise .65s}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.login-crest{
-  width:104px;height:104px;border-radius:50%;margin:0 auto 14px;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-  background:linear-gradient(135deg,var(--navy),var(--blue-2));
-  color:var(--gold-2);font-weight:900;font-size:34px;letter-spacing:1px;
-  border:4px solid var(--gold);box-shadow:0 8px 22px rgba(200,155,60,.32);
-}
+.login-crest{width:104px;height:104px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--blue2));color:var(--gold2);font-weight:900;font-size:34px;border:4px solid var(--gold);box-shadow:0 8px 22px rgba(200,155,60,.32)}
 .login-crest img{width:100%;height:100%;object-fit:contain;background:#fff}
-.login-card h1{margin:6px 0 2px;color:var(--navy);font-size:23px;font-weight:800;letter-spacing:.3px}
+.login-card h1{margin:6px 0 2px;color:var(--navy);font-size:23px;font-weight:800}
 .login-card h2{margin:0 0 4px;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:2.4px}
-.login-card .motto{color:var(--muted);font-size:12px;margin:0 0 22px;letter-spacing:.6px}
+.login-card .motto{color:var(--muted);font-size:12px;margin:0 0 22px}
 .field{position:relative;margin:11px 0;text-align:left}
-.field label{display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:5px;letter-spacing:.3px}
-.field input{
-  width:100%;padding:13px 14px;border:1.5px solid #d5dce5;border-radius:10px;
-  background:#f9fbfd;transition:.2s;font-size:14px;
-}
+.field label{display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:5px}
+.field input{width:100%;padding:13px 14px;border:1.5px solid #d5dce5;border-radius:10px;background:#f9fbfd;font-size:14px}
 .field input:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(23,105,170,.12)}
-.btn-signin{
-  width:100%;margin-top:14px;padding:14px;border:0;border-radius:11px;cursor:pointer;
-  background:linear-gradient(135deg,var(--navy),var(--blue-2));
-  color:#fff;font-weight:800;letter-spacing:.6px;font-size:14px;
-  box-shadow:0 8px 22px rgba(23,105,170,.35);transition:.22s;
-}
-.btn-signin:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(23,105,170,.45)}
-.btn-signin:active{transform:translateY(0)}
-.login-hint{
-  margin-top:14px;font-size:11.5px;color:var(--muted);
-  background:#f5f8fb;border:1px dashed #d5dce5;border-radius:9px;padding:9px 12px;
-}
+.btn-signin{width:100%;margin-top:14px;padding:14px;border:0;border-radius:11px;cursor:pointer;background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;font-weight:800;letter-spacing:.6px;font-size:14px;box-shadow:0 8px 22px rgba(23,105,170,.35)}
+.btn-signin:hover{transform:translateY(-1px)}
+.login-hint{margin-top:14px;font-size:11.5px;color:var(--muted);background:#f5f8fb;border:1px dashed #d5dce5;border-radius:9px;padding:9px 12px}
 .login-hint code{background:#e8eef5;padding:1px 6px;border-radius:5px;color:var(--navy);font-weight:700}
-.login-error{
-  margin-top:10px;padding:9px 12px;border-radius:8px;font-size:12.5px;
-  background:#fdecea;color:#8b2018;border-left:3px solid var(--red);text-align:left;display:none;
-}
-.designer{
-  margin-top:24px;padding-top:16px;border-top:1px solid var(--line-2);
-  font-size:10.5px;color:var(--muted-2);letter-spacing:1.6px;font-weight:700;
-}
+.login-error{margin-top:10px;padding:9px 12px;border-radius:8px;font-size:12.5px;background:#fdecea;color:#8b2018;border-left:3px solid var(--red);text-align:left;display:none}
+.designer{margin-top:24px;padding-top:16px;border-top:1px solid var(--line2);font-size:10.5px;color:var(--muted2);letter-spacing:1.6px;font-weight:700}
 .designer strong{display:block;color:var(--navy);font-size:14px;margin-top:4px;letter-spacing:.6px}
 
-/* ============================================================
-   APP SHELL
-   ============================================================ */
+/* APP */
 #app{display:none;min-height:100vh;flex-direction:column}
-.topbar{
-  height:66px;background:linear-gradient(90deg,var(--navy),var(--navy-2));
-  color:#fff;display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;position:sticky;top:0;z-index:40;
-  box-shadow:0 2px 14px rgba(11,37,69,.28);border-bottom:3px solid var(--gold);
-}
+.topbar{height:66px;background:linear-gradient(90deg,var(--navy),var(--navy2));color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:40;box-shadow:0 2px 14px rgba(11,37,69,.28);border-bottom:3px solid var(--gold)}
 .brand{display:flex;align-items:center;gap:12px;font-weight:800;min-width:0}
-.brand .logo-slot{
-  width:42px;height:42px;border-radius:50%;background:#fff;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-  border:2px solid var(--gold);
-}
+.brand .logo-slot{width:42px;height:42px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid var(--gold)}
 .brand .logo-slot img{width:100%;height:100%;object-fit:contain}
-.brand .logo-slot .initials{color:var(--navy);font-size:13px;font-weight:900;letter-spacing:-.5px}
-.brand-text{display:flex;flex-direction:column;min-width:0}
-.brand-text b{font-size:14px;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand-text small{font-size:10.5px;color:var(--gold-2);letter-spacing:1.6px;font-weight:700}
+.brand .logo-slot .initials{color:var(--navy);font-size:13px;font-weight:900}
+.brand-text b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.brand-text small{font-size:10.5px;color:var(--gold2);letter-spacing:1.6px;font-weight:700}
 .top-actions{display:flex;gap:8px;align-items:center}
-.top-actions .pill{
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);
-  padding:7px 12px;border-radius:8px;font-size:12px;color:#e8eef5;font-weight:600;
-}
-.top-actions button{
-  background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);
-  padding:8px 13px;border-radius:8px;cursor:pointer;font-weight:600;font-size:12.5px;
-  transition:.18s;display:inline-flex;align-items:center;gap:6px;
-}
+.top-actions .pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);padding:7px 12px;border-radius:8px;font-size:12px;color:#e8eef5;font-weight:600}
+.top-actions button{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);padding:8px 13px;border-radius:8px;cursor:pointer;font-weight:600;font-size:12.5px}
 .top-actions button:hover{background:rgba(255,255,255,.18)}
 .layout{display:flex;min-height:calc(100vh - 66px);flex:1}
 
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
-.sidebar{
-  width:252px;background:#fff;border-right:1px solid var(--line);
-  padding:16px 14px;flex-shrink:0;display:flex;flex-direction:column;
-  position:sticky;top:66px;height:calc(100vh - 66px);overflow-y:auto;
-}
-.sidebar .section-label{
-  font-size:10px;font-weight:800;color:var(--muted-2);letter-spacing:1.4px;
-  margin:12px 8px 6px;text-transform:uppercase;
-}
-.navbtn{
-  width:100%;text-align:left;background:transparent;border:0;padding:11px 12px;
-  border-radius:9px;color:#475569;margin-bottom:3px;cursor:pointer;font-weight:600;
-  display:flex;align-items:center;gap:10px;font-size:13.5px;transition:.16s;
-}
-.navbtn .ico{
-  width:26px;height:26px;border-radius:7px;background:#eef3f9;color:var(--navy);
-  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
-}
+/* SIDEBAR */
+.sidebar{width:252px;background:#fff;border-right:1px solid var(--line);padding:16px 14px;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:66px;height:calc(100vh - 66px);overflow-y:auto}
+.sidebar .section-label{font-size:10px;font-weight:800;color:var(--muted2);letter-spacing:1.4px;margin:12px 8px 6px;text-transform:uppercase}
+.navbtn{width:100%;text-align:left;background:transparent;border:0;padding:11px 12px;border-radius:9px;color:#475569;margin-bottom:3px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:10px;font-size:13.5px}
+.navbtn .ico{width:26px;height:26px;border-radius:7px;background:#eef3f9;color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;font-weight:800}
 .navbtn:hover{background:#f2f7fc;color:var(--navy)}
 .navbtn.active{background:linear-gradient(135deg,#eaf2f9,#dfebf6);color:var(--navy);font-weight:800}
-.navbtn.active .ico{background:var(--navy);color:var(--gold-2)}
-.sidebar-footer{
-  margin-top:auto;padding:12px;background:#f5f8fb;border-radius:10px;
-  font-size:11px;color:var(--muted);line-height:1.6;border:1px solid var(--line);
-}
+.navbtn.active .ico{background:var(--navy);color:var(--gold2)}
+.sidebar-footer{margin-top:auto;padding:12px;background:#f5f8fb;border-radius:10px;font-size:11px;color:var(--muted);line-height:1.6;border:1px solid var(--line)}
 .sidebar-footer b{color:var(--navy)}
 
-/* ============================================================
-   CONTENT
-   ============================================================ */
+/* CONTENT */
 .content{padding:24px;flex:1;min-width:0;overflow-x:hidden}
-.page{display:none;animation:fadeUp .3s ease}
-.page.active{display:block}
+.page{display:none}
+.page.active{display:block;animation:fadeUp .3s}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .page-head{margin-bottom:20px}
-.page-title{font-size:24px;color:var(--navy);margin:0 0 4px;font-weight:800;letter-spacing:.2px}
+.page-title{font-size:24px;color:var(--navy);margin:0 0 4px;font-weight:800}
 .subtitle{color:var(--muted);margin:0;font-size:13.5px}
-.page-head .rule{
-  height:3px;width:64px;background:linear-gradient(90deg,var(--gold),transparent);
-  border-radius:3px;margin-top:12px;
-}
-
-/* Stats */
+.page-head .rule{height:3px;width:64px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:3px;margin-top:12px}
 .cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
-.stat{
-  background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;
-  position:relative;overflow:hidden;box-shadow:var(--shadow-sm);transition:.2s;
-}
-.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(15,23,42,.06)}
 .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--navy)}
-.stat.gold::before{background:linear-gradient(180deg,var(--gold),var(--gold-2))}
-.stat.blue::before{background:linear-gradient(180deg,var(--blue),var(--blue-2))}
+.stat.gold::before{background:linear-gradient(180deg,var(--gold),var(--gold2))}
+.stat.blue::before{background:linear-gradient(180deg,var(--blue),var(--blue2))}
 .stat.green::before{background:linear-gradient(180deg,#0f9d58,#16c472)}
 .stat.slate::before{background:linear-gradient(180deg,#64748b,#94a3b8)}
-.stat .n{font-size:30px;font-weight:900;color:var(--navy);line-height:1.1;letter-spacing:-.5px}
-.stat small{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.3px;display:block;margin-top:2px}
-.stat .ico{
-  position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:10px;
-  background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:16px;
-}
-
-/* Panels */
-.panel{
-  background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;
-  margin-bottom:18px;box-shadow:var(--shadow-sm);
-}
-.panel h3{margin:0 0 14px;color:var(--navy);font-size:15px;font-weight:800;letter-spacing:.2px}
+.stat .n{font-size:30px;font-weight:900;color:var(--navy);line-height:1.1}
+.stat small{color:var(--muted);font-size:12px;font-weight:600;display:block;margin-top:2px}
+.stat .ico{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:10px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--navy)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+.panel h3{margin:0 0 14px;color:var(--navy);font-size:15px;font-weight:800}
 .panel .hint{color:var(--muted);font-size:12.5px;margin:-6px 0 14px;line-height:1.6}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-label{display:block;font-weight:700;font-size:12.5px;color:#475569;margin-bottom:6px;letter-spacing:.2px}
-input[type=text],input[type=date],input[type=password],input[type=file],select,textarea{
-  width:100%;padding:11px 12px;border:1.5px solid #d5dce5;border-radius:9px;background:#fff;
-  transition:.18s;font-size:13.5px;
-}
+label{display:block;font-weight:700;font-size:12.5px;color:#475569;margin-bottom:6px}
+input[type=text],input[type=date],input[type=password],input[type=file],select,textarea{width:100%;padding:11px 12px;border:1.5px solid #d5dce5;border-radius:9px;background:#fff;font-size:13.5px}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(23,105,170,.1)}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
-.btn{
-  border:0;border-radius:9px;padding:10px 15px;cursor:pointer;font-weight:700;
-  font-size:13px;letter-spacing:.2px;transition:.18s;display:inline-flex;align-items:center;gap:7px;
-}
+.btn{border:0;border-radius:9px;padding:10px 15px;cursor:pointer;font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:7px}
 .btn:hover{transform:translateY(-1px)}
-.btn:active{transform:translateY(0)}
-.btn.blue{background:linear-gradient(135deg,var(--blue),var(--blue-2));color:#fff;box-shadow:0 4px 12px rgba(23,105,170,.28)}
-.btn.green{background:linear-gradient(135deg,#0f7a52,#16a06a);color:#fff;box-shadow:0 4px 12px rgba(22,160,106,.26)}
-.btn.gold{background:linear-gradient(135deg,#b8862b,#d9a83f);color:#fff;box-shadow:0 4px 12px rgba(200,155,60,.3)}
-.btn.navy{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;box-shadow:0 4px 12px rgba(11,37,69,.28)}
+.btn.blue{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff}
+.btn.green{background:linear-gradient(135deg,#0f7a52,#16a06a);color:#fff}
+.btn.gold{background:linear-gradient(135deg,#b8862b,#d9a83f);color:#fff}
+.btn.navy{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff}
 .btn.gray{background:#eef2f7;color:#334155;border:1px solid #dce3ec}
 .btn.gray:hover{background:#e3e9f1}
 .btn.red{background:#fdecea;color:#b03024;border:1px solid #f5c6c0}
-.btn.red:hover{background:#fbdbd6}
 .btn.sm{padding:6px 10px;font-size:12px;border-radius:7px}
-.btn:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
-
-/* Notices */
-.notice{
-  padding:12px 15px;border-radius:10px;background:#fffaf0;border-left:4px solid var(--gold);
-  color:#6b5518;font-size:12.5px;line-height:1.6;
-}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.notice{padding:12px 15px;border-radius:10px;background:#fffaf0;border-left:4px solid var(--gold);color:#6b5518;font-size:12.5px;line-height:1.6}
 .notice.blue{background:#eef6fc;border-left-color:var(--blue);color:#134a72}
 .notice.green{background:#eefaf4;border-left-color:var(--green);color:#0b5c3d}
 .notice.red{background:#fdecea;border-left-color:var(--red);color:#8b2018}
-
-/* Tables */
 .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px;background:#fff}
 table{width:100%;border-collapse:collapse}
-th,td{padding:11px 12px;border-bottom:1px solid var(--line-2);text-align:left;font-size:13px;vertical-align:middle}
-th{
-  background:#f7f9fc;color:#334155;font-weight:800;font-size:11.5px;
-  letter-spacing:.6px;text-transform:uppercase;position:sticky;top:0;z-index:1;
-}
+th,td{padding:11px 12px;border-bottom:1px solid var(--line2);text-align:left;font-size:13px;vertical-align:middle}
+th{background:#f7f9fc;color:#334155;font-weight:800;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase}
 tr:last-child td{border-bottom:0}
 tbody tr:hover{background:#fafcfe}
-.thumb{
-  width:42px;height:52px;object-fit:cover;border-radius:6px;border:1.5px solid #ccd5df;background:#f5f8fb;
-}
-.thumb.placeholder{
-  display:flex;align-items:center;justify-content:center;color:var(--muted-2);font-size:16px;
-}
-.badge{
-  padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.4px;
-  background:#e9f3fb;color:var(--blue);display:inline-block;
-}
+.thumb{width:42px;height:52px;object-fit:cover;border-radius:6px;border:1.5px solid #ccd5df;background:#f5f8fb}
+.thumb.placeholder{display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:14px;font-weight:900}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;background:#e9f3fb;color:var(--blue);display:inline-block}
 .badge.s4{background:#e9f3fb;color:#1769aa}
 .badge.s6{background:#fdf2e0;color:#9a721c}
 .empty{padding:46px 20px;text-align:center;color:var(--muted)}
-.empty .big{font-size:36px;margin-bottom:10px;opacity:.45}
-
-/* Template picker */
+.empty .big{font-size:36px;margin-bottom:10px;opacity:.45;font-weight:900}
 .template-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.template-card{
-  border:2px solid var(--line);border-radius:13px;padding:11px;cursor:pointer;background:#fff;
-  transition:.2s;position:relative;
-}
-.template-card:hover{border-color:#c3ceda;transform:translateY(-2px);box-shadow:var(--shadow)}
+.template-card{border:2px solid var(--line);border-radius:13px;padding:11px;cursor:pointer;background:#fff;position:relative}
+.template-card:hover{border-color:#c3ceda;transform:translateY(-2px)}
 .template-card.selected{border-color:var(--gold);box-shadow:0 0 0 4px rgba(200,155,60,.16)}
-.template-card.selected::after{
-  content:"✓";position:absolute;top:9px;right:9px;width:24px;height:24px;border-radius:50%;
-  background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:900;
-}
-.template-mini{
-  height:150px;border-radius:7px;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;text-align:center;padding:12px;font-family:var(--font-serif);
-  margin-bottom:10px;overflow:hidden;position:relative;
-}
-.template-mini .mini-title{font-size:11px;letter-spacing:2px;font-weight:800;opacity:.9}
+.template-card.selected::after{content:"OK";position:absolute;top:9px;right:9px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900}
+.template-mini{height:150px;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;font-family:var(--ff);margin-bottom:10px;overflow:hidden;position:relative}
+.template-mini .mini-title{font-size:11px;letter-spacing:2px;font-weight:800}
 .template-mini .mini-line{width:50px;height:1px;background:currentColor;opacity:.45;margin:8px 0}
 .template-mini .mini-sub{font-size:8px;letter-spacing:1.4px;opacity:.7}
 .template-card b{font-size:13px;color:var(--navy);display:block}
 .template-card p{font-size:11.5px;color:var(--muted);margin:3px 0 0;line-height:1.4}
-
 .mini-1{background:#fff;border:7px double #0b2545;color:#0b2545}
 .mini-2{background:linear-gradient(180deg,#fffdf6,#fff8e6);border:6px solid #c89b3c;color:#6b4e14}
-.mini-3{background:linear-gradient(135deg,#f6fbff,#e9f4ff);border:6px double #1769aa;color:#0f4c81;position:relative}
-.mini-3::before{content:"";position:absolute;top:6px;left:6px;right:6px;height:3px;background:linear-gradient(90deg,#1769aa,#1c7ed6);border-radius:3px}
-.mini-4{background:linear-gradient(120deg,#f8fbff,#fff);border:6px solid #0b2545;color:#0b2545;position:relative}
-.mini-4::before{content:"";position:absolute;top:0;left:0;right:0;height:12px;background:linear-gradient(90deg,#0b2545 60%,#c89b3c 60%)}
+.mini-3{background:linear-gradient(135deg,#f6fbff,#e9f4ff);border:6px double #1769aa;color:#0f4c81}
+.mini-4{background:linear-gradient(120deg,#f8fbff,#fff);border:6px solid #0b2545;color:#0b2545}
 .mini-5{background:#fafafa;border:5px solid #4a4a4a;color:#222}
 
-/* ============================================================
-   CERTIFICATE — A4 LANDSCAPE (1123 x 794 @ ~96dpi = 297x210mm)
-   ============================================================ */
-.certificate-stage{
-  background:repeating-conic-gradient(#dfe5ec 0% 25%,#e8edf3 0% 50%) 50%/24px 24px;
-  padding:22px;border-radius:14px;overflow:auto;border:1px solid var(--line);
-}
-.certificate{
-  width:1123px;height:794px;position:relative;background:#fff;margin:auto;overflow:hidden;
-  font-family:var(--font-serif);color:#1a2b3c;
-  box-shadow:0 14px 40px rgba(11,37,69,.22);flex-shrink:0;
-}
-.certificate.small{transform-origin:top left}
-
-/* Common text */
-.cert-school{font-size:30px;font-weight:800;letter-spacing:1.4px;line-height:1.15}
-.cert-address{font-family:var(--font-ui);font-size:12.5px;margin-top:5px;letter-spacing:.5px}
-.cert-title{font-size:30px;font-weight:800;letter-spacing:6px;margin:0 0 4px;text-transform:uppercase}
-.cert-subtitle{
-  font-family:var(--font-ui);font-size:11px;letter-spacing:3px;text-transform:uppercase;
-  font-weight:700;margin-bottom:12px;
-}
-.cert-lead{font-family:var(--font-ui);font-size:14px;margin:10px 0 4px;color:#334}
-.cert-name{
-  font-size:40px;font-weight:800;text-transform:uppercase;letter-spacing:1px;
-  margin:12px auto 10px;padding:2px 30px 10px;width:max-content;max-width:82%;line-height:1.1;
-}
-.cert-body{
-  font-family:var(--font-ui);font-size:14px;line-height:1.65;
-  max-width:820px;margin:8px auto 0;color:#2a3b4c;
-}
-.package-title{
-  font-family:var(--font-ui);font-size:11px;font-weight:800;letter-spacing:2.4px;
-  margin:14px 0 8px;text-transform:uppercase;
-}
-.package-list{
-  font-family:var(--font-ui);font-size:12px;display:flex;justify-content:center;
-  gap:7px;flex-wrap:wrap;max-width:900px;margin:auto;
-}
-.package-list span{
-  border:1px solid #ccd6e0;padding:5px 10px;border-radius:6px;background:#f8fafc;
-  letter-spacing:.2px;font-weight:600;color:#2a3b4c;
-}
-.cert-footer{
-  position:absolute;left:70px;right:70px;bottom:44px;display:flex;
-  justify-content:space-between;align-items:flex-end;font-family:var(--font-ui);
-}
-.sig{width:230px;text-align:center;font-size:11.5px}
-.sig .sig-img{height:44px;max-width:200px;object-fit:contain;display:block;margin:0 auto -2px}
-.sig .sigline{border-top:1.5px solid #334;padding-top:6px;font-weight:800;letter-spacing:.6px}
-.sig .signame{font-size:11px;color:#475569;font-weight:600;margin-top:2px;font-style:italic}
-.cert-meta{
-  font-family:var(--font-ui);font-size:11.5px;color:#475569;margin-top:14px;letter-spacing:.2px;
-}
-.cert-meta b{color:#0b2545}
-.qr-slot{
-  position:absolute;right:58px;bottom:114px;width:74px;height:74px;background:#fff;
-  padding:3px;border:1px solid #e2e8f0;border-radius:6px;
-}
+/* CERTIFICATE - A4 LANDSCAPE 297 x 210 mm @ 96dpi = 1123 x 794 */
+.certificate-stage{background:repeating-conic-gradient(#dfe5ec 0% 25%,#e8edf3 0% 50%) 50%/24px 24px;padding:22px;border-radius:14px;overflow:auto;border:1px solid var(--line)}
+.cert-print-wrap{display:flex;justify-content:center}
+.certificate{width:1123px;height:794px;position:relative;background:#fff;margin:auto;overflow:hidden;font-family:var(--ff);color:#1a2b3c;flex-shrink:0;box-shadow:0 14px 40px rgba(11,37,69,.22)}
+.cert-school-name{font-family:'Times New Roman',Georgia,serif;font-size:36px;font-weight:900;letter-spacing:1.5px;line-height:1.1;text-align:center;margin:0;font-style:italic}
+.cert-address{font-family:var(--fs);font-size:13px;text-align:center;letter-spacing:.6px;margin-top:6px;font-weight:600}
+.cert-motto{font-family:var(--ff);font-style:italic;font-size:15px;text-align:center;margin-top:4px}
+.cert-title{font-family:var(--fs);font-size:30px;font-weight:900;letter-spacing:5px;text-align:center;text-transform:uppercase;margin:0 0 6px}
+.cert-lead{font-family:var(--ff);font-style:italic;font-size:17px;text-align:center;margin:6px 0 4px;color:#334}
+.cert-name{font-family:var(--fs);font-size:30px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;text-align:center;margin:6px auto;padding:2px 30px 6px;width:max-content;max-width:88%;line-height:1.1}
+.cert-body{font-family:var(--ff);font-style:italic;font-size:15.5px;line-height:1.5;max-width:820px;margin:6px auto 0;text-align:center;color:#26343f}
+.cert-body b{font-style:normal;font-weight:800}
+.competences-head{font-family:var(--ff);font-style:italic;font-weight:700;font-size:16px;margin:12px 0 8px}
+.package-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 34px;padding:0 8px}
+.package-item{display:flex;align-items:center;gap:11px;min-width:0}
+.pkg-icon{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(11,37,69,.08);box-shadow:0 1px 2px rgba(11,37,69,.05)}
+.pkg-icon svg{width:17px;height:17px}
+.pkg-text{font-family:var(--fs);font-size:13.5px;font-weight:600;color:#1e293b;line-height:1.25}
+.pkg-num{font-family:var(--ff);font-style:italic;color:#8a6516;font-weight:700;margin-right:2px}
+.pkg-icon.c1{background:linear-gradient(135deg,#e3f0fb,#c9e2f7);color:#1769aa}
+.pkg-icon.c2{background:linear-gradient(135deg,#e7f6ec,#c9ebd6);color:#137a4a}
+.pkg-icon.c3{background:linear-gradient(135deg,#fdeede,#f9d8b7);color:#a4591a}
+.pkg-icon.c4{background:linear-gradient(135deg,#f3e8fd,#e0cdf7);color:#6a3ab8}
+.pkg-icon.c5{background:linear-gradient(135deg,#fde7ee,#f8c8d7);color:#b02f5c}
+.pkg-icon.c6{background:linear-gradient(135deg,#e5f1fd,#c8e0f8);color:#0b4f9c}
+.pkg-icon.c7{background:linear-gradient(135deg,#e6f7f8,#c4ebee);color:#0d6d76}
+.cert-footer{position:absolute;left:54px;right:54px;bottom:22px;display:flex;justify-content:space-between;align-items:flex-end}
+.sig{width:250px;text-align:center;font-family:var(--fs)}
+.sig .sig-img{height:50px;max-width:210px;object-fit:contain;display:block;margin:0 auto -6px}
+.sig .sigline{border-top:1.8px solid #222;padding-top:6px;font-weight:800;letter-spacing:1.4px;font-size:15px}
+.sig .signame{font-size:12.5px;color:#334155;font-weight:600;margin-top:3px;font-style:italic}
+.center-slot{width:110px;height:100px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.center-slot .stamp-img{max-width:100px;max-height:100px;object-fit:contain;opacity:.85}
+.center-slot .badge-c{width:82px;height:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(from 200deg,#1769aa,#1c7ed6,#0b2545,#1769aa);color:#fff;font-family:var(--fs);font-weight:900;font-size:11px;letter-spacing:1.4px;text-align:center;line-height:1.15;padding:8px;box-shadow:0 4px 14px rgba(11,37,69,.35);border:3px solid #fff}
+.center-slot .badge-c small{display:block;font-size:8px;letter-spacing:1.6px;opacity:.9;font-weight:700}
+.qr-slot{position:absolute;left:54px;bottom:22px;width:78px;height:78px;background:#fff;padding:3px;border:1px solid #e2e8f0;border-radius:6px;box-shadow:0 2px 8px rgba(11,37,69,.08)}
 .qr-slot img{width:100%;height:100%;display:block}
-.cert-photo{
-  position:absolute;top:44px;right:50px;width:112px;height:134px;object-fit:cover;
-  border:2.5px solid #0b2545;padding:3px;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.1);
-}
-.cert-photo.placeholder{
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  color:var(--muted-2);font-family:var(--font-ui);font-size:9px;text-align:center;
-  background:#f8fafc;letter-spacing:.5px;gap:4px;
-}
-.cert-photo.placeholder .ico{font-size:20px}
-.cert-logo{position:absolute;top:40px;left:50px;width:92px;height:92px;object-fit:contain}
-.cert-logo.placeholder{
-  display:flex;align-items:center;justify-content:center;border-radius:50%;
-  background:linear-gradient(135deg,#0b2545,#1769aa);color:#e6c66b;font-weight:900;
-  font-size:26px;border:3px solid #c89b3c;font-family:var(--font-ui);
-}
-.cert-stamp{
-  position:absolute;right:270px;bottom:40px;width:86px;height:86px;object-fit:contain;opacity:.78;
-}
-.cert-watermark{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  font-family:var(--font-serif);font-size:210px;font-weight:900;letter-spacing:-8px;
-  color:#0b2545;opacity:.028;pointer-events:none;user-select:none;line-height:1;
-}
+.cert-top-row{display:grid;grid-template-columns:135px 1fr 135px;gap:14px;align-items:start;margin-bottom:4px}
+.cert-logo-box{width:135px;height:150px;border:2px solid rgba(11,37,69,.85);border-radius:6px;background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 2px 6px rgba(11,37,69,.06)}
+.cert-logo-box img{max-width:100%;max-height:100%;object-fit:contain}
+.cert-logo-box.placeholder{background:linear-gradient(135deg,#0b2545,#1769aa);color:#e6c66b;font-family:var(--fs);font-weight:900;font-size:34px;border-color:#c89b3c}
+.cert-photo-box{width:135px;height:150px;border:2px solid rgba(11,37,69,.85);border-radius:6px;background:#f8fafc;padding:3px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 2px 6px rgba(11,37,69,.06);justify-self:end}
+.cert-photo-box img{width:100%;height:100%;object-fit:cover}
+.cert-photo-box.placeholder{flex-direction:column;gap:6px;color:#94a3b8;font-family:var(--fs);font-size:11px;letter-spacing:.6px;text-align:center}
+.cert-photo-box.placeholder .ico{font-size:26px;opacity:.6;font-weight:900}
+.cert-head-center{min-width:0;text-align:center;padding-top:4px}
 
-/* ============================================================
-   TEMPLATE 1 — CLASSIC ACADEMIC
-   ============================================================ */
-.tpl1 .cert-inner{position:absolute;inset:26px;border:3px solid #0b2545;padding:34px 54px}
-.tpl1 .cert-inner::before{content:"";position:absolute;inset:6px;border:1px solid #0b2545;pointer-events:none}
-.tpl1 .cert-inner::after{content:"";position:absolute;inset:-3px;border:1px solid #c89b3c;pointer-events:none}
-.tpl1 .cert-title{color:#0b2545}
-.tpl1 .cert-subtitle{color:#9a721c}
-.tpl1 .cert-name{border-bottom:2px solid #9a721c;color:#0b2545}
-.tpl1 .cert-body b{color:#0b2545}
-.tpl1 .corner{position:absolute;width:26px;height:26px;border:2px solid #c89b3c;z-index:2}
-.tpl1 .corner.tl{top:8px;left:8px;border-right:0;border-bottom:0}
-.tpl1 .corner.tr{top:8px;right:8px;border-left:0;border-bottom:0}
-.tpl1 .corner.bl{bottom:8px;left:8px;border-right:0;border-top:0}
-.tpl1 .corner.br{bottom:8px;right:8px;border-left:0;border-top:0}
+/* TEMPLATE 1 - CLASSIC (matches sample) */
+.tpl1{background:#f2a877;padding:0}
+.tpl1 .cert-green{position:absolute;inset:14px;background:linear-gradient(135deg,#3fae3f,#2f9a2f)}
+.tpl1 .cert-paper{position:absolute;inset:24px;background:#fff;padding:16px 42px 18px;overflow:hidden}
+.tpl1 .cert-paper::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 30%,rgba(63,174,63,.06),transparent 40%),radial-gradient(circle at 85% 70%,rgba(242,168,119,.06),transparent 40%),repeating-radial-gradient(circle at 50% 50%,transparent 0 34px,rgba(63,174,63,.025) 34px 35px)}
+.tpl1 .corner-tri{position:absolute;width:0;height:0;z-index:2}
+.tpl1 .corner-tri.tl{top:0;left:0;border-top:52px solid #3fae3f;border-right:52px solid transparent}
+.tpl1 .corner-tri.br{bottom:0;right:0;border-bottom:52px solid #3fae3f;border-left:52px solid transparent}
+.tpl1 .cert-school-name{color:#c8102e;text-shadow:1px 1px 0 rgba(255,255,255,.9),2px 2px 0 rgba(200,16,46,.15)}
+.tpl1 .cert-address{color:#111}
+.tpl1 .cert-motto{color:#e91e63}
+.tpl1 .cert-title{color:transparent;-webkit-text-stroke:1.4px #1769aa;letter-spacing:6px}
+.tpl1 .cert-name{color:#c8102e}
+.tpl1 .competences-head{color:#e91e63}
+.tpl1 .cert-name::after{content:"";display:block;height:2px;width:76%;margin:6px auto 0;background:linear-gradient(90deg,transparent,#c8102e,transparent);border-radius:2px}
 
-/* ============================================================
-   TEMPLATE 2 — PREMIUM GOLD
-   ============================================================ */
-.tpl2{background:linear-gradient(180deg,#fffef9,#fff9ec)}
-.tpl2 .cert-inner{position:absolute;inset:22px;border:3px solid #c89b3c;padding:34px 54px;background:transparent}
-.tpl2 .cert-inner::before{
-  content:"";position:absolute;inset:8px;border:1px solid #c89b3c;pointer-events:none;
-}
-.tpl2 .cert-inner::after{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(circle at 0 0, rgba(200,155,60,.18) 0 40px, transparent 42px),
-    radial-gradient(circle at 100% 0, rgba(200,155,60,.18) 0 40px, transparent 42px),
-    radial-gradient(circle at 0 100%, rgba(200,155,60,.18) 0 40px, transparent 42px),
-    radial-gradient(circle at 100% 100%, rgba(200,155,60,.18) 0 40px, transparent 42px);
-  pointer-events:none;
-}
-.tpl2 .cert-title{color:#8a6516;text-shadow:0 1px 0 #fff,0 2px 0 rgba(200,155,60,.25)}
-.tpl2 .cert-subtitle{color:#a37e26}
-.tpl2 .cert-name{border-bottom:2px solid #c89b3c;color:#5b4616}
-.tpl2 .cert-body b{color:#8a6516}
-.tpl2 .cert-school{color:#8a6516}
-.tpl2 .package-list span{border-color:#e6d5a8;background:#fffdf5;color:#5b4616}
+/* TEMPLATE 2 - PREMIUM GOLD */
+.tpl2{background:linear-gradient(180deg,#fffef9,#fff9ec);padding:22px}
+.tpl2 .cert-inner{position:absolute;inset:22px;border:3px solid #c89b3c;padding:16px 42px 18px}
+.tpl2 .cert-inner::before{content:"";position:absolute;inset:8px;border:1px solid #c89b3c;pointer-events:none}
+.tpl2 .cert-school-name{color:#8a6516;text-shadow:1px 1px 0 #fff,2px 2px 0 rgba(200,155,60,.22)}
+.tpl2 .cert-address{color:#6b4e14}
+.tpl2 .cert-motto{color:#a37e26}
+.tpl2 .cert-title{color:#8a6516}
+.tpl2 .cert-name{color:#5b4616;border-bottom:2px solid #c89b3c;padding-bottom:6px}
+.tpl2 .competences-head{color:#a37e26}
 .tpl2 .sig .sigline{border-top-color:#8a6516}
-.tpl2 .cert-watermark{color:#c89b3c;opacity:.05}
 
-/* ============================================================
-   TEMPLATE 3 — PROFESSIONAL BLUE
-   ============================================================ */
-.tpl3{background:linear-gradient(135deg,#f9fcff 0%,#eef6fd 100%)}
-.tpl3 .cert-inner{position:absolute;inset:26px;border:0;padding:34px 54px}
-.tpl3 .cert-inner::before{
-  content:"";position:absolute;inset:0;border:2px solid #1769aa;
-  clip-path:polygon(0 0,40% 0,40% 6px,60% 6px,60% 0,100% 0,100% 100%,0 100%);
-}
-.tpl3 .cert-inner::after{
-  content:"";position:absolute;top:-26px;left:-26px;width:180px;height:180px;
-  background:linear-gradient(135deg,rgba(23,105,170,.14),transparent 70%);
-  border-radius:0 0 100% 0;pointer-events:none;
-}
-.tpl3 .cert-title{color:#0f4c81;letter-spacing:5px}
-.tpl3 .cert-subtitle{color:#1769aa}
-.tpl3 .cert-name{border-bottom:2px solid #1769aa;color:#0f4c81}
-.tpl3 .cert-body b{color:#0f4c81}
-.tpl3 .cert-school{color:#0f4c81}
-.tpl3 .package-list span{border-color:#c9def0;background:#f5faff;color:#0f4c81}
+/* TEMPLATE 3 - PROFESSIONAL BLUE */
+.tpl3{background:linear-gradient(135deg,#f9fcff 0%,#eef6fd 100%);padding:22px}
+.tpl3 .cert-inner{position:absolute;inset:22px;border:2px solid #1769aa;padding:16px 42px 18px}
+.tpl3 .cert-inner::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:14px;background:linear-gradient(90deg,#0f4c81,#1769aa 45%,#1c7ed6 45%,#1c7ed6 70%,#0b2545 70%)}
+.tpl3 .cert-inner::after{content:"";position:absolute;bottom:-2px;left:-2px;right:-2px;height:14px;background:linear-gradient(90deg,#0b2545 30%,#1c7ed6 30%,#1c7ed6 55%,#1769aa 55%,#0f4c81)}
+.tpl3 .cert-school-name{color:#0f4c81}
+.tpl3 .cert-address{color:#1769aa}
+.tpl3 .cert-motto{color:#1c7ed6}
+.tpl3 .cert-title{color:#0f4c81;letter-spacing:6px}
+.tpl3 .cert-name{color:#0f4c81;border-bottom:2px solid #1769aa;padding-bottom:6px}
+.tpl3 .competences-head{color:#1769aa}
 .tpl3 .sig .sigline{border-top-color:#0f4c81}
 
-/* ============================================================
-   TEMPLATE 4 — MODERN INSTITUTIONAL
-   ============================================================ */
-.tpl4{background:linear-gradient(120deg,#f8fbff,#fff)}
-.tpl4 .cert-inner{position:absolute;inset:24px;border:2px solid #0b2545;padding:34px 54px;background:transparent}
-.tpl4 .cert-inner::before{
-  content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:16px;
-  background:linear-gradient(90deg,#0b2545 62%,#c89b3c 62%);
-}
-.tpl4 .cert-inner::after{
-  content:"";position:absolute;bottom:-2px;left:-2px;right:-2px;height:16px;
-  background:linear-gradient(90deg,#c89b3c 38%,#0b2545 38%);
-}
-.tpl4 .cert-title{color:#0b2545;letter-spacing:5px}
-.tpl4 .cert-subtitle{color:#c89b3c}
-.tpl4 .cert-name{border-bottom:2px solid #c89b3c;color:#0b2545}
-.tpl4 .cert-body b{color:#0b2545}
-.tpl4 .cert-school{color:#0b2545}
-.tpl4 .package-list span{border-color:#c8d3e2;background:#f5f8fc;color:#0b2545}
+/* TEMPLATE 4 - MODERN INSTITUTIONAL */
+.tpl4{background:linear-gradient(120deg,#f8fbff,#fff);padding:22px}
+.tpl4 .cert-inner{position:absolute;inset:22px;border:2px solid #0b2545;padding:16px 42px 18px}
+.tpl4 .cert-inner::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:16px;background:linear-gradient(90deg,#0b2545 62%,#c89b3c 62%)}
+.tpl4 .cert-inner::after{content:"";position:absolute;bottom:-2px;left:-2px;right:-2px;height:16px;background:linear-gradient(90deg,#c89b3c 38%,#0b2545 38%)}
+.tpl4 .cert-school-name{color:#0b2545}
+.tpl4 .cert-address{color:#0b2545}
+.tpl4 .cert-motto{color:#c89b3c}
+.tpl4 .cert-title{color:#0b2545;letter-spacing:6px}
+.tpl4 .cert-name{color:#0b2545;border-bottom:2px solid #c89b3c;padding-bottom:6px}
+.tpl4 .competences-head{color:#c89b3c}
 
-/* ============================================================
-   TEMPLATE 5 — FORMAL MONOCHROME
-   ============================================================ */
-.tpl5{background:#fdfdfd}
-.tpl5 .cert-inner{position:absolute;inset:28px;border:3px solid #333;padding:34px 54px}
-.tpl5 .cert-inner::before{content:"";position:absolute;inset:7px;border:1px solid #666;pointer-events:none}
-.tpl5 .cert-title{color:#111;letter-spacing:7px}
-.tpl5 .cert-subtitle{color:#555}
-.tpl5 .cert-name{border-bottom:1.5px solid #333;color:#111}
-.tpl5 .cert-body b{color:#222}
-.tpl5 .cert-school{color:#111}
-.tpl5 .package-list span{border-color:#c9c9c9;background:#f5f5f5;color:#333}
+/* TEMPLATE 5 - FORMAL MONOCHROME */
+.tpl5{background:#fdfdfd;padding:22px}
+.tpl5 .cert-inner{position:absolute;inset:24px;border:3px solid #333;padding:16px 42px 18px}
+.tpl5 .cert-inner::before{content:"";position:absolute;inset:7px;border:1px solid #777;pointer-events:none}
+.tpl5 .cert-school-name{color:#111}
+.tpl5 .cert-address{color:#333}
+.tpl5 .cert-motto{color:#666}
+.tpl5 .cert-title{color:#111;letter-spacing:8px}
+.tpl5 .cert-name{color:#111;border-bottom:1.8px solid #333;padding-bottom:6px}
+.tpl5 .competences-head{color:#444}
+.tpl5 .pkg-icon{background:#f3f3f3!important;color:#444!important;border-color:#ddd}
 .tpl5 .sig .sigline{border-top-color:#333}
+.tpl5 .center-slot .badge-c{background:linear-gradient(135deg,#555,#222)!important}
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media(max-width:1180px){
-  .cards{grid-template-columns:repeat(3,1fr)}
-}
-@media(max-width:950px){
-  .sidebar{display:none}
-  .cards{grid-template-columns:repeat(2,1fr)}
-  .template-grid{grid-template-columns:1fr 1fr}
-  .grid2,.grid3,.grid4{grid-template-columns:1fr}
-  .content{padding:14px}
-  .certificate{transform-origin:top left}
-}
-@media(max-width:600px){
-  .cards{grid-template-columns:1fr}
-  .template-grid{grid-template-columns:1fr}
-  .topbar{padding:0 10px}
-  .brand-text small{display:none}
-  .top-actions .pill{display:none}
-}
+.img-preview{margin-top:8px;padding:8px;border:1px dashed #d5dce5;border-radius:8px;background:#f9fbfd;min-height:52px;display:flex;align-items:center;justify-content:center}
+.img-preview img{max-height:52px;object-fit:contain}
+.img-preview.empty::before{content:"No image uploaded";color:#94a3b8;font-size:11.5px}
 
-/* ============================================================
-   PRINT — A4 LANDSCAPE ONLY
-   ============================================================ */
+/* RESPONSIVE */
+@media(max-width:1180px){.cards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:950px){.sidebar{display:none}.cards{grid-template-columns:repeat(2,1fr)}.template-grid{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.content{padding:14px}}
+@media(max-width:600px){.cards{grid-template-columns:1fr}.template-grid{grid-template-columns:1fr}.topbar{padding:0 10px}.brand-text small{display:none}.top-actions .pill{display:none}}
+
+/* PRINT - A4 LANDSCAPE */
 @media print{
   @page{size:A4 landscape;margin:0}
   body{background:#fff!important;margin:0;padding:0}
   body *{visibility:hidden!important}
-  #printArea, #printArea *{visibility:visible!important}
-  #printArea{position:absolute;left:0;top:0;width:297mm;height:210mm;margin:0;padding:0;background:#fff}
-  #printArea .certificate{
-    width:297mm;height:210mm;box-shadow:none;margin:0;page-break-after:always;
-    page-break-inside:avoid;
-  }
+  #printArea,#printArea *{visibility:visible!important}
+  #printArea{position:absolute;left:0;top:0;width:297mm;height:210mm;margin:0;padding:0;background:#fff;display:block!important}
+  #printArea .certificate{width:297mm;height:210mm;box-shadow:none;margin:0;page-break-after:always;page-break-inside:avoid}
   #printArea .certificate:last-child{page-break-after:auto}
   .no-print{display:none!important}
 }
@@ -620,103 +312,81 @@ tbody tr:hover{background:#fafcfe}
 </head>
 <body>
 
-<!-- ============================ TOAST WRAP ============================ -->
 <div id="toastWrap"></div>
 
-<!-- ============================ LOGIN ============================ -->
+<!-- LOGIN -->
 <section id="loginPage">
   <div class="login-card">
     <div id="loginCrest" class="login-crest">RA</div>
     <h1>Rubongi Army Secondary School</h1>
     <h2>ICT CERTIFICATE MANAGEMENT SYSTEM</h2>
     <p class="motto">Professional certificate preparation, preview and batch generation</p>
-
-    <div class="field">
-      <label for="loginUser">Username</label>
-      <input id="loginUser" type="text" placeholder="Enter username" autocomplete="username">
-    </div>
-    <div class="field">
-      <label for="loginPass">Password</label>
-      <input id="loginPass" type="password" placeholder="Enter password" autocomplete="current-password">
-    </div>
+    <div class="field"><label for="loginUser">Username</label>
+      <input id="loginUser" type="text" placeholder="Enter username" autocomplete="username"></div>
+    <div class="field"><label for="loginPass">Password</label>
+      <input id="loginPass" type="password" placeholder="Enter password" autocomplete="current-password"></div>
     <div id="loginError" class="login-error"></div>
     <button class="btn-signin" onclick="attemptLogin()">Sign In to System</button>
-
     <div class="login-hint">Default login: <code>admin</code> / <code>admin</code></div>
-
-    <div class="designer">
-      SYSTEM DESIGNER
-      <strong>MAWERERE FRANCIS</strong>
-    </div>
+    <div class="designer">SYSTEM DESIGNER<strong>MAWERERE FRANCIS</strong></div>
   </div>
 </section>
 
-<!-- ============================ APP ============================ -->
+<!-- APP -->
 <section id="app">
   <header class="topbar">
     <div class="brand">
       <div id="topLogoSlot" class="logo-slot"><span class="initials">RA</span></div>
       <div class="brand-text">
-        <b>Rubongi Army SS — ICT Certificates</b>
+        <b>Rubongi Army SS - ICT Certificates</b>
         <small>CERTIFICATE MANAGEMENT</small>
       </div>
     </div>
     <div class="top-actions">
       <span id="todayLabel" class="pill"></span>
-      <button onclick="openPasswordModal()">🔑 Password</button>
-      <button onclick="logout()">⏻ Logout</button>
+      <button onclick="openPasswordModal()">Password</button>
+      <button onclick="logout()">Logout</button>
     </div>
   </header>
 
   <div class="layout">
     <aside class="sidebar">
       <div class="section-label">Navigation</div>
-      <button class="navbtn active" data-page="dashboard"><span class="ico">▦</span> Dashboard</button>
-      <button class="navbtn" data-page="learners"><span class="ico">👥</span> Learners</button>
-      <button class="navbtn" data-page="templates"><span class="ico">🎨</span> Templates</button>
-      <button class="navbtn" data-page="generate"><span class="ico">🖨️</span> Generate</button>
-
+      <button class="navbtn active" data-page="dashboard"><span class="ico">D</span> Dashboard</button>
+      <button class="navbtn" data-page="learners"><span class="ico">L</span> Learners</button>
+      <button class="navbtn" data-page="templates"><span class="ico">T</span> Templates</button>
+      <button class="navbtn" data-page="generate"><span class="ico">G</span> Generate</button>
       <div class="section-label">System</div>
-      <button class="navbtn" data-page="settings"><span class="ico">⚙️</span> School Settings</button>
-      <button class="navbtn" data-page="backup"><span class="ico">💾</span> Backup & Restore</button>
-
+      <button class="navbtn" data-page="settings"><span class="ico">S</span> School Settings</button>
+      <button class="navbtn" data-page="backup"><span class="ico">B</span> Backup &amp; Restore</button>
       <div class="sidebar-footer">
-        <b>Landscape only</b><br>
-        S.4: 2023–2026<br>
-        S.6: 2024–2026<br><br>
+        <b>Landscape only</b><br>S.4: 2023-2026<br>S.6: 2024-2026<br><br>
         Award date is set automatically to the generation date.
       </div>
     </aside>
 
     <main class="content">
 
-      <!-- ==================== DASHBOARD ==================== -->
       <section id="dashboard" class="page active">
         <div class="page-head">
           <h1 class="page-title">Certificate Dashboard</h1>
           <p class="subtitle">Manage ICT course completion certificates for Rubongi Army Secondary School.</p>
           <div class="rule"></div>
         </div>
-
         <div class="cards">
-          <div class="stat blue"><div class="ico">👥</div><div class="n" id="statTotal">0</div><small>Total Learners</small></div>
+          <div class="stat blue"><div class="ico">#</div><div class="n" id="statTotal">0</div><small>Total Learners</small></div>
           <div class="stat blue"><div class="ico">S4</div><div class="n" id="statS4">0</div><small>S.4 Learners</small></div>
           <div class="stat gold"><div class="ico">S6</div><div class="n" id="statS6">0</div><small>S.6 Learners</small></div>
-          <div class="stat green"><div class="ico">✓</div><div class="n" id="statGenerated">0</div><small>Certificates Generated</small></div>
-          <div class="stat slate"><div class="ico">⏳</div><div class="n" id="statPending">0</div><small>Pending</small></div>
+          <div class="stat green"><div class="ico">OK</div><div class="n" id="statGenerated">0</div><small>Generated</small></div>
+          <div class="stat slate"><div class="ico">..</div><div class="n" id="statPending">0</div><small>Pending</small></div>
         </div>
-
         <div class="panel" style="margin-top:18px">
           <h3>Certificate Programme</h3>
           <div class="grid2">
-            <div>
-              <b style="color:#0b2545">S.4 — 2023–2026</b>
-              <p class="subtitle" style="margin-top:6px">All seven ICT packages including <b>Web Designing</b>.</p>
-            </div>
-            <div>
-              <b style="color:#8a6516">S.6 — 2024–2026</b>
-              <p class="subtitle" style="margin-top:6px">Six ICT packages. <b>Web Designing excluded</b>.</p>
-            </div>
+            <div><b style="color:#0b2545">S.4 - 2023-2026</b>
+              <p class="subtitle" style="margin-top:6px">All seven ICT packages including <b>Web Designing</b>.</p></div>
+            <div><b style="color:#8a6516">S.6 - 2024-2026</b>
+              <p class="subtitle" style="margin-top:6px">Six ICT packages. <b>Web Designing excluded</b>.</p></div>
           </div>
           <div class="notice blue" style="margin-top:14px">
             <b>Date of Award</b> is recorded automatically as the date on which the certificate is generated.
@@ -725,60 +395,47 @@ tbody tr:hover{background:#fafcfe}
         </div>
       </section>
 
-      <!-- ==================== LEARNERS ==================== -->
       <section id="learners" class="page">
         <div class="page-head">
           <h1 class="page-title">Learner Register</h1>
           <p class="subtitle">Add learners individually or import a batch list from Excel.</p>
           <div class="rule"></div>
         </div>
-
         <div class="panel">
           <h3>Add Learner</h3>
           <div class="grid3">
             <div><label>Full Name *</label><input id="lname" type="text" placeholder="e.g. JOHN PETER OKELLO"></div>
             <div><label>Class *</label>
-              <select id="lclass">
-                <option value="S.4">S.4 (2023–2026)</option>
-                <option value="S.6">S.6 (2024–2026)</option>
-              </select>
+              <select id="lclass"><option value="S.4">S.4 (2023-2026)</option><option value="S.6">S.6 (2024-2026)</option></select>
             </div>
             <div><label>Admission / Index No.</label><input id="lindex" type="text" placeholder="Optional"></div>
           </div>
-          <div style="margin-top:12px">
-            <label>Passport Photo (optional)</label>
-            <input id="lphoto" type="file" accept="image/*">
-          </div>
+          <div style="margin-top:12px"><label>Passport Photo (optional)</label><input id="lphoto" type="file" accept="image/*"></div>
           <div class="actions">
-            <button class="btn blue" onclick="addLearner()">➕ Add Learner</button>
+            <button class="btn blue" onclick="addLearner()">+ Add Learner</button>
             <button class="btn gray" onclick="clearLearnerForm()">Clear Form</button>
           </div>
         </div>
-
         <div class="panel">
           <h3>Import Learners from Excel</h3>
-          <p class="hint">Use the downloadable template. Accepted columns: <b>Name, Class, AdmissionNo, Photo</b>. Photos cannot be imported automatically — upload them individually after import.</p>
+          <p class="hint">Use the downloadable template. Columns: <b>Name, Class, AdmissionNo, Photo</b>. Photos must be uploaded individually after import.</p>
           <input id="excelFile" type="file" accept=".xlsx,.xls,.csv" onchange="importExcel(event)">
           <div class="actions">
-            <button class="btn gray" onclick="downloadTemplate()">📄 Download Excel Template</button>
-            <button class="btn red" onclick="clearAllLearners()">🗑 Delete All Learners</button>
+            <button class="btn gray" onclick="downloadTemplate()">Download Excel Template</button>
+            <button class="btn red" onclick="clearAllLearners()">Delete All Learners</button>
           </div>
         </div>
-
         <div class="panel">
           <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
             <h3 style="margin:0">Registered Learners (<span id="learnerCount">0</span>)</h3>
-            <input id="searchLearners" style="max-width:300px" type="text" placeholder="🔍 Search by name, class or number..." oninput="renderLearners()">
+            <input id="searchLearners" style="max-width:300px" type="text" placeholder="Search by name, class or number..." oninput="renderLearners()">
           </div>
           <div class="table-wrap">
             <table>
               <thead><tr>
-                <th style="width:44px">#</th>
-                <th style="width:64px">Photo</th>
-                <th>Learner Name</th>
-                <th style="width:90px">Class</th>
-                <th>Admission/Index</th>
-                <th>Certificate No.</th>
+                <th style="width:44px">#</th><th style="width:64px">Photo</th>
+                <th>Learner Name</th><th style="width:90px">Class</th>
+                <th>Admission/Index</th><th>Certificate No.</th>
                 <th style="width:190px">Actions</th>
               </tr></thead>
               <tbody id="learnerTable"></tbody>
@@ -787,127 +444,85 @@ tbody tr:hover{background:#fafcfe}
         </div>
       </section>
 
-      <!-- ==================== TEMPLATES ==================== -->
       <section id="templates" class="page">
         <div class="page-head">
           <h1 class="page-title">Certificate Templates</h1>
-          <p class="subtitle">All designs are A4 landscape. Choose a template — a live preview will follow below.</p>
+          <p class="subtitle">All designs are A4 landscape. Choose a template - a live preview follows below.</p>
           <div class="rule"></div>
         </div>
-
         <div class="template-grid" id="templateGrid">
           <div class="template-card selected" data-template="1" onclick="selectTemplate(1)">
-            <div class="template-mini mini-1">
-              <div class="mini-title">CLASSIC</div>
-              <div class="mini-line"></div>
-              <div class="mini-sub">ACADEMIC</div>
-            </div>
-            <b>Classic Academic</b>
-            <p>Traditional navy & gold double-border academic certificate.</p>
+            <div class="template-mini mini-1"><div class="mini-title">CLASSIC</div><div class="mini-line"></div><div class="mini-sub">ACADEMIC</div></div>
+            <b>Classic Academic</b><p>Orange-green framed classic certificate matching the school's traditional design.</p>
           </div>
           <div class="template-card" data-template="2" onclick="selectTemplate(2)">
-            <div class="template-mini mini-2">
-              <div class="mini-title">PREMIUM</div>
-              <div class="mini-line"></div>
-              <div class="mini-sub">GOLD</div>
-            </div>
-            <b>Premium Gold</b>
-            <p>Ornate gold ceremonial design with decorative corner medallions.</p>
+            <div class="template-mini mini-2"><div class="mini-title">PREMIUM</div><div class="mini-line"></div><div class="mini-sub">GOLD</div></div>
+            <b>Premium Gold</b><p>Ornate gold ceremonial design with decorative framing.</p>
           </div>
           <div class="template-card" data-template="3" onclick="selectTemplate(3)">
-            <div class="template-mini mini-3">
-              <div class="mini-title">PROFESSIONAL</div>
-              <div class="mini-line"></div>
-              <div class="mini-sub">BLUE</div>
-            </div>
-            <b>Professional Blue</b>
-            <p>Modern technology-inspired layout with clean accent lines.</p>
+            <div class="template-mini mini-3"><div class="mini-title">PROFESSIONAL</div><div class="mini-line"></div><div class="mini-sub">BLUE</div></div>
+            <b>Professional Blue</b><p>Modern technology-inspired layout with clean accent bands.</p>
           </div>
           <div class="template-card" data-template="4" onclick="selectTemplate(4)">
-            <div class="template-mini mini-4">
-              <div class="mini-title">MODERN</div>
-              <div class="mini-line"></div>
-              <div class="mini-sub">INSTITUTIONAL</div>
-            </div>
-            <b>Modern Institutional</b>
-            <p>Strong navy & gold institutional design with geometric bands.</p>
+            <div class="template-mini mini-4"><div class="mini-title">MODERN</div><div class="mini-line"></div><div class="mini-sub">INSTITUTIONAL</div></div>
+            <b>Modern Institutional</b><p>Strong navy &amp; gold institutional design with geometric bands.</p>
           </div>
           <div class="template-card" data-template="5" onclick="selectTemplate(5)">
-            <div class="template-mini mini-5">
-              <div class="mini-title">FORMAL</div>
-              <div class="mini-line"></div>
-              <div class="mini-sub">MONOCHROME</div>
-            </div>
-            <b>Formal Monochrome</b>
-            <p>Printer-friendly black & grey elegance with minimal decoration.</p>
+            <div class="template-mini mini-5"><div class="mini-title">FORMAL</div><div class="mini-line"></div><div class="mini-sub">MONOCHROME</div></div>
+            <b>Formal Monochrome</b><p>Printer-friendly black &amp; grey elegance with minimal decoration.</p>
           </div>
         </div>
-
         <div class="panel" style="margin-top:18px">
           <h3>Live Preview</h3>
           <div id="templatePreview" class="certificate-stage"></div>
         </div>
       </section>
 
-      <!-- ==================== GENERATE ==================== -->
       <section id="generate" class="page">
         <div class="page-head">
           <h1 class="page-title">Generate Certificates</h1>
-          <p class="subtitle">Select a template, preview a learner, then generate certificates one-by-one or in a batch.</p>
+          <p class="subtitle">Select a template, preview a learner, then generate certificates one by one or in batch.</p>
           <div class="rule"></div>
         </div>
-
         <div class="panel">
           <div class="grid3">
-            <div>
-              <label>Certificate Template</label>
+            <div><label>Certificate Template</label>
               <select id="genTemplate" onchange="selectTemplate(Number(this.value))">
-                <option value="1">Classic Academic</option>
-                <option value="2">Premium Gold</option>
-                <option value="3">Professional Blue</option>
-                <option value="4">Modern Institutional</option>
+                <option value="1">Classic Academic</option><option value="2">Premium Gold</option>
+                <option value="3">Professional Blue</option><option value="4">Modern Institutional</option>
                 <option value="5">Formal Monochrome</option>
               </select>
             </div>
-            <div>
-              <label>Preview Learner</label>
-              <select id="previewLearner" onchange="renderPreview()"></select>
-            </div>
-            <div>
-              <label>Batch</label>
+            <div><label>Preview Learner</label><select id="previewLearner" onchange="renderPreview()"></select></div>
+            <div><label>Batch</label>
               <div style="padding:11px;background:#f5f8fb;border-radius:9px">
                 <b id="batchInfo">0</b> <span style="color:#64748b">certificates ready</span>
               </div>
             </div>
           </div>
-
           <div class="actions">
-            <button class="btn blue" onclick="generateSelectedPDF()">📄 Generate Selected PDF</button>
-            <button class="btn navy" onclick="generateAllPDF()">📚 Generate ALL (One PDF)</button>
-            <button class="btn gold" onclick="generateAllZIP()">🗂 Download ALL (ZIP of PDFs)</button>
-            <button class="btn gray" onclick="printAll()">🖨️ Print All (A4 Landscape)</button>
+            <button class="btn blue" onclick="generateSelectedPDF()">Generate Selected PDF</button>
+            <button class="btn navy" onclick="generateAllPDF()">Generate ALL (One PDF)</button>
+            <button class="btn gold" onclick="generateAllZIP()">Download ALL (ZIP of PDFs)</button>
+            <button class="btn gray" onclick="printAll()">Print All (A4 Landscape)</button>
           </div>
-
           <div class="notice" style="margin-top:12px">
             The <b>Date of Award</b> is taken from the computer's current date when generation begins.
             Every certificate is A4 Landscape at print-ready resolution.
           </div>
         </div>
-
         <div class="panel">
           <h3>Certificate Preview</h3>
           <div id="certificatePreview" class="certificate-stage"></div>
         </div>
       </section>
 
-      <!-- ==================== SETTINGS ==================== -->
       <section id="settings" class="page">
         <div class="page-head">
-          <h1 class="page-title">School & Certificate Settings</h1>
+          <h1 class="page-title">School &amp; Certificate Settings</h1>
           <p class="subtitle">These details appear automatically on every generated certificate.</p>
           <div class="rule"></div>
         </div>
-
         <div class="panel">
           <h3>School Information</h3>
           <div class="grid2">
@@ -915,18 +530,18 @@ tbody tr:hover{background:#fafcfe}
             <div><label>Postal Address</label><input id="setAddress" type="text"></div>
             <div><label>Telephone</label><input id="setTel" type="text"></div>
             <div><label>Certificate Title</label><input id="setTitle" type="text"></div>
+            <div><label>School Motto</label><input id="setMotto" type="text" placeholder="e.g. Victory is Our Challenge"></div>
+            <div><label>Center Badge Label (footer)</label><input id="setBadge" type="text" placeholder="e.g. ICT DEPARTMENT"></div>
           </div>
         </div>
-
         <div class="panel">
           <h3>Signatories</h3>
-          <p class="hint">Only two signatories are used on every certificate: <b>HOD ICT</b> and <b>HEAD TEACHER</b>.</p>
+          <p class="hint">Only two signatories are used: <b>HOD ICT</b> and <b>HEAD TEACHER</b>.</p>
           <div class="grid2">
-            <div><label>HOD ICT — Full Name</label><input id="setHod" type="text" placeholder="e.g. Mr. John Okello"></div>
-            <div><label>Head Teacher — Full Name</label><input id="setHead" type="text" placeholder="e.g. Mrs. Sarah Nabwire"></div>
+            <div><label>HOD ICT - Full Name</label><input id="setHod" type="text" placeholder="e.g. Mr. John Okello"></div>
+            <div><label>Head Teacher - Full Name</label><input id="setHead" type="text" placeholder="e.g. Mrs. Sarah Nabwire"></div>
           </div>
         </div>
-
         <div class="panel">
           <h3>Uploads</h3>
           <div class="grid2">
@@ -936,51 +551,40 @@ tbody tr:hover{background:#fafcfe}
             <div><label>Head Teacher Signature</label><input type="file" accept="image/*" onchange="saveImageSetting(event,'headSig')"><div id="prevHeadSig" class="img-preview"></div></div>
           </div>
           <div class="actions">
-            <button class="btn green" onclick="saveSettings()">💾 Save Settings</button>
-            <button class="btn gray" onclick="resetSettings()">↺ Restore Defaults</button>
+            <button class="btn green" onclick="saveSettings()">Save Settings</button>
+            <button class="btn gray" onclick="resetSettings()">Restore Defaults</button>
           </div>
         </div>
-
         <div class="panel">
           <h3>ICT Course Packages (Automatic)</h3>
           <div class="notice blue">
-            <b>S.4</b> — Data Management & Sharing · Word Processing · Electronic Presentation · Electronic Spreadsheet · <b>Web Designing</b> · Software Management · ICT Safety & Environment<br><br>
-            <b>S.6</b> — Data Management & Sharing · Word Processing · Electronic Presentation · Electronic Spreadsheet · Software Management · ICT Safety & Environment. <b>Web Designing is automatically excluded.</b>
+            <b>S.4</b> - Data Management &amp; Sharing, Word Processing, Electronic Presentation, Electronic Spreadsheet, <b>Web Designing</b>, Software Management, ICT Safety &amp; Environment.<br><br>
+            <b>S.6</b> - Data Management &amp; Sharing, Word Processing, Electronic Presentation, Electronic Spreadsheet, Software Management, ICT Safety &amp; Environment. <b>Web Designing is automatically excluded.</b>
           </div>
         </div>
       </section>
 
-      <!-- ==================== BACKUP ==================== -->
       <section id="backup" class="page">
         <div class="page-head">
-          <h1 class="page-title">Backup & Restore</h1>
+          <h1 class="page-title">Backup &amp; Restore</h1>
           <p class="subtitle">Export or import all system data (learners, settings, uploads) as a single JSON file.</p>
           <div class="rule"></div>
         </div>
-
         <div class="panel">
           <h3>Export System Data</h3>
-          <p class="hint">Download a complete backup containing learners, certificate numbers, school settings, uploaded logo, signatures and stamp.</p>
-          <div class="actions">
-            <button class="btn blue" onclick="exportData()">📤 Export System Data (JSON)</button>
-          </div>
+          <p class="hint">Download a complete backup containing learners, certificate numbers, school settings, logo, signatures and stamp.</p>
+          <div class="actions"><button class="btn blue" onclick="exportData()">Export System Data (JSON)</button></div>
         </div>
-
         <div class="panel">
           <h3>Import System Data</h3>
           <p class="hint">Restore a previously exported JSON backup. This will replace all current data.</p>
           <input type="file" id="importFile" accept=".json,application/json">
-          <div class="actions">
-            <button class="btn gold" onclick="importData()">📥 Import & Restore Data</button>
-          </div>
+          <div class="actions"><button class="btn gold" onclick="importData()">Import &amp; Restore Data</button></div>
         </div>
-
         <div class="panel">
           <h3>Storage Status</h3>
           <div id="storageStatus" class="notice"></div>
-          <div class="actions">
-            <button class="btn red" onclick="factoryReset()">⚠ Factory Reset (Delete Everything)</button>
-          </div>
+          <div class="actions"><button class="btn red" onclick="factoryReset()">Factory Reset (Delete Everything)</button></div>
         </div>
       </section>
 
@@ -988,48 +592,37 @@ tbody tr:hover{background:#fafcfe}
   </div>
 </section>
 
-<!-- Hidden print area -->
 <div id="printArea" style="display:none"></div>
-
-<!-- MODAL -->
-<div id="modalBackdrop">
-  <div class="modal" id="modalBox"></div>
-</div>
-
-<!-- PROGRESS OVERLAY -->
+<div id="modalBackdrop"><div class="modal" id="modalBox"></div></div>
 <div id="progressOverlay">
   <div class="progress-card">
-    <h3 id="progressTitle">Working…</h3>
+    <h3 id="progressTitle">Working...</h3>
     <p class="sub" id="progressSub">Please wait while we process your request.</p>
     <div class="progress-bar"><div class="bar" id="progressBar"></div></div>
     <div class="count" id="progressCount">0 <span>of 0</span></div>
   </div>
 </div>
 
-<style>
-.img-preview{margin-top:8px;padding:8px;border:1px dashed #d5dce5;border-radius:8px;background:#f9fbfd;min-height:52px;display:flex;align-items:center;justify-content:center}
-.img-preview img{max-height:52px;object-fit:contain}
-.img-preview.empty::before{content:"No image uploaded";color:#94a3b8;font-size:11.5px}
-</style>
-
 <script>
 /* ============================================================
-   STATE & CONSTANTS
+   STATE
    ============================================================ */
-const LS = {
-  settings:'rubongiCertSettings_v2',
-  learners:'rubongiCertLearners_v2',
-  template:'rubongiCertTemplate_v2',
-  generated:'rubongiGeneratedCount_v2',
-  counter:'rubongiCertCounter_v2',
-  auth:'rubongiAuth_v2'
+var LS = {
+  settings:'rubongiSettings_v3',
+  learners:'rubongiLearners_v3',
+  template:'rubongiTemplate_v3',
+  generated:'rubongiGenerated_v3',
+  counter:'rubongiCounter_v3',
+  auth:'rubongiAuth_v3'
 };
 
-const DEFAULTS = {
+var DEFAULTS = {
   school:"Rubongi Army Secondary School",
-  address:"P.O. Box 698, Tororo, Uganda",
+  address:"P.O BOX 698, TORORO",
   tel:"0454445131 / 0782651148",
   title:"Certificate of Completion",
+  motto:"Victory is Our Challenge",
+  badge:"ICT DEPARTMENT",
   hod:"",
   head:"",
   logo:"",
@@ -1038,150 +631,98 @@ const DEFAULTS = {
   stamp:""
 };
 
-const PACKAGES_BASE = [
-  "Data Management & Sharing",
-  "Word Processing",
-  "Electronic Presentation",
-  "Electronic Spreadsheet"
-];
-const PACKAGES_TAIL = ["Software Management","ICT Safety & Environment"];
-const WEB_DESIGNING = "Web Designing";
+var PACKAGES_BASE = ["Data Management & Sharing","Word Processing","Electronic Presentation","Electronic Spreadsheet"];
+var PACKAGES_TAIL = ["Software Management","ICT Safety & Environment"];
+var WEB_DESIGNING = "Web Designing";
 
-let settings = load(LS.settings, DEFAULTS);
-let learners = load(LS.learners, []);
-let selectedTemplate = Number(localStorage.getItem(LS.template) || 1);
-let generatedCount = Number(localStorage.getItem(LS.generated) || 0);
-let certCounter = load(LS.counter, {S4:{}, S6:{}}); // {S4:{year: lastNum}, S6:{year: lastNum}}
-let auth = load(LS.auth, {user:"admin", passHash: simpleHash("admin")});
+var settings = load(LS.settings, DEFAULTS);
+var learners = load(LS.learners, []);
+var selectedTemplate = Number(localStorage.getItem(LS.template) || 1);
+var generatedCount = Number(localStorage.getItem(LS.generated) || 0);
+var certCounter = load(LS.counter, {S4:{}, S6:{}});
+var auth = load(LS.auth, {user:"admin", passHash: simpleHash("admin")});
 
 /* ============================================================
    UTILITIES
    ============================================================ */
 function $(id){return document.getElementById(id)}
-function load(key, fallback){
+function load(key, fb){
   try{
-    const raw = localStorage.getItem(key);
-    if(!raw) return typeof fallback === 'object' ? JSON.parse(JSON.stringify(fallback)) : fallback;
+    var raw = localStorage.getItem(key);
+    if(!raw) return typeof fb === 'object' ? JSON.parse(JSON.stringify(fb)) : fb;
     return JSON.parse(raw);
-  }catch(e){
-    console.warn('Load error for', key, e);
-    return typeof fallback === 'object' ? JSON.parse(JSON.stringify(fallback)) : fallback;
-  }
+  }catch(e){ console.warn('Load error', key, e); return typeof fb === 'object' ? JSON.parse(JSON.stringify(fb)) : fb; }
 }
 function save(key, value){
-  try{
-    localStorage.setItem(key, JSON.stringify(value));
-    return true;
-  }catch(e){
-    toast('error','Storage full','Could not save data. Browser storage is full. Please export your data and clear older items.');
-    return false;
-  }
+  try{ localStorage.setItem(key, JSON.stringify(value)); return true; }
+  catch(e){ toast('error','Storage full','Could not save data. Export your data and free browser storage.'); return false; }
 }
 function simpleHash(str){
-  // Lightweight non-cryptographic hash — sufficient for local single-user login.
-  let h = 5381;
-  for(let i=0;i<str.length;i++) h = ((h<<5) + h) + str.charCodeAt(i);
+  var h = 5381;
+  for(var i=0;i<str.length;i++) h = ((h<<5) + h) + str.charCodeAt(i);
   return (h>>>0).toString(36);
 }
 function escapeHtml(s){
-  return String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+  return String(s==null?"":s).replace(/[&<>"']/g, function(m){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m];
+  });
 }
-function safe(s){
-  return String(s||"").replace(/[^a-z0-9_-]+/gi,"_").replace(/^_+|_+$/g,"") || "certificate";
-}
-function todayLong(){
-  return new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
-}
-function todayISO(){
-  const d=new Date();
-  return d.toISOString().slice(0,10);
-}
-function uid(){
-  return 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-}
-function debounce(fn, ms=200){
-  let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); };
-}
+function safe(s){ return String(s||"").replace(/[^a-z0-9_-]+/gi,"_").replace(/^_+|_+$/g,"") || "certificate"; }
+function todayLong(){ return new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}); }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function uid(){ return 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function debounce(fn, ms){ ms=ms||200; var t; return function(){ var a=arguments, self=this; clearTimeout(t); t=setTimeout(function(){ fn.apply(self,a); }, ms); }; }
 
-/* ============================================================
-   TOAST
-   ============================================================ */
-function toast(type, title, msg, duration=4200){
-  const el = document.createElement('div');
+/* TOAST */
+function toast(type, title, msg, duration){
+  duration = duration || 4200;
+  var el = document.createElement('div');
   el.className = 'toast ' + (type||'');
-  const icons = {success:'✓', error:'✕', warn:'⚠', info:'ℹ'};
-  el.innerHTML = `<div class="tico">${icons[type]||'ℹ'}</div>
-    <div class="tbody"><b>${escapeHtml(title)}</b><span>${escapeHtml(msg||'')}</span></div>`;
+  var icons = {success:'OK', error:'X', warn:'!', info:'i'};
+  el.innerHTML = '<div class="tico">' + (icons[type]||'i') + '</div><div class="tbody"><b>' + escapeHtml(title) + '</b><span>' + escapeHtml(msg||'') + '</span></div>';
   $('toastWrap').appendChild(el);
-  setTimeout(()=>{
+  setTimeout(function(){
     el.style.transition = 'opacity .3s, transform .3s';
     el.style.opacity = 0; el.style.transform = 'translateX(40px)';
-    setTimeout(()=>el.remove(), 320);
+    setTimeout(function(){ el.remove(); }, 320);
   }, duration);
 }
 
-/* ============================================================
-   MODAL
-   ============================================================ */
-function openModal(html){
-  $('modalBox').innerHTML = html;
-  $('modalBackdrop').classList.add('show');
-}
-function closeModal(){
-  $('modalBackdrop').classList.remove('show');
-  $('modalBox').innerHTML = '';
-}
-$('modalBackdrop').addEventListener('click', e=>{
-  if(e.target.id === 'modalBackdrop') closeModal();
-});
-document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeModal(); });
-
-function confirmDialog(title, msg, onConfirm, confirmLabel='Confirm', danger=false){
-  openModal(`
-    <div class="modal-head"><h3>${escapeHtml(title)}</h3><button onclick="closeModal()">✕</button></div>
-    <div class="modal-body"><p style="margin:0;color:#334155;line-height:1.6">${escapeHtml(msg)}</p></div>
-    <div class="modal-foot">
-      <button class="btn gray" onclick="closeModal()">Cancel</button>
-      <button class="btn ${danger?'red':'blue'}" id="confirmBtn">${escapeHtml(confirmLabel)}</button>
-    </div>
-  `);
-  $('confirmBtn').onclick = ()=>{ closeModal(); onConfirm(); };
+/* MODAL */
+function openModal(html){ $('modalBox').innerHTML = html; $('modalBackdrop').classList.add('show'); }
+function closeModal(){ $('modalBackdrop').classList.remove('show'); $('modalBox').innerHTML = ''; }
+document.getElementById('modalBackdrop').addEventListener('click', function(e){ if(e.target.id === 'modalBackdrop') closeModal(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+function confirmDialog(title, msg, onConfirm, confirmLabel, danger){
+  openModal('<div class="modal-head"><h3>'+escapeHtml(title)+'</h3><button onclick="closeModal()">X</button></div>'+
+    '<div class="modal-body"><p style="margin:0;color:#334155;line-height:1.6">'+escapeHtml(msg)+'</p></div>'+
+    '<div class="modal-foot"><button class="btn gray" onclick="closeModal()">Cancel</button>'+
+    '<button class="btn '+(danger?'red':'blue')+'" id="confirmBtn">'+escapeHtml(confirmLabel||'Confirm')+'</button></div>');
+  $('confirmBtn').onclick = function(){ closeModal(); onConfirm(); };
 }
 
-/* ============================================================
-   PROGRESS
-   ============================================================ */
+/* PROGRESS */
 function showProgress(title, sub){
   $('progressTitle').textContent = title;
-  $('progressSub').textContent = sub || 'Please wait…';
+  $('progressSub').textContent = sub || 'Please wait...';
   $('progressBar').style.width = '0%';
-  $('progressCount').innerHTML = `0 <span>of 0</span>`;
+  $('progressCount').innerHTML = '0 <span>of 0</span>';
   $('progressOverlay').classList.add('show');
 }
 function updateProgress(done, total){
-  const pct = total ? (done/total)*100 : 0;
+  var pct = total ? (done/total)*100 : 0;
   $('progressBar').style.width = pct + '%';
-  $('progressCount').innerHTML = `${done} <span>of ${total}</span>`;
+  $('progressCount').innerHTML = done + ' <span>of ' + total + '</span>';
 }
-function hideProgress(){
-  setTimeout(()=>$('progressOverlay').classList.remove('show'), 200);
-}
+function hideProgress(){ setTimeout(function(){ $('progressOverlay').classList.remove('show'); }, 200); }
 
-/* ============================================================
-   LOGIN
-   ============================================================ */
+/* LOGIN */
 function attemptLogin(){
-  const u = $('loginUser').value.trim();
-  const p = $('loginPass').value;
-  const err = $('loginError');
+  var u = $('loginUser').value.trim();
+  var p = $('loginPass').value;
+  var err = $('loginError');
   err.style.display = 'none';
-
-  if(!u || !p){
-    err.textContent = 'Please enter both username and password.';
-    err.style.display = 'block';
-    return;
-  }
-
+  if(!u || !p){ err.textContent = 'Please enter both username and password.'; err.style.display = 'block'; return; }
   if(u.toLowerCase() === auth.user.toLowerCase() && simpleHash(p) === auth.passHash){
     sessionStorage.setItem('rubongiLoggedIn','1');
     enterApp();
@@ -1191,68 +732,56 @@ function attemptLogin(){
     $('loginPass').value = '';
   }
 }
-$('loginPass').addEventListener('keydown', e=>{ if(e.key === 'Enter') attemptLogin(); });
-$('loginUser').addEventListener('keydown', e=>{ if(e.key === 'Enter') $('loginPass').focus(); });
-
+$('loginPass').addEventListener('keydown', function(e){ if(e.key === 'Enter') attemptLogin(); });
+$('loginUser').addEventListener('keydown', function(e){ if(e.key === 'Enter') $('loginPass').focus(); });
 function enterApp(){
   $('loginPage').style.display = 'none';
   $('app').style.display = 'flex';
   initApp();
 }
 function logout(){
-  confirmDialog('Sign out?', 'You will need to sign in again to use the system.', ()=>{
-    sessionStorage.removeItem('rubongiLoggedIn');
-    location.reload();
+  confirmDialog('Sign out?', 'You will need to sign in again to use the system.', function(){
+    sessionStorage.removeItem('rubongiLoggedIn'); location.reload();
   }, 'Sign Out');
 }
 
-/* ============================================================
-   PASSWORD CHANGE
-   ============================================================ */
+/* PASSWORD */
 function openPasswordModal(){
-  openModal(`
-    <div class="modal-head"><h3>Change Password</h3><button onclick="closeModal()">✕</button></div>
-    <div class="modal-body">
-      <div class="field"><label>Current Password</label><input id="pwCurrent" type="password"></div>
-      <div class="field"><label>New Password</label><input id="pwNew" type="password"></div>
-      <div class="field"><label>Confirm New Password</label><input id="pwConfirm" type="password"></div>
-      <div id="pwError" class="notice red" style="display:none;margin-top:10px"></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn gray" onclick="closeModal()">Cancel</button>
-      <button class="btn blue" onclick="changePassword()">Update Password</button>
-    </div>
-  `);
+  openModal('<div class="modal-head"><h3>Change Password</h3><button onclick="closeModal()">X</button></div>'+
+    '<div class="modal-body"><div class="field"><label>Current Password</label><input id="pwCurrent" type="password"></div>'+
+    '<div class="field"><label>New Password</label><input id="pwNew" type="password"></div>'+
+    '<div class="field"><label>Confirm New Password</label><input id="pwConfirm" type="password"></div>'+
+    '<div id="pwError" class="notice red" style="display:none;margin-top:10px"></div></div>'+
+    '<div class="modal-foot"><button class="btn gray" onclick="closeModal()">Cancel</button>'+
+    '<button class="btn blue" onclick="changePassword()">Update Password</button></div>');
 }
 function changePassword(){
-  const cur = $('pwCurrent').value, nw = $('pwNew').value, cf = $('pwConfirm').value;
-  const err = $('pwError');
-  err.style.display = 'none';
-
+  var cur = $('pwCurrent').value, nw = $('pwNew').value, cf = $('pwConfirm').value;
+  var err = $('pwError'); err.style.display = 'none';
   if(simpleHash(cur) !== auth.passHash){ err.textContent='Current password is incorrect.'; err.style.display='block'; return; }
   if(nw.length < 4){ err.textContent='New password must be at least 4 characters.'; err.style.display='block'; return; }
   if(nw !== cf){ err.textContent='New passwords do not match.'; err.style.display='block'; return; }
-
   auth.passHash = simpleHash(nw);
   save(LS.auth, auth);
   closeModal();
   toast('success','Password updated','Your new password has been saved.');
 }
 
-/* ============================================================
-   APP INIT
-   ============================================================ */
-document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.navbtn').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const page = $(b.dataset.page);
-  if(page) page.classList.add('active');
-
-  if(b.dataset.page === 'templates') renderTemplatePreview();
-  if(b.dataset.page === 'generate') renderGeneratePage();
-  if(b.dataset.page === 'backup') updateStorageStatus();
-}));
+/* NAV */
+var navBtns = document.querySelectorAll('.navbtn');
+for(var i=0;i<navBtns.length;i++){
+  navBtns[i].addEventListener('click', function(){
+    var all = document.querySelectorAll('.navbtn');
+    for(var j=0;j<all.length;j++) all[j].classList.remove('active');
+    this.classList.add('active');
+    var pages = document.querySelectorAll('.page');
+    for(var k=0;k<pages.length;k++) pages[k].classList.remove('active');
+    var page = $(this.dataset.page); if(page) page.classList.add('active');
+    if(this.dataset.page === 'templates') renderTemplatePreview();
+    if(this.dataset.page === 'generate') renderGeneratePage();
+    if(this.dataset.page === 'backup') updateStorageStatus();
+  });
+}
 
 function initApp(){
   $('todayLabel').textContent = todayLong();
@@ -1264,21 +793,19 @@ function initApp(){
   renderGeneratePage();
   updateStorageStatus();
 }
-
 function refreshBranding(){
-  const slot = $('topLogoSlot');
+  var slot = $('topLogoSlot');
   if(settings.logo){
-    slot.innerHTML = `<img src="${settings.logo}" alt="Logo">`;
-    $('loginCrest').innerHTML = `<img src="${settings.logo}" alt="Logo">`;
+    slot.innerHTML = '<img src="'+settings.logo+'" alt="Logo">';
+    $('loginCrest').innerHTML = '<img src="'+settings.logo+'" alt="Logo">';
   }else{
-    slot.innerHTML = `<span class="initials">RA</span>`;
+    slot.innerHTML = '<span class="initials">RA</span>';
     $('loginCrest').textContent = 'RA';
   }
 }
-
 function refreshStats(){
-  const s4 = learners.filter(x=>x.class==='S.4').length;
-  const s6 = learners.filter(x=>x.class==='S.6').length;
+  var s4 = learners.filter(function(x){ return x.class==='S.4'; }).length;
+  var s6 = learners.filter(function(x){ return x.class==='S.6'; }).length;
   $('statTotal').textContent = learners.length;
   $('statS4').textContent = s4;
   $('statS6').textContent = s6;
@@ -1288,240 +815,177 @@ function refreshStats(){
   if($('learnerCount')) $('learnerCount').textContent = learners.length;
 }
 
-/* ============================================================
-   LEARNERS
-   ============================================================ */
+/* LEARNERS */
 function addLearner(){
-  const name = $('lname').value.trim();
-  const cls = $('lclass').value;
-  const idx = $('lindex').value.trim();
-  const file = $('lphoto').files[0];
-
-  if(!name){ toast('warn','Name required','Please enter the learner\'s full name.'); return; }
+  var name = $('lname').value.trim();
+  var cls  = $('lclass').value;
+  var idx  = $('lindex').value.trim();
+  var file = $('lphoto').files[0];
+  if(!name){ toast('warn','Name required','Please enter the learner full name.'); return; }
   if(cls !== 'S.4' && cls !== 'S.6'){ toast('warn','Invalid class','Class must be S.4 or S.6.'); return; }
-
-  const finalize = (photoData)=>{
-    const learner = {
-      id: uid(),
-      name,
-      class: cls,
-      index: idx,
-      photo: photoData || '',
-      certNo: '',          // assigned on first generation
-      createdAt: new Date().toISOString()
-    };
-    learner.certNo = assignCertNo(learner); // pre-assign so it is stable
+  function finalize(photoData){
+    var learner = { id: uid(), name: name, class: cls, index: idx, photo: photoData || '', certNo: '', createdAt: new Date().toISOString() };
+    learner.certNo = assignCertNo(learner);
     learners.push(learner);
     if(save(LS.learners, learners)){
-      refreshStats();
-      renderLearners();
-      renderGeneratePage();
-      clearLearnerForm();
-      toast('success','Learner added', `${name} (${cls}) was added to the register.`);
+      refreshStats(); renderLearners(); renderGeneratePage(); clearLearnerForm();
+      toast('success','Learner added', name + ' (' + cls + ') was added to the register.');
     }
-  };
-
-  if(file){
-    const r = new FileReader();
-    r.onload = () => finalize(r.result);
-    r.onerror = () => { toast('error','Photo error','Could not read the photo file.'); finalize(''); };
-    r.readAsDataURL(file);
-  }else{
-    finalize('');
   }
+  if(file){
+    var r = new FileReader();
+    r.onload = function(){ finalize(r.result); };
+    r.onerror = function(){ toast('error','Photo error','Could not read the photo file.'); finalize(''); };
+    r.readAsDataURL(file);
+  } else { finalize(''); }
 }
-function clearLearnerForm(){
-  $('lname').value = ''; $('lindex').value = ''; $('lphoto').value = '';
-}
+function clearLearnerForm(){ $('lname').value=''; $('lindex').value=''; $('lphoto').value=''; }
 
 function assignCertNo(learner){
   if(learner.certNo) return learner.certNo;
-  const year = new Date().getFullYear();
-  const prefix = learner.class === 'S.4' ? 'S4' : 'S6';
-  const bucket = certCounter[prefix] || (certCounter[prefix] = {});
-  const next = (bucket[year] || 0) + 1;
+  var year = new Date().getFullYear();
+  var prefix = learner.class === 'S.4' ? 'S4' : 'S6';
+  var bucket = certCounter[prefix] || (certCounter[prefix] = {});
+  var next = (bucket[year] || 0) + 1;
   bucket[year] = next;
   save(LS.counter, certCounter);
-  return `RA/ICT/${prefix}/${year}/${String(next).padStart(3,'0')}`;
+  return 'RA/ICT/' + prefix + '/' + year + '/' + String(next).padStart(3,'0');
 }
 
 function renderLearners(){
-  const q = ($('searchLearners')?.value || '').toLowerCase().trim();
-  const rows = learners.filter(l =>
-    !q || (l.name + ' ' + l.class + ' ' + (l.index||'') + ' ' + (l.certNo||'')).toLowerCase().includes(q)
-  );
-
-  const tb = $('learnerTable');
+  var qEl = $('searchLearners');
+  var q = (qEl ? qEl.value : '').toLowerCase().trim();
+  var rows = learners.filter(function(l){
+    if(!q) return true;
+    return (l.name + ' ' + l.class + ' ' + (l.index||'') + ' ' + (l.certNo||'')).toLowerCase().indexOf(q) !== -1;
+  });
+  var tb = $('learnerTable');
   if(!rows.length){
-    tb.innerHTML = `<tr><td colspan="7" class="empty">
-      <div class="big">👥</div>
-      <b>${q ? 'No matching learners' : 'No learners registered yet'}</b>
-      <p>${q ? 'Try a different search.' : 'Add learners individually or import from Excel above.'}</p>
-    </td></tr>`;
+    tb.innerHTML = '<tr><td colspan="7" class="empty"><div class="big">--</div><b>'+
+      (q ? 'No matching learners' : 'No learners registered yet')+
+      '</b><p>'+(q ? 'Try a different search.' : 'Add learners individually or import from Excel above.')+'</p></td></tr>';
     return;
   }
-
-  tb.innerHTML = rows.map((l,i)=>`
-    <tr>
-      <td>${i+1}</td>
-      <td>${l.photo
-        ? `<img class="thumb" src="${l.photo}" alt="">`
-        : `<div class="thumb placeholder">👤</div>`}</td>
-      <td><b>${escapeHtml(l.name)}</b></td>
-      <td><span class="badge ${l.class==='S.4'?'s4':'s6'}">${l.class}</span></td>
-      <td>${escapeHtml(l.index||'—')}</td>
-      <td style="font-size:12px;color:#475569">${escapeHtml(l.certNo||'—')}</td>
-      <td>
-        <button class="btn gray sm" onclick="editLearner('${l.id}')">✎ Edit</button>
-        <button class="btn gray sm" onclick="uploadPhoto('${l.id}')">📷 Photo</button>
-        <button class="btn red sm" onclick="deleteLearner('${l.id}')">🗑</button>
-      </td>
-    </tr>
-  `).join('');
+  tb.innerHTML = rows.map(function(l, i){
+    var photo = l.photo
+      ? '<img class="thumb" src="'+l.photo+'" alt="">'
+      : '<div class="thumb placeholder">U</div>';
+    return '<tr><td>'+(i+1)+'</td><td>'+photo+'</td>'+
+      '<td><b>'+escapeHtml(l.name)+'</b></td>'+
+      '<td><span class="badge '+(l.class==='S.4'?'s4':'s6')+'">'+l.class+'</span></td>'+
+      '<td>'+escapeHtml(l.index||'-')+'</td>'+
+      '<td style="font-size:12px;color:#475569">'+escapeHtml(l.certNo||'-')+'</td>'+
+      '<td><button class="btn gray sm" onclick="editLearner(\''+l.id+'\')">Edit</button> '+
+      '<button class="btn gray sm" onclick="uploadPhoto(\''+l.id+'\')">Photo</button> '+
+      '<button class="btn red sm" onclick="deleteLearner(\''+l.id+'\')">Del</button></td></tr>';
+  }).join('');
 }
 
 function editLearner(id){
-  const l = learners.find(x=>x.id===id);
-  if(!l) return;
-
-  openModal(`
-    <div class="modal-head"><h3>Edit Learner</h3><button onclick="closeModal()">✕</button></div>
-    <div class="modal-body">
-      <div class="field"><label>Full Name</label><input id="edName" type="text" value="${escapeHtml(l.name)}"></div>
-      <div class="field"><label>Class</label>
-        <select id="edClass">
-          <option value="S.4" ${l.class==='S.4'?'selected':''}>S.4 (2023–2026)</option>
-          <option value="S.6" ${l.class==='S.6'?'selected':''}>S.6 (2024–2026)</option>
-        </select>
-      </div>
-      <div class="field"><label>Admission / Index No.</label><input id="edIndex" type="text" value="${escapeHtml(l.index||'')}"></div>
-      <div class="field"><label>Certificate Number</label><input id="edCertNo" type="text" value="${escapeHtml(l.certNo||'')}" placeholder="Auto-generated"></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn gray" onclick="closeModal()">Cancel</button>
-      <button class="btn blue" onclick="saveLearnerEdit('${l.id}')">Save Changes</button>
-    </div>
-  `);
+  var l = learners.find(function(x){ return x.id===id; }); if(!l) return;
+  openModal('<div class="modal-head"><h3>Edit Learner</h3><button onclick="closeModal()">X</button></div>'+
+    '<div class="modal-body">'+
+    '<div class="field"><label>Full Name</label><input id="edName" type="text" value="'+escapeHtml(l.name)+'"></div>'+
+    '<div class="field"><label>Class</label><select id="edClass">'+
+    '<option value="S.4" '+(l.class==='S.4'?'selected':'')+'>S.4 (2023-2026)</option>'+
+    '<option value="S.6" '+(l.class==='S.6'?'selected':'')+'>S.6 (2024-2026)</option></select></div>'+
+    '<div class="field"><label>Admission / Index No.</label><input id="edIndex" type="text" value="'+escapeHtml(l.index||'')+'"></div>'+
+    '<div class="field"><label>Certificate Number</label><input id="edCertNo" type="text" value="'+escapeHtml(l.certNo||'')+'" placeholder="Auto-generated"></div>'+
+    '</div><div class="modal-foot"><button class="btn gray" onclick="closeModal()">Cancel</button>'+
+    '<button class="btn blue" onclick="saveLearnerEdit(\''+l.id+'\')">Save Changes</button></div>');
 }
 function saveLearnerEdit(id){
-  const l = learners.find(x=>x.id===id);
-  if(!l) return;
-  const name = $('edName').value.trim();
-  const cls = $('edClass').value;
-  const idx = $('edIndex').value.trim();
-  const certNo = $('edCertNo').value.trim();
-
-  if(!name){ toast('warn','Name required','Please enter the learner\'s name.'); return; }
+  var l = learners.find(function(x){ return x.id===id; }); if(!l) return;
+  var name = $('edName').value.trim();
+  var cls = $('edClass').value;
+  var idx = $('edIndex').value.trim();
+  var certNo = $('edCertNo').value.trim();
+  if(!name){ toast('warn','Name required','Please enter the learner name.'); return; }
   if(cls !== 'S.4' && cls !== 'S.6'){ toast('warn','Invalid class','Class must be S.4 or S.6.'); return; }
-
-  l.name = name; l.class = cls; l.index = idx; l.certNo = certNo || l.certNo;
+  l.name=name; l.class=cls; l.index=idx; l.certNo=certNo || l.certNo;
   save(LS.learners, learners);
-  closeModal();
-  renderLearners();
-  renderGeneratePage();
-  renderPreview();
+  closeModal(); renderLearners(); renderGeneratePage(); renderPreview();
   toast('success','Learner updated','Changes have been saved.');
 }
-
 function uploadPhoto(id){
-  const l = learners.find(x=>x.id===id);
-  if(!l) return;
-  const input = document.createElement('input');
-  input.type = 'file'; input.accept = 'image/*';
-  input.onchange = e => {
-    const f = e.target.files[0]; if(!f) return;
-    const r = new FileReader();
-    r.onload = () => {
+  var l = learners.find(function(x){ return x.id===id; }); if(!l) return;
+  var input = document.createElement('input'); input.type='file'; input.accept='image/*';
+  input.onchange = function(e){
+    var f = e.target.files[0]; if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
       l.photo = r.result;
       save(LS.learners, learners);
       renderLearners(); renderPreview();
-      toast('success','Photo updated', `Photo set for ${l.name}.`);
+      toast('success','Photo updated', 'Photo set for ' + l.name + '.');
     };
     r.readAsDataURL(f);
   };
   input.click();
 }
-
 function deleteLearner(id){
-  const l = learners.find(x=>x.id===id);
-  if(!l) return;
-  confirmDialog('Delete learner?', `Remove "${l.name}" (${l.class}) from the register? This cannot be undone.`, ()=>{
-    learners = learners.filter(x=>x.id!==id);
+  var l = learners.find(function(x){ return x.id===id; }); if(!l) return;
+  confirmDialog('Delete learner?', 'Remove "' + l.name + '" (' + l.class + ') from the register? This cannot be undone.', function(){
+    learners = learners.filter(function(x){ return x.id!==id; });
     save(LS.learners, learners);
     refreshStats(); renderLearners(); renderGeneratePage();
-    toast('success','Deleted',`${l.name} was removed.`);
+    toast('success','Deleted', l.name + ' was removed.');
   }, 'Delete', true);
 }
-
 function clearAllLearners(){
   if(!learners.length) return toast('warn','Nothing to delete','The register is already empty.');
-  confirmDialog('Delete ALL learners?', `This will permanently remove all ${learners.length} learners from the register. Settings, logo and signatures will be kept.`, ()=>{
-    learners = [];
-    save(LS.learners, learners);
+  confirmDialog('Delete ALL learners?', 'This will permanently remove all ' + learners.length + ' learners. Settings, logo and signatures will be kept.', function(){
+    learners = []; save(LS.learners, learners);
     refreshStats(); renderLearners(); renderGeneratePage();
     toast('success','Register cleared','All learners have been removed.');
   }, 'Delete All', true);
 }
 
-/* ============================================================
-   EXCEL
-   ============================================================ */
+/* EXCEL */
 function downloadTemplate(){
   try{
-    const rows = [
+    var rows = [
       {Name:"JOHN PETER OKELLO", Class:"S.4", AdmissionNo:"001", Photo:"john.jpg"},
-      {Name:"MARY AKOTH",        Class:"S.6", AdmissionNo:"002", Photo:"mary.jpg"},
-      {Name:"DAVID WASSWA",      Class:"S.4", AdmissionNo:"003", Photo:""}
+      {Name:"MARY AKOTH", Class:"S.6", AdmissionNo:"002", Photo:"mary.jpg"},
+      {Name:"DAVID WASSWA", Class:"S.4", AdmissionNo:"003", Photo:""}
     ];
-    const ws = XLSX.utils.json_to_sheet(rows);
+    var ws = XLSX.utils.json_to_sheet(rows);
     ws['!cols'] = [{wch:28},{wch:8},{wch:14},{wch:16}];
-    const wb = XLSX.utils.book_new();
+    var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Learners");
     XLSX.writeFile(wb, "Rubongi_ICT_Learners_Template.xlsx");
     toast('success','Template downloaded','Fill in the columns and import.');
-  }catch(e){
-    toast('error','Download failed','Could not create the Excel template.');
-  }
+  }catch(e){ toast('error','Download failed','Could not create the Excel template.'); }
 }
-
 function importExcel(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
+  var file = e.target.files[0]; if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev){
     try{
-      const wb = XLSX.read(ev.target.result, {type:'array'});
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const data = XLSX.utils.sheet_to_json(ws, {defval:''});
+      var wb = XLSX.read(ev.target.result, {type:'array'});
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      var data = XLSX.utils.sheet_to_json(ws, {defval:''});
       if(!data.length){ toast('warn','Empty file','The Excel file has no data rows.'); return; }
-
-      const pick = (row, names) => {
-        const keys = Object.keys(row);
-        const k = keys.find(k => names.includes(k.toLowerCase().replace(/[^a-z]/g,'')));
+      function pick(row, names){
+        var keys = Object.keys(row);
+        var k = keys.find(function(kk){ return names.indexOf(kk.toLowerCase().replace(/[^a-z]/g,'')) !== -1; });
         return k ? row[k] : '';
-      };
-      let added = 0, skipped = 0;
-      data.forEach(r=>{
-        const rawName = String(pick(r, ['name','learnername','fullname','studentname'])).trim();
-        let cls = String(pick(r, ['class','level'])).trim().toUpperCase().replace(/\s+/g,'');
+      }
+      var added=0, skipped=0;
+      data.forEach(function(r){
+        var rawName = String(pick(r,['name','learnername','fullname','studentname'])).trim();
+        var cls = String(pick(r,['class','level'])).trim().toUpperCase().replace(/\s+/g,'');
         if(cls === 'S4') cls = 'S.4';
         if(cls === 'S6') cls = 'S.6';
-        const idx = String(pick(r, ['admissionno','admissionnumber','index','indexno','admno'])).trim();
-
-        if(!rawName || (cls !== 'S.4' && cls !== 'S.6')){ skipped++; return; }
-
-        const learner = {
-          id: uid(), name: rawName, class: cls, index: idx, photo: '', certNo: '',
-          createdAt: new Date().toISOString()
-        };
+        var idx = String(pick(r,['admissionno','admissionnumber','index','indexno','admno'])).trim();
+        if(!rawName || (cls!=='S.4' && cls!=='S.6')){ skipped++; return; }
+        var learner = { id: uid(), name: rawName, class: cls, index: idx, photo: '', certNo: '', createdAt: new Date().toISOString() };
         learner.certNo = assignCertNo(learner);
-        learners.push(learner);
-        added++;
+        learners.push(learner); added++;
       });
-
       save(LS.learners, learners);
       refreshStats(); renderLearners(); renderGeneratePage();
-      toast('success','Import complete', `${added} learner(s) imported.${skipped? ' '+skipped+' row(s) skipped (invalid name or class).':''}`);
+      toast('success','Import complete', added + ' learner(s) imported.' + (skipped ? ' ' + skipped + ' row(s) skipped.' : ''));
     }catch(err){
       console.error(err);
       toast('error','Invalid file','Could not read this file. Please use the provided Excel template.');
@@ -1531,570 +995,434 @@ function importExcel(e){
   e.target.value = '';
 }
 
-/* ============================================================
-   SETTINGS
-   ============================================================ */
+/* SETTINGS */
 function loadSettingsForm(){
   $('setSchool').value = settings.school;
   $('setAddress').value = settings.address;
   $('setTel').value = settings.tel;
   $('setTitle').value = settings.title;
+  $('setMotto').value = settings.motto || '';
+  $('setBadge').value = settings.badge || '';
   $('setHod').value = settings.hod;
   $('setHead').value = settings.head;
-
-  const setPrev = (id, src) => {
-    const el = $(id);
-    el.innerHTML = src ? `<img src="${src}" alt="">` : '';
-    el.classList.toggle('empty', !src);
-  };
+  function setPrev(id, src){
+    var el = $(id); el.innerHTML = src ? '<img src="'+src+'" alt="">' : '';
+    if(src) el.classList.remove('empty'); else el.classList.add('empty');
+  }
   setPrev('prevLogo', settings.logo);
   setPrev('prevStamp', settings.stamp);
   setPrev('prevHodSig', settings.hodSig);
   setPrev('prevHeadSig', settings.headSig);
 }
-
 function saveSettings(){
-  settings.school = $('setSchool').value.trim() || DEFAULTS.school;
+  settings.school  = $('setSchool').value.trim()  || DEFAULTS.school;
   settings.address = $('setAddress').value.trim() || DEFAULTS.address;
-  settings.tel = $('setTel').value.trim() || DEFAULTS.tel;
-  settings.title = $('setTitle').value.trim() || DEFAULTS.title;
-  settings.hod = $('setHod').value.trim();
-  settings.head = $('setHead').value.trim();
-
+  settings.tel     = $('setTel').value.trim()     || DEFAULTS.tel;
+  settings.title   = $('setTitle').value.trim()   || DEFAULTS.title;
+  settings.motto   = $('setMotto').value.trim()   || DEFAULTS.motto;
+  settings.badge   = $('setBadge').value.trim()   || DEFAULTS.badge;
+  settings.hod     = $('setHod').value.trim();
+  settings.head    = $('setHead').value.trim();
   if(save(LS.settings, settings)){
-    refreshBranding();
-    renderTemplatePreview();
-    renderPreview();
+    refreshBranding(); renderTemplatePreview(); renderPreview();
     toast('success','Settings saved','School details have been updated.');
   }
 }
-
 function saveImageSetting(e, key){
-  const f = e.target.files[0]; if(!f) return;
-  if(f.size > 1.6 * 1024 * 1024){
-    toast('warn','Image too large','Please use an image under 1.5 MB for reliable storage.');
-  }
-  const r = new FileReader();
-  r.onload = () => {
+  var f = e.target.files[0]; if(!f) return;
+  if(f.size > 1.6 * 1024 * 1024) toast('warn','Image too large','Please use an image under 1.5 MB for reliable storage.');
+  var r = new FileReader();
+  r.onload = function(){
     settings[key] = r.result;
     if(save(LS.settings, settings)){
-      loadSettingsForm();
-      refreshBranding();
-      renderTemplatePreview();
-      renderPreview();
-      toast('success','Image saved',`${key.replace('Sig',' signature').replace('logo','Logo')} updated.`);
+      loadSettingsForm(); refreshBranding(); renderTemplatePreview(); renderPreview();
+      toast('success','Image saved', key + ' updated.');
     }
   };
   r.readAsDataURL(f);
   e.target.value = '';
 }
-
 function resetSettings(){
-  confirmDialog('Restore defaults?','This will clear your uploaded logo, signatures and stamp. Learner data is not affected.',()=>{
+  confirmDialog('Restore defaults?','This will clear your uploaded logo, signatures and stamp. Learner data is not affected.',function(){
     settings = JSON.parse(JSON.stringify(DEFAULTS));
     save(LS.settings, settings);
-    loadSettingsForm();
-    refreshBranding();
-    renderTemplatePreview();
-    renderPreview();
+    loadSettingsForm(); refreshBranding(); renderTemplatePreview(); renderPreview();
     toast('success','Defaults restored','');
   },'Restore',true);
 }
 
-/* ============================================================
-   TEMPLATE SELECTION
-   ============================================================ */
+/* TEMPLATE */
 function selectTemplate(n){
   selectedTemplate = Number(n);
   localStorage.setItem(LS.template, selectedTemplate);
-  document.querySelectorAll('.template-card').forEach(c=>{
-    c.classList.toggle('selected', Number(c.dataset.template) === selectedTemplate);
-  });
+  var cards = document.querySelectorAll('.template-card');
+  for(var i=0;i<cards.length;i++){
+    if(Number(cards[i].dataset.template) === selectedTemplate) cards[i].classList.add('selected');
+    else cards[i].classList.remove('selected');
+  }
   if($('genTemplate')) $('genTemplate').value = selectedTemplate;
-  renderTemplatePreview();
-  renderPreview();
+  renderTemplatePreview(); renderPreview();
 }
 
-/* ============================================================
-   CERTIFICATE BUILDER
-   ============================================================ */
+/* PACKAGE ICONS - inline SVG, no emoji */
+function packageIconData(name){
+  var b = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">';
+  var icons = {
+    'Data Management & Sharing': b+'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>',
+    'Word Processing': b+'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>',
+    'Electronic Presentation': b+'<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 8l4 3 3-2 3 2"/></svg>',
+    'Electronic Spreadsheet': b+'<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>',
+    'Web Designing': b+'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+    'Software Management': b+'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+    'ICT Safety & Environment': b+'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>'
+  };
+  return icons[name] || (b+'<circle cx="12" cy="12" r="9"/></svg>');
+}
+function packageIconClass(name){
+  var m = {'Data Management & Sharing':'c1','Word Processing':'c2','Electronic Presentation':'c3','Electronic Spreadsheet':'c4','Web Designing':'c5','Software Management':'c6','ICT Safety & Environment':'c7'};
+  return m[name] || 'c1';
+}
 function packagesFor(cls){
-  const p = [...PACKAGES_BASE];
+  var p = PACKAGES_BASE.slice();
   if(cls === 'S.4') p.push(WEB_DESIGNING);
   return p.concat(PACKAGES_TAIL);
 }
-function periodFor(cls){
-  return cls === 'S.4' ? '2023–2026' : '2024–2026';
-}
+function periodFor(cls){ return cls === 'S.4' ? '2023-2026' : '2024-2026'; }
 
-async function qrDataURL(text){
-  return new Promise((resolve, reject)=>{
+/* QR */
+function qrDataURL(text){
+  return new Promise(function(resolve, reject){
     try{
-      const canvas = document.createElement('canvas');
+      var canvas = document.createElement('canvas');
       QRCode.toCanvas(canvas, text, {
         width: 220, margin: 1, errorCorrectionLevel: 'M',
         color: { dark: '#0b2545', light: '#ffffff' }
-      }, err=>{
+      }, function(err){
         if(err) reject(err);
         else resolve(canvas.toDataURL('image/png'));
       });
     }catch(e){ reject(e); }
   });
 }
-
 function qrTextFor(learner){
-  const period = periodFor(learner.class);
   return [
     settings.school,
     'Certificate No: ' + learner.certNo,
     'Learner: ' + learner.name,
     'Course: ICT',
     'Class: ' + learner.class,
-    'Period: ' + period,
+    'Period: ' + periodFor(learner.class),
     'Date Awarded: ' + todayLong()
   ].join('\n');
 }
 
-async function buildCertificateHTML(learner){
-  const tpl = selectedTemplate;
+/* CERTIFICATE BUILD */
+function buildCertificateHTML(learner){
+  return new Promise(function(resolve){
+    var tpl = selectedTemplate;
+    var logoBlock = settings.logo
+      ? '<div class="cert-logo-box"><img src="'+settings.logo+'" alt="Logo"></div>'
+      : '<div class="cert-logo-box placeholder">RA</div>';
+    var photoBlock = learner.photo
+      ? '<div class="cert-photo-box"><img src="'+learner.photo+'" alt="Photo"></div>'
+      : '<div class="cert-photo-box placeholder"><div class="ico">U</div><div>PHOTO</div></div>';
 
-  // Photo
-  const photo = learner.photo
-    ? `<img class="cert-photo" src="${learner.photo}" alt="">`
-    : `<div class="cert-photo placeholder"><div class="ico">👤</div><div>PHOTO</div></div>`;
+    var hodSig = settings.hodSig ? '<img class="sig-img" src="'+settings.hodSig+'" alt="">' : '<div style="height:50px"></div>';
+    var headSig = settings.headSig ? '<img class="sig-img" src="'+settings.headSig+'" alt="">' : '<div style="height:50px"></div>';
+    var hodName = settings.hod ? '<div class="signame">'+escapeHtml(settings.hod)+'</div>' : '';
+    var headName = settings.head ? '<div class="signame">'+escapeHtml(settings.head)+'</div>' : '';
 
-  // Logo
-  const logo = settings.logo
-    ? `<img class="cert-logo" src="${settings.logo}" alt="">`
-    : `<div class="cert-logo placeholder">RA</div>`;
+    var badgeLabel = settings.badge || 'ICT DEPARTMENT';
+    var badgeTop = badgeLabel.split(' ')[0] || 'ICT';
+    var badgeBottom = badgeLabel.split(' ').slice(1).join(' ') || 'DEPARTMENT';
+    var centerSlot = settings.stamp
+      ? '<div class="center-slot"><img class="stamp-img" src="'+settings.stamp+'" alt="Stamp"></div>'
+      : '<div class="center-slot"><div class="badge-c">'+escapeHtml(badgeTop)+'<small>'+escapeHtml(badgeBottom)+'</small></div></div>';
 
-  // Signatures
-  const hodSig  = settings.hodSig  ? `<img class="sig-img" src="${settings.hodSig}" alt="">`  : `<div style="height:44px"></div>`;
-  const headSig = settings.headSig ? `<img class="sig-img" src="${settings.headSig}" alt="">` : `<div style="height:44px"></div>`;
-  const stamp   = settings.stamp   ? `<img class="cert-stamp" src="${settings.stamp}" alt="">` : '';
+    var pkgs = packagesFor(learner.class);
+    var roman = ['i','ii','iii','iv','v','vi','vii','viii','ix','x'];
+    var packageHTML = pkgs.map(function(p, i){
+      return '<div class="package-item"><div class="pkg-icon '+packageIconClass(p)+'">'+packageIconData(p)+'</div>'+
+        '<div class="pkg-text"><span class="pkg-num">'+roman[i]+'.</span> '+escapeHtml(p)+'</div></div>';
+    }).join('');
 
-  // QR code as data URL (reliable with html2canvas)
-  let qrImg = '';
-  try{
-    const url = await qrDataURL(qrTextFor(learner));
-    qrImg = `<div class="qr-slot"><img src="${url}" alt="QR"></div>`;
-  }catch(e){
-    qrImg = '';
-  }
+    var paperOpen = tpl === 1
+      ? '<div class="cert-green"></div><div class="cert-paper"><div class="corner-tri tl"></div><div class="corner-tri br"></div>'
+      : '<div class="cert-inner">';
 
-  // Packages
-  const pkgs = packagesFor(learner.class).map(x=>`<span>${escapeHtml(x)}</span>`).join('');
-
-  const period = periodFor(learner.class);
-
-  // Template-specific decorations
-  const corners = tpl === 1
-    ? `<div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>`
-    : '';
-  const watermark = `<div class="cert-watermark">RAS</div>`;
-
-  const hodName  = settings.hod ? `<div class="signame">${escapeHtml(settings.hod)}</div>` : '';
-  const headName = settings.head ? `<div class="signame">${escapeHtml(settings.head)}</div>` : '';
-
-  return `
-    <div class="certificate tpl${tpl}">
-      ${watermark}
-      <div class="cert-inner">
-        ${logo}
-        ${photo}
-        ${corners}
-        <div class="cert-school">${escapeHtml(settings.school)}</div>
-        <div class="cert-address">${escapeHtml(settings.address)} &nbsp;•&nbsp; Tel: ${escapeHtml(settings.tel)}</div>
-
-        <div style="height:22px"></div>
-
-        <div class="cert-title">${escapeHtml(settings.title)}</div>
-        <div class="cert-subtitle">ICT Course — ${learner.class} &nbsp;•&nbsp; ${period}</div>
-
-        <div class="cert-lead">This is to certify that</div>
-        <div class="cert-name">${escapeHtml(learner.name)}</div>
-
-        <div class="cert-body">
-          has successfully completed the prescribed <b>ICT Course</b> for <b>${learner.class}</b>
-          during the period <b>${period}</b> and has demonstrated satisfactory participation
-          in the following ICT course packages.
-        </div>
-
-        <div class="package-title">ICT Course Packages</div>
-        <div class="package-list">${pkgs}</div>
-
-        <div class="cert-meta">
-          Certificate No.: <b>${escapeHtml(learner.certNo)}</b>
-          &nbsp;•&nbsp; Date of Award: <b>${todayLong()}</b>
-          ${learner.index ? `&nbsp;•&nbsp; Admission/Index: <b>${escapeHtml(learner.index)}</b>` : ''}
-        </div>
-
-        ${qrImg}
-        ${stamp}
-
-        <div class="cert-footer">
-          <div class="sig">
-            ${hodSig}
-            <div class="sigline">HOD ICT</div>
-            ${hodName}
-          </div>
-          <div class="sig">
-            ${headSig}
-            <div class="sigline">HEAD TEACHER</div>
-            ${headName}
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
+    // Render certificate with QR placeholder first, then fill QR as data URL
+    function finish(qrImg){
+      resolve(
+        '<div class="certificate tpl'+tpl+'">'+paperOpen+
+        '<div class="cert-top-row">'+logoBlock+'<div class="cert-head-center"></div>'+photoBlock+'</div>'+
+        '<div class="cert-school-name">'+escapeHtml(settings.school)+'</div>'+
+        '<div class="cert-address">'+escapeHtml(settings.address)+' &nbsp;&bull;&nbsp; Tel: '+escapeHtml(settings.tel)+'</div>'+
+        '<div class="cert-motto">"'+escapeHtml(settings.motto || 'Victory is Our Challenge')+'"</div>'+
+        '<div style="height:8px"></div>'+
+        '<div class="cert-title">'+escapeHtml(settings.title)+'</div>'+
+        '<div class="cert-lead">This is to certify that</div>'+
+        '<div class="cert-name">'+escapeHtml(learner.name)+'</div>'+
+        '<div class="cert-body">Has successfully completed a four year competence based training in <b>ICT</b> for <b>'+learner.class+'</b> and has demonstrated satisfactory participation in the following competence areas.</div>'+
+        '<div class="competences-head">Competences achieved:-</div>'+
+        '<div class="package-grid">'+packageHTML+'</div>'+
+        '<div class="cert-footer">'+
+          '<div class="sig">'+hodSig+'<div class="sigline">HOD ICT</div>'+hodName+'</div>'+
+          centerSlot+
+          '<div class="sig">'+headSig+'<div class="sigline">HEAD TEACHER</div>'+headName+'</div>'+
+        '</div>'+qrImg+
+        '</div></div>'
+      );
+    }
+    qrDataURL(qrTextFor(learner)).then(function(url){
+      finish('<div class="qr-slot"><img src="'+url+'" alt="QR"></div>');
+    }).catch(function(){ finish(''); });
+  });
 }
 
-/* ============================================================
-   PREVIEW
-   ============================================================ */
-const previewDebounced = debounce(()=>renderPreview(), 180);
-
-async function renderTemplatePreview(){
-  const demo = learners[0] || {
-    id:'demo', name:'SAMPLE LEARNER', class:'S.4', index:'001', photo:'', certNo:'RA/ICT/S4/2026/001'
-  };
-  const target = $('templatePreview');
-  if(!target) return;
-  target.innerHTML = '<div style="text-align:center;padding:40px;color:#64748b">Rendering preview…</div>';
-  try{
-    const html = await buildCertificateHTML(demo);
-    target.innerHTML = `<div class="cert-print-wrap">${html}</div>`;
-  }catch(e){
+/* PREVIEW */
+function renderTemplatePreview(){
+  var demo = learners[0] || { id:'demo', name:'ABOTH ALICE SHALOM', class:'S.4', index:'U1896/015', photo:'', certNo:'RA/ICT/S4/2026/001' };
+  var target = $('templatePreview'); if(!target) return;
+  target.innerHTML = '<div style="text-align:center;padding:40px;color:#64748b">Rendering preview...</div>';
+  buildCertificateHTML(demo).then(function(html){
+    target.innerHTML = '<div class="cert-print-wrap">'+html+'</div>';
+  }).catch(function(e){
     console.error(e);
     target.innerHTML = '<div class="notice red">Could not render preview.</div>';
-  }
+  });
 }
-
-async function renderPreview(){
-  const sel = $('previewLearner');
-  const id = sel?.value;
-  const learner = learners.find(x=>x.id===id) || learners[0];
-  const target = $('certificatePreview');
-  if(!target) return;
-
+function renderPreview(){
+  var sel = $('previewLearner');
+  var id = sel ? sel.value : null;
+  var learner = learners.find(function(x){ return x.id===id; }) || learners[0];
+  var target = $('certificatePreview'); if(!target) return;
   if(!learner){
-    target.innerHTML = `<div class="empty"><div class="big">🎓</div><b>No learners to preview</b><p>Add or import learners first.</p></div>`;
+    target.innerHTML = '<div class="empty"><div class="big">--</div><b>No learners to preview</b><p>Add or import learners first.</p></div>';
     return;
   }
-  target.innerHTML = '<div style="text-align:center;padding:40px;color:#64748b">Rendering preview…</div>';
-  try{
-    const html = await buildCertificateHTML(learner);
-    target.innerHTML = `<div class="cert-print-wrap">${html}</div>`;
-  }catch(e){
+  target.innerHTML = '<div style="text-align:center;padding:40px;color:#64748b">Rendering preview...</div>';
+  buildCertificateHTML(learner).then(function(html){
+    target.innerHTML = '<div class="cert-print-wrap">'+html+'</div>';
+  }).catch(function(e){
     console.error(e);
     target.innerHTML = '<div class="notice red">Could not render preview.</div>';
-  }
+  });
 }
-
 function renderGeneratePage(){
-  const sel = $('previewLearner');
-  if(!sel) return;
-
+  var sel = $('previewLearner'); if(!sel) return;
   if(!learners.length){
     sel.innerHTML = '<option value="">No learners registered</option>';
   }else{
-    sel.innerHTML = learners.map(l =>
-      `<option value="${l.id}">${escapeHtml(l.name)} — ${l.class} — ${escapeHtml(l.certNo)}</option>`
-    ).join('');
+    sel.innerHTML = learners.map(function(l){
+      return '<option value="'+l.id+'">'+escapeHtml(l.name)+' - '+l.class+' - '+escapeHtml(l.certNo)+'</option>';
+    }).join('');
     sel.value = learners[0].id;
   }
-  refreshStats();
-  renderPreview();
+  refreshStats(); renderPreview();
 }
 
-/* ============================================================
-   RENDER-TO-CANVAS (off-screen helper)
-   ============================================================ */
-async function renderCertificateToCanvas(learner){
-  const holder = document.createElement('div');
-  holder.style.cssText = 'position:fixed;left:-20000px;top:0;width:1123px;background:#fff;';
-  holder.innerHTML = await buildCertificateHTML(learner);
-  document.body.appendChild(holder);
-
-  // Allow images to load (qr, logo, photos)
-  await new Promise(r=>setTimeout(r, 260));
-
-  const target = holder.querySelector('.certificate');
-  const canvas = await html2canvas(target, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: '#ffffff',
-    logging: false,
-    width: 1123,
-    height: 794
-  });
-
-  holder.remove();
-  return canvas;
-}
-
-/* ============================================================
-   PDF / ZIP GENERATION
-   ============================================================ */
-async function generateSelectedPDF(){
-  const id = $('previewLearner').value;
-  const learner = learners.find(x=>x.id===id);
-  if(!learner){ toast('warn','No learner','Please add learners first.'); return; }
-
-  showProgress('Generating certificate','Rendering ' + learner.name + '…');
-  updateProgress(0,1);
-
-  try{
-    const canvas = await renderCertificateToCanvas(learner);
-    updateProgress(1,1);
-
-    const {jsPDF} = window.jspdf;
-    const pdf = new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
-    const img = canvas.toDataURL('image/jpeg', 0.95);
-    pdf.addImage(img, 'JPEG', 0, 0, 297, 210);
-    pdf.save(`${safe(learner.name)}_${learner.class}_ICT_Certificate.pdf`);
-
-    generatedCount++;
-    save(LS.generated, generatedCount);
-    refreshStats();
-
-    hideProgress();
-    toast('success','Certificate generated', `${learner.name} — PDF downloaded.`);
-  }catch(e){
-    console.error(e);
-    hideProgress();
-    toast('error','Generation failed','Could not generate the certificate. Please try again.');
-  }
-}
-
-async function generateAllPDF(){
-  if(!learners.length) return toast('warn','No learners','Add or import learners first.');
-
-  showProgress('Generating all certificates', `Preparing ${learners.length} certificates…`);
-  updateProgress(0, learners.length);
-
-  const {jsPDF} = window.jspdf;
-  const pdf = new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
-
-  let ok = 0, failed = 0;
-  for(let i=0; i<learners.length; i++){
-    try{
-      const canvas = await renderCertificateToCanvas(learners[i]);
-      if(i > 0) pdf.addPage();
-      const img = canvas.toDataURL('image/jpeg', 0.93);
-      pdf.addImage(img, 'JPEG', 0, 0, 297, 210);
-      ok++;
-    }catch(e){
-      console.error('Failed for', learners[i].name, e);
-      failed++;
-    }
-    updateProgress(i+1, learners.length);
-  }
-
-  try{
-    pdf.save(`Rubongi_ICT_Certificates_${todayISO()}.pdf`);
-    generatedCount += ok;
-    save(LS.generated, generatedCount);
-    refreshStats();
-    hideProgress();
-    toast('success','Batch complete',
-      `${ok} certificate(s) generated in one PDF${failed? `, ${failed} failed.` : '.'}`);
-  }catch(e){
-    hideProgress();
-    toast('error','Save failed','Could not save the PDF.');
-  }
-}
-
-async function generateAllZIP(){
-  if(!learners.length) return toast('warn','No learners','Add or import learners first.');
-
-  showProgress('Generating individual PDFs', `Packaging ${learners.length} certificates…`);
-  updateProgress(0, learners.length);
-
-  const {jsPDF} = window.jspdf;
-  const zip = new JSZip();
-  let ok = 0, failed = 0;
-
-  for(let i=0; i<learners.length; i++){
-    const l = learners[i];
-    try{
-      const canvas = await renderCertificateToCanvas(l);
-      const pdf = new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
-      pdf.addImage(canvas.toDataURL('image/jpeg', 0.93), 'JPEG', 0, 0, 297, 210);
-      const blob = pdf.output('blob');
-      const idx = String(i+1).padStart(3,'0');
-      zip.file(`${idx}_${safe(l.name)}_${l.class}.pdf`, blob);
-      ok++;
-    }catch(e){
-      console.error('ZIP fail for', l.name, e);
-      failed++;
-    }
-    updateProgress(i+1, learners.length);
-  }
-
-  try{
-    const zipBlob = await zip.generateAsync({type:'blob'}, meta => {
-      // optional
+/* RENDER TO CANVAS */
+function renderCertificateToCanvas(learner){
+  return buildCertificateHTML(learner).then(function(html){
+    var holder = document.createElement('div');
+    holder.style.cssText = 'position:fixed;left:-20000px;top:0;width:1123px;background:#fff;';
+    holder.innerHTML = html;
+    document.body.appendChild(holder);
+    return new Promise(function(resolve){
+      setTimeout(function(){
+        var target = holder.querySelector('.certificate');
+        html2canvas(target, { scale:2, useCORS:true, backgroundColor:'#ffffff', logging:false, width:1123, height:794 })
+        .then(function(canvas){ holder.remove(); resolve(canvas); })
+        .catch(function(e){ holder.remove(); throw e; });
+      }, 260);
     });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(zipBlob);
-    a.download = `Rubongi_ICT_Certificates_${todayISO()}.zip`;
-    a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
-
-    generatedCount += ok;
-    save(LS.generated, generatedCount);
-    refreshStats();
-    hideProgress();
-    toast('success','ZIP ready', `${ok} PDF(s) packaged${failed? `, ${failed} failed.` : '.'}`);
-  }catch(e){
-    hideProgress();
-    toast('error','ZIP failed','Could not create the ZIP file.');
-  }
+  });
 }
 
-/* ============================================================
-   PRINT (A4 LANDSCAPE)
-   ============================================================ */
-async function printAll(){
+/* PDF / ZIP */
+function generateSelectedPDF(){
+  var id = $('previewLearner').value;
+  var learner = learners.find(function(x){ return x.id===id; });
+  if(!learner){ toast('warn','No learner','Please add learners first.'); return; }
+  showProgress('Generating certificate','Rendering ' + learner.name + '...');
+  updateProgress(0,1);
+  renderCertificateToCanvas(learner).then(function(canvas){
+    updateProgress(1,1);
+    var jsPDF = window.jspdf.jsPDF;
+    var pdf = new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 297, 210);
+    pdf.save(safe(learner.name)+'_'+learner.class+'_ICT_Certificate.pdf');
+    generatedCount++; save(LS.generated, generatedCount); refreshStats();
+    hideProgress();
+    toast('success','Certificate generated', learner.name + ' - PDF downloaded.');
+  }).catch(function(e){ console.error(e); hideProgress(); toast('error','Generation failed','Could not generate the certificate.'); });
+}
+function generateAllPDF(){
   if(!learners.length) return toast('warn','No learners','Add or import learners first.');
-
-  showProgress('Preparing print', `Rendering ${learners.length} certificate(s)…`);
+  showProgress('Generating all certificates','Preparing ' + learners.length + ' certificates...');
   updateProgress(0, learners.length);
+  var jsPDF = window.jspdf.jsPDF;
+  var pdf = new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
+  var ok = 0, failed = 0, i = 0;
+  function step(){
+    if(i >= learners.length) return done();
+    renderCertificateToCanvas(learners[i]).then(function(canvas){
+      if(i > 0) pdf.addPage();
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.93), 'JPEG', 0, 0, 297, 210);
+      ok++;
+    }).catch(function(e){ console.error('Failed for', learners[i].name, e); failed++; })
+    .then(function(){
+      i++; updateProgress(i, learners.length);
+      setTimeout(step, 30);
+    });
+  }
+  function done(){
+    try{
+      pdf.save('Rubongi_ICT_Certificates_' + todayISO() + '.pdf');
+      generatedCount += ok; save(LS.generated, generatedCount); refreshStats();
+      hideProgress();
+      toast('success','Batch complete', ok + ' certificate(s) generated' + (failed ? ', ' + failed + ' failed.' : '.'));
+    }catch(e){ hideProgress(); toast('error','Save failed','Could not save the PDF.'); }
+  }
+  step();
+}
+function generateAllZIP(){
+  if(!learners.length) return toast('warn','No learners','Add or import learners first.');
+  showProgress('Generating individual PDFs','Packaging ' + learners.length + ' certificates...');
+  updateProgress(0, learners.length);
+  var jsPDF = window.jspdf.jsPDF;
+  var zip = new JSZip();
+  var ok = 0, failed = 0, i = 0;
+  function step(){
+    if(i >= learners.length) return done();
+    var l = learners[i];
+    renderCertificateToCanvas(l).then(function(canvas){
+      var pdf = new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.93), 'JPEG', 0, 0, 297, 210);
+      var blob = pdf.output('blob');
+      var idx = String(i+1).padStart(3,'0');
+      zip.file(idx + '_' + safe(l.name) + '_' + l.class + '.pdf', blob);
+      ok++;
+    }).catch(function(e){ console.error('ZIP fail', l.name, e); failed++; })
+    .then(function(){
+      i++; updateProgress(i, learners.length);
+      setTimeout(step, 30);
+    });
+  }
+  function done(){
+    zip.generateAsync({type:'blob'}).then(function(zipBlob){
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(zipBlob);
+      a.download = 'Rubongi_ICT_Certificates_' + todayISO() + '.zip';
+      a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+      generatedCount += ok; save(LS.generated, generatedCount); refreshStats();
+      hideProgress();
+      toast('success','ZIP ready', ok + ' PDF(s) packaged' + (failed ? ', ' + failed + ' failed.' : '.'));
+    }).catch(function(){ hideProgress(); toast('error','ZIP failed','Could not create the ZIP file.'); });
+  }
+  step();
+}
 
-  const printArea = $('printArea');
+/* PRINT */
+function printAll(){
+  if(!learners.length) return toast('warn','No learners','Add or import learners first.');
+  showProgress('Preparing print','Rendering ' + learners.length + ' certificate(s)...');
+  updateProgress(0, learners.length);
+  var printArea = $('printArea');
   printArea.innerHTML = '';
   printArea.style.display = 'block';
-
-  for(let i=0; i<learners.length; i++){
-    const html = await buildCertificateHTML(learners[i]);
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = html;
-    printArea.appendChild(wrapper.firstElementChild);
-    updateProgress(i+1, learners.length);
+  var i = 0;
+  function step(){
+    if(i >= learners.length) return done();
+    buildCertificateHTML(learners[i]).then(function(html){
+      var wrapper = document.createElement('div');
+      wrapper.innerHTML = html;
+      printArea.appendChild(wrapper.firstElementChild);
+      i++; updateProgress(i, learners.length);
+      setTimeout(step, 30);
+    }).catch(function(){ i++; updateProgress(i, learners.length); setTimeout(step, 30); });
   }
-
-  hideProgress();
-
-  // Give browser a moment to layout images
-  setTimeout(()=>{
-    window.print();
-    setTimeout(()=>{ printArea.style.display = 'none'; printArea.innerHTML = ''; }, 500);
-  }, 350);
+  function done(){
+    hideProgress();
+    setTimeout(function(){
+      window.print();
+      setTimeout(function(){ printArea.style.display='none'; printArea.innerHTML=''; }, 500);
+    }, 350);
+  }
+  step();
 }
 
-/* ============================================================
-   BACKUP / RESTORE
-   ============================================================ */
+/* BACKUP */
 function updateStorageStatus(){
-  const el = $('storageStatus');
-  if(!el) return;
-  let usedKB = 0;
-  try{
-    for(const k in localStorage){
-      if(localStorage.hasOwnProperty(k)) usedKB += (localStorage[k] || '').length / 1024;
-    }
-  }catch(e){}
-  const limit = 5120; // approx 5 MB
-  const pct = Math.min(100, (usedKB/limit)*100);
+  var el = $('storageStatus'); if(!el) return;
+  var usedKB = 0;
+  try{ for(var k in localStorage){ if(localStorage.hasOwnProperty(k)) usedKB += (localStorage[k] || '').length / 1024; } }catch(e){}
+  var limit = 5120;
+  var pct = Math.min(100, (usedKB/limit)*100);
   el.className = 'notice ' + (pct > 80 ? 'red' : pct > 60 ? '' : 'green');
-  el.innerHTML = `<b>Storage used:</b> ${usedKB.toFixed(1)} KB of ~5120 KB (${pct.toFixed(1)}%)
-    <br><b>Learners:</b> ${learners.length} &nbsp; <b>Generated (session total):</b> ${generatedCount}
-    ${pct > 80 ? '<br>⚠ Browser storage is running low. Export your data and clear older items.' : ''}`;
+  el.innerHTML = '<b>Storage used:</b> ' + usedKB.toFixed(1) + ' KB of ~5120 KB (' + pct.toFixed(1) + '%)' +
+    '<br><b>Learners:</b> ' + learners.length + ' &nbsp; <b>Generated:</b> ' + generatedCount +
+    (pct > 80 ? '<br>Browser storage is running low. Export your data.' : '');
 }
-
 function exportData(){
   try{
-    const payload = {
-      app: "Rubongi Army SS — ICT Certificate Management System",
-      exportedAt: new Date().toISOString(),
-      version: 2,
-      settings, learners, selectedTemplate, generatedCount, certCounter
+    var payload = {
+      app: "Rubongi Army SS - ICT Certificate Management System",
+      exportedAt: new Date().toISOString(), version: 3,
+      settings: settings, learners: learners, selectedTemplate: selectedTemplate,
+      generatedCount: generatedCount, certCounter: certCounter
     };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-    const a = document.createElement('a');
+    var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `Rubongi_ICT_Backup_${todayISO()}.json`;
+    a.download = 'Rubongi_ICT_Backup_' + todayISO() + '.json';
     a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
     toast('success','Backup exported','Your JSON backup has been downloaded.');
-  }catch(e){
-    toast('error','Export failed','Could not create the backup file.');
-  }
+  }catch(e){ toast('error','Export failed','Could not create the backup file.'); }
 }
-
 function importData(){
-  const f = $('importFile').files[0];
+  var f = $('importFile').files[0];
   if(!f) return toast('warn','No file','Please select a JSON backup file first.');
-
-  const r = new FileReader();
-  r.onload = ev => {
+  var r = new FileReader();
+  r.onload = function(ev){
     try{
-      const data = JSON.parse(ev.target.result);
+      var data = JSON.parse(ev.target.result);
       if(!data || typeof data !== 'object') throw new Error('bad');
-
-      confirmDialog('Import & replace data?',
-        'This will replace ALL current learners, settings and uploads with the contents of this backup. Continue?',
-        ()=>{
-          if(data.settings) settings = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), data.settings);
-          if(Array.isArray(data.learners)) learners = data.learners;
-          if(data.selectedTemplate) selectedTemplate = Number(data.selectedTemplate);
-          if(typeof data.generatedCount === 'number') generatedCount = data.generatedCount;
-          if(data.certCounter && typeof data.certCounter === 'object') certCounter = data.certCounter;
-
-          save(LS.settings, settings);
-          save(LS.learners, learners);
-          save(LS.generated, generatedCount);
-          save(LS.counter, certCounter);
-          localStorage.setItem(LS.template, selectedTemplate);
-
-          loadSettingsForm();
-          refreshBranding();
-          refreshStats();
-          renderLearners();
-          selectTemplate(selectedTemplate);
-          renderGeneratePage();
-          updateStorageStatus();
-          $('importFile').value = '';
-          toast('success','Data restored', `${learners.length} learner(s) loaded from backup.`);
-        },
-        'Import & Replace', true);
-    }catch(e){
-      console.error(e);
-      toast('error','Invalid backup','This file is not a valid Rubongi system backup.');
-    }
+      confirmDialog('Import & replace data?', 'This will replace ALL current learners, settings and uploads with the contents of this backup. Continue?', function(){
+        if(data.settings) settings = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), data.settings);
+        if(Array.isArray(data.learners)) learners = data.learners;
+        if(data.selectedTemplate) selectedTemplate = Number(data.selectedTemplate);
+        if(typeof data.generatedCount === 'number') generatedCount = data.generatedCount;
+        if(data.certCounter && typeof data.certCounter === 'object') certCounter = data.certCounter;
+        save(LS.settings, settings); save(LS.learners, learners);
+        save(LS.generated, generatedCount); save(LS.counter, certCounter);
+        localStorage.setItem(LS.template, selectedTemplate);
+        loadSettingsForm(); refreshBranding(); refreshStats();
+        renderLearners(); selectTemplate(selectedTemplate);
+        renderGeneratePage(); updateStorageStatus();
+        $('importFile').value = '';
+        toast('success','Data restored', learners.length + ' learner(s) loaded from backup.');
+      }, 'Import & Replace', true);
+    }catch(e){ console.error(e); toast('error','Invalid backup','This file is not a valid Rubongi system backup.'); }
   };
   r.readAsText(f);
 }
-
 function factoryReset(){
-  confirmDialog('Factory reset?',
-    'This will permanently delete ALL learners, settings, uploads and certificate numbers from this browser. Make sure you have exported a backup first.',
-    ()=>{
-      Object.values(LS).forEach(k => localStorage.removeItem(k));
-      sessionStorage.removeItem('rubongiLoggedIn');
-      toast('success','System reset','The application will now reload.');
-      setTimeout(()=>location.reload(), 900);
-    }, 'Erase Everything', true);
+  confirmDialog('Factory reset?', 'This will permanently delete ALL learners, settings, uploads and certificate numbers from this browser. Make sure you have exported a backup first.', function(){
+    Object.keys(LS).forEach(function(k){ localStorage.removeItem(LS[k]); });
+    sessionStorage.removeItem('rubongiLoggedIn');
+    toast('success','System reset','The application will now reload.');
+    setTimeout(function(){ location.reload(); }, 900);
+  }, 'Erase Everything', true);
 }
 
-/* ============================================================
-   BOOTSTRAP
-   ============================================================ */
+/* BOOTSTRAP */
 (function boot(){
-  // If a logo was previously saved, show on login crest
-  if(settings.logo){
-    $('loginCrest').innerHTML = `<img src="${settings.logo}" alt="">`;
-  }
-
-  // Auto-login if session exists
-  if(sessionStorage.getItem('rubongiLoggedIn') === '1'){
-    enterApp();
-  }else{
-    setTimeout(()=>$('loginUser')?.focus(), 300);
-  }
-
-  // Pre-warm QR
+  if(settings.logo) $('loginCrest').innerHTML = '<img src="'+settings.logo+'" alt="">';
+  if(sessionStorage.getItem('rubongiLoggedIn') === '1') enterApp();
+  else setTimeout(function(){ var el = $('loginUser'); if(el) el.focus(); }, 300);
   try{ qrDataURL('warmup'); }catch(e){}
 })();
 </script>
