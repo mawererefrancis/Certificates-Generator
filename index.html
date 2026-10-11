@@ -231,20 +231,20 @@ tbody tr:hover{background:#fafcfe}
 .cert-title-block .cert-title{margin:0 0 4px}
 
 /* ============================================================
-   SCHOOL STAMP OVERLAY - small, higher, ink-coloured
+   SCHOOL STAMP OVERLAY - compact, higher, thick and bold
    ============================================================ */
 .cert-stamp-overlay{
   position:absolute;
-  right:60px;
-  bottom:118px;
-  width:215px;
+  right:55px;
+  bottom:112px;
+  width:225px;
   pointer-events:none;
   z-index:7;
-  opacity:.95;
+  opacity:1;
   transform:rotate(-9deg);
   transform-origin:bottom right;
   mix-blend-mode:multiply;
-  filter:drop-shadow(0 1px 1px rgba(28,63,140,.18));
+  filter:drop-shadow(0 1px 1px rgba(28,63,140,.22));
 }
 .cert-stamp-overlay svg{width:100%;height:auto;display:block}
 
@@ -751,12 +751,12 @@ tbody tr:hover{background:#fafcfe}
 
 <script>
 var LS = {
-  settings:'rubongiSettings_v10',
-  learners:'rubongiLearners_v10',
-  template:'rubongiTemplate_v10',
-  generated:'rubongiGenerated_v10',
-  counter:'rubongiCounter_v10',
-  auth:'rubongiAuth_v10'
+  settings:'rubongiSettings_v11',
+  learners:'rubongiLearners_v11',
+  template:'rubongiTemplate_v11',
+  generated:'rubongiGenerated_v11',
+  counter:'rubongiCounter_v11',
+  auth:'rubongiAuth_v11'
 };
 
 var DEFAULTS = {
@@ -811,14 +811,13 @@ function todayLong(){ return new Date().toLocaleDateString("en-GB",{day:"numeric
 function todayISO(){ return new Date().toISOString().slice(0,10); }
 function uid(){ return 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
-/* Format the stamp date like the sample: 05 JUN 2026 */
+/* Short date for the stamp: 05/06/26 */
 function stampDateString(){
   var d = STAMP_DATE;
   var day = String(d.getDate()).padStart(2,'0');
-  var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  var mon = months[d.getMonth()];
-  var yr = d.getFullYear();
-  return day + ' ' + mon + ' ' + yr;
+  var mon = String(d.getMonth()+1).padStart(2,'0');
+  var yr  = String(d.getFullYear()).slice(-2);
+  return day + '/' + mon + '/' + yr;
 }
 
 function compressImage(file, maxW, maxH, quality){
@@ -1324,60 +1323,63 @@ function qrTextFor(learner){
 /* ============================================================
    SCHOOL STAMP SVG
    Layout:
-     Top row: RUBONGI ARMY SECONDARY / SCHOOL
-     Middle: logo (left)  |  DATE (red)  |  star (right)
-             HEADTEACHER (label only, no name)
+     Top:    RUBONGI ARMY SECONDARY / SCHOOL (very bold)
+     Middle: big logo (left) | short date DD/MM/YY (red, smaller width)
+     HEADTEACHER label
+     Star (right)
      Bottom: P.O. BOX 698, TORORO
-   Rendered as inline SVG so html2canvas can rasterize it.
+   All strokes, text and icons are thick and high contrast so the
+   stamp reads clearly at small size in PDF and print output.
    ============================================================ */
 function buildStampSVG(){
   var logo = settings.logo || '';
   var dateStr = stampDateString();
 
+  /* Logo is enlarged and backed by a white circle so it stands out on any paper */
   var logoBlock = logo
-    ? '<image href="'+logo+'" xlink:href="'+logo+'" x="30" y="115" width="110" height="110" preserveAspectRatio="xMidYMid meet"/>'
-    : '<g transform="translate(30,115)"><circle cx="55" cy="55" r="52" fill="none" stroke="#1c3f8c" stroke-width="5"/><text x="55" y="63" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="900" fill="#1c3f8c" text-anchor="middle">RA</text></g>';
+    ? '<circle cx="120" cy="176" r="76" fill="#ffffff" stroke="#1c3f8c" stroke-width="5"/>'
+      + '<image href="'+logo+'" xlink:href="'+logo+'" x="58" y="114" width="124" height="124" preserveAspectRatio="xMidYMid meet"/>'
+    : '<circle cx="120" cy="176" r="76" fill="#ffffff" stroke="#1c3f8c" stroke-width="5"/>'
+      + '<text x="120" y="196" font-family="Arial,Helvetica,sans-serif" font-size="52" font-weight="900" fill="#1c3f8c" text-anchor="middle" letter-spacing="2">RA</text>';
 
   return ''
-  + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 320" xmlns:xlink="http://www.w3.org/1999/xlink">'
+  + '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 340" xmlns:xlink="http://www.w3.org/1999/xlink">'
   +   '<defs>'
   +     '<style>'
-  +       '.st-line{fill:none;stroke:#1c3f8c;stroke-width:4}'
-  +       '.st-line2{fill:none;stroke:#1c3f8c;stroke-width:3.5}'
-  +       '.st-top{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#1c3f8c;letter-spacing:1.5px}'
-  +       '.st-date{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#e02020;letter-spacing:2px}'
-  +       '.st-addr{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#1c3f8c;letter-spacing:2.5px}'
-  +       '.st-head{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#1c3f8c;letter-spacing:4px}'
+  +       '.st-top{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#1c3f8c;letter-spacing:2px}'
+  +       '.st-date{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#e02020;letter-spacing:1px}'
+  +       '.st-addr{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#1c3f8c;letter-spacing:3px}'
+  +       '.st-head{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#1c3f8c;letter-spacing:5px}'
   +     '</style>'
   +   '</defs>'
 
-  /* Outer tilted rounded rectangle with a double border */
-  +   '<g transform="rotate(-3 330 160)">'
-  +     '<rect x="12" y="14" width="636" height="292" rx="10" ry="10" fill="none" stroke="#1c3f8c" stroke-width="7"/>'
-  +     '<rect x="24" y="26" width="612" height="268" rx="6" ry="6" fill="none" stroke="#1c3f8c" stroke-width="3.5"/>'
+  /* Outer tilted rounded rectangle with THICK double border */
+  +   '<g transform="rotate(-3 330 170)">'
+  +     '<rect x="10" y="12" width="640" height="316" rx="12" ry="12" fill="none" stroke="#1c3f8c" stroke-width="10"/>'
+  +     '<rect x="26" y="28" width="608" height="284" rx="6" ry="6" fill="none" stroke="#1c3f8c" stroke-width="4"/>'
 
-  /* Top text - school name on two lines */
-  +     '<text x="330" y="72" font-size="30" text-anchor="middle" class="st-top">RUBONGI ARMY SECONDARY</text>'
-  +     '<text x="330" y="104" font-size="30" text-anchor="middle" class="st-top">SCHOOL</text>'
+  /* School name - two lines, very bold */
+  +     '<text x="330" y="72" font-size="34" text-anchor="middle" class="st-top">RUBONGI ARMY SECONDARY</text>'
+  +     '<text x="330" y="108" font-size="34" text-anchor="middle" class="st-top">SCHOOL</text>'
 
   /* Divider under the title */
-  +     '<line x1="90" y1="118" x2="570" y2="118" class="st-line2"/>'
+  +     '<line x1="80" y1="122" x2="580" y2="122" stroke="#1c3f8c" stroke-width="4"/>'
 
-  /* Middle row: logo | date | star */
+  /* Middle row: large logo with white circle | date (short) | star */
   +     logoBlock
-  +     '<text x="330" y="192" font-size="52" text-anchor="middle" class="st-date">'+escapeHtml(dateStr)+'</text>'
-  +     '<text x="330" y="228" font-size="22" text-anchor="middle" class="st-head">HEADTEACHER</text>'
+  +     '<text x="345" y="200" font-size="46" text-anchor="middle" class="st-date">'+escapeHtml(dateStr)+'</text>'
+  +     '<text x="345" y="242" font-size="22" text-anchor="middle" class="st-head">HEADTEACHER</text>'
 
-  /* Bigger star on the right */
-  +     '<g transform="translate(560,162)">'
-  +       '<polygon points="0,-30 7,-9 30,-9 11,5 18,26 0,12 -18,26 -11,5 -30,-9 -7,-9" fill="#1c3f8c"/>'
+  /* Big bold star on the right */
+  +     '<g transform="translate(568,180)">'
+  +       '<polygon points="0,-34 8,-10 34,-10 12,6 20,30 0,14 -20,30 -12,6 -34,-10 -8,-10" fill="#1c3f8c"/>'
   +     '</g>'
 
   /* Divider above the address */
-  +     '<line x1="90" y1="248" x2="570" y2="248" class="st-line2"/>'
+  +     '<line x1="80" y1="272" x2="580" y2="272" stroke="#1c3f8c" stroke-width="4"/>'
 
-  /* Bottom address */
-  +     '<text x="330" y="284" font-size="22" text-anchor="middle" class="st-addr">P.O. BOX 698, TORORO</text>'
+  /* Bottom address - very bold */
+  +     '<text x="330" y="308" font-size="24" text-anchor="middle" class="st-addr">P.O. BOX 698, TORORO</text>'
   +   '</g>'
   + '</svg>';
 }
@@ -1727,7 +1729,7 @@ function exportData(){
   try{
     var payload = {
       app: "Rubongi Army SS - ICT Certificate Management System",
-      exportedAt: new Date().toISOString(), version: 10,
+      exportedAt: new Date().toISOString(), version: 11,
       settings: settings, learners: learners, selectedTemplate: selectedTemplate,
       generatedCount: generatedCount, certCounter: certCounter
     };
