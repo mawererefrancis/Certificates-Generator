@@ -32,8 +32,7 @@ img{max-width:100%;display:block}
 .toast .tbody b{display:block;font-size:12.5px;color:var(--navy);margin-bottom:2px}
 
 #modalBackdrop{position:fixed;inset:0;background:rgba(11,37,69,.55);backdrop-filter:blur(3px);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px}
-#modalBackdrop.show{display:flex;animation:fade .2s}
-@keyframes fade{from{opacity:0}to{opacity:1}}
+#modalBackdrop.show{display:flex}
 .modal{background:#fff;border-radius:16px;width:min(560px,100%);max-height:90vh;overflow:auto;box-shadow:0 22px 60px rgba(15,23,42,.2)}
 .modal-head{padding:18px 22px;border-bottom:1px solid var(--line2);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;border-radius:16px 16px 0 0}
 .modal-head h3{margin:0;color:var(--navy);font-size:16px;font-weight:800}
@@ -148,9 +147,10 @@ tbody tr:hover{background:#fafcfe}
 .badge.s6{background:#fdf2e0;color:#9a721c}
 .empty{padding:46px 20px;text-align:center;color:var(--muted)}
 .empty .big{font-size:36px;margin-bottom:10px;opacity:.45;font-weight:900}
+
 .template-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.template-card{border:2px solid var(--line);border-radius:13px;padding:11px;cursor:pointer;background:#fff;position:relative}
-.template-card:hover{border-color:#c3ceda;transform:translateY(-2px)}
+.template-card{border:2px solid var(--line);border-radius:13px;padding:11px;cursor:pointer;background:#fff;position:relative;transition:.2s}
+.template-card:hover{border-color:#c3ceda;transform:translateY(-2px);box-shadow:0 6px 16px rgba(15,23,42,.08)}
 .template-card.selected{border-color:var(--gold);box-shadow:0 0 0 4px rgba(200,155,60,.16)}
 .template-card.selected::after{content:"OK";position:absolute;top:9px;right:9px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900}
 .template-mini{height:150px;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;font-family:var(--ff);margin-bottom:10px;overflow:hidden;position:relative}
@@ -159,30 +159,53 @@ tbody tr:hover{background:#fafcfe}
 .template-mini .mini-sub{font-size:8px;letter-spacing:1.4px;opacity:.7}
 .template-card b{font-size:13px;color:var(--navy);display:block}
 .template-card p{font-size:11.5px;color:var(--muted);margin:3px 0 0;line-height:1.4}
+
 .mini-1{background:#fff;border:7px double #0b2545;color:#0b2545}
 .mini-2{background:linear-gradient(180deg,#fffdf6,#fff8e6);border:6px solid #c89b3c;color:#6b4e14}
 .mini-3{background:linear-gradient(135deg,#f6fbff,#e9f4ff);border:6px double #1769aa;color:#0f4c81}
 .mini-4{background:linear-gradient(120deg,#f8fbff,#fff);border:6px solid #0b2545;color:#0b2545}
 .mini-5{background:#fafafa;border:5px solid #4a4a4a;color:#222}
+.mini-6{background:#0e5c68;color:#fff;border:6px solid #0e5c68;position:relative;padding:22px}
+.mini-6::before{content:"";position:absolute;inset:14px;background:#fff;border-radius:6px}
+.mini-6 .mini-title,.mini-6 .mini-line,.mini-6 .mini-sub{position:relative;z-index:2;color:#0e5c68}
+.mini-7{background:#fce4c4;border:5px double #111;color:#111;position:relative}
+.mini-7::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#e6b400,#b8862b);box-shadow:0 0 0 2px #fff inset}
+.mini-8{background:linear-gradient(135deg,#6a3ab8,#4a2484);color:#fff;border:6px solid #3a1a68;position:relative}
+.mini-8::before{content:"";position:absolute;inset:10px;border:1.5px solid #fff;border-radius:4px}
+.mini-8 .mini-title,.mini-8 .mini-line,.mini-8 .mini-sub{position:relative;z-index:2}
+.mini-9{background:#fff8e8;color:#0e5c68;position:relative;border:1px solid #e6d5a8}
+.mini-9::before{content:"";position:absolute;top:0;left:0;width:0;height:0;border-top:36px solid #0e5c68;border-right:36px solid transparent}
+.mini-9::after{content:"";position:absolute;bottom:0;right:0;width:0;height:0;border-bottom:36px solid #0e5c68;border-left:36px solid transparent}
+.mini-10{background:#fff8e8;border:6px double #c89b3c;color:#8a6516;position:relative}
 
+.img-preview{margin-top:8px;padding:8px;border:1px dashed #d5dce5;border-radius:8px;background:#f9fbfd;min-height:52px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.img-preview img{max-height:52px;object-fit:contain}
+.img-preview .sz{font-size:10.5px;color:#64748b;font-weight:600}
+.img-preview.empty::before{content:"No image uploaded";color:#94a3b8;font-size:11.5px}
+
+/* ============================================================
+   CERTIFICATE - A4 LANDSCAPE (297 x 210 mm @ 96dpi = 1123 x 794)
+   ============================================================ */
 .certificate-stage{background:repeating-conic-gradient(#dfe5ec 0% 25%,#e8edf3 0% 50%) 50%/24px 24px;padding:22px;border-radius:14px;overflow:auto;border:1px solid var(--line)}
 .cert-print-wrap{display:flex;justify-content:center}
 .certificate{width:1123px;height:794px;position:relative;background:#fff;margin:auto;overflow:hidden;font-family:var(--ff);color:#1a2b3c;flex-shrink:0;box-shadow:0 14px 40px rgba(11,37,69,.22)}
 
-.cert-school-name{font-family:'Times New Roman',Georgia,serif;font-size:38px;font-weight:900;letter-spacing:1.5px;line-height:1.1;text-align:center;margin:0;font-style:italic}
-.cert-address{font-family:var(--fs);font-size:14px;text-align:center;letter-spacing:.6px;margin-top:8px;font-weight:700}
-.cert-motto{font-family:var(--ff);font-style:italic;font-size:16px;text-align:center;margin-top:5px;font-weight:600}
-.cert-title{font-family:var(--fs);font-size:28px;font-weight:900;letter-spacing:4px;text-align:center;text-transform:uppercase;margin:0;line-height:1.15}
-.cert-lead{font-family:var(--ff);font-style:italic;font-size:17px;text-align:center;margin:8px 0 4px;color:#334}
-.cert-name{font-family:var(--fs);font-size:30px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;text-align:center;margin:6px auto;padding:2px 30px 6px;width:max-content;max-width:88%;line-height:1.1}
-.cert-body{font-family:var(--ff);font-style:italic;font-size:15px;line-height:1.55;max-width:870px;margin:8px auto 0;text-align:center;color:#26343f}
+.cert-school-name{font-family:'Times New Roman',Georgia,serif;font-size:34px;font-weight:900;letter-spacing:1.5px;line-height:1.1;text-align:center;margin:0;font-style:italic}
+.cert-address{font-family:var(--fs);font-size:13px;text-align:center;letter-spacing:.6px;margin-top:6px;font-weight:700}
+.cert-motto{font-family:var(--ff);font-style:italic;font-size:15px;text-align:center;margin-top:4px;font-weight:600}
+.cert-title{font-family:var(--fs);font-size:26px;font-weight:900;letter-spacing:4px;text-align:center;text-transform:uppercase;margin:0;line-height:1.15}
+.cert-lead{font-family:var(--ff);font-style:italic;font-size:16px;text-align:center;margin:6px 0 4px;color:#334}
+.cert-name{font-family:var(--fs);font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;text-align:center;margin:4px auto;padding:2px 30px 6px;width:max-content;max-width:88%;line-height:1.1}
+.cert-body{font-family:var(--ff);font-style:italic;font-size:14px;line-height:1.5;max-width:860px;margin:6px auto 0;text-align:center;color:#26343f}
 .cert-body b{font-style:normal;font-weight:800}
-.competences-head{font-family:var(--ff);font-style:italic;font-weight:700;font-size:16px;margin:14px 0 8px}
-.package-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 40px;padding:0 8px}
-.package-item{display:flex;align-items:center;gap:11px;min-width:0}
-.pkg-icon{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(11,37,69,.08);box-shadow:0 1px 2px rgba(11,37,69,.05)}
-.pkg-icon svg{width:17px;height:17px}
-.pkg-text{font-family:var(--fs);font-size:13.5px;font-weight:600;color:#1e293b;line-height:1.25}
+.competences-head{font-family:var(--ff);font-style:italic;font-weight:700;font-size:16px;margin:12px auto 8px;text-align:center;color:#c8102e}
+.package-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 46px;padding:0 60px;max-width:940px;margin:0 auto}
+.package-col{display:flex;flex-direction:column;gap:8px;min-width:0}
+.package-col .package-item{align-self:flex-start}
+.package-item{display:flex;align-items:center;gap:10px;min-width:0}
+.pkg-icon{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(11,37,69,.08);box-shadow:0 1px 2px rgba(11,37,69,.05)}
+.pkg-icon svg{width:16px;height:16px}
+.pkg-text{font-family:var(--fs);font-size:13px;font-weight:600;color:#1e293b;line-height:1.25}
 .pkg-num{font-family:var(--ff);font-style:italic;color:#8a6516;font-weight:700;margin-right:2px}
 .pkg-icon.c1{background:linear-gradient(135deg,#e3f0fb,#c9e2f7);color:#1769aa}
 .pkg-icon.c2{background:linear-gradient(135deg,#e7f6ec,#c9ebd6);color:#137a4a}
@@ -192,31 +215,33 @@ tbody tr:hover{background:#fafcfe}
 .pkg-icon.c6{background:linear-gradient(135deg,#e5f1fd,#c8e0f8);color:#0b4f9c}
 .pkg-icon.c7{background:linear-gradient(135deg,#e6f7f8,#c4ebee);color:#0d6d76}
 
-.cert-footer{position:absolute;left:54px;right:54px;bottom:22px;display:flex;justify-content:space-between;align-items:flex-end}
+.cert-footer{position:absolute;left:54px;right:54px;bottom:20px;display:flex;justify-content:space-between;align-items:flex-end}
 .sig{width:250px;text-align:center;font-family:var(--fs)}
-.sig .sig-img{height:50px;max-width:210px;object-fit:contain;display:block;margin:0 auto -6px}
-.sig .sigline{border-top:1.8px solid #222;padding-top:6px;font-weight:800;letter-spacing:1.4px;font-size:15px}
-.sig .signame{font-size:12.5px;color:#334155;font-weight:600;margin-top:3px;font-style:italic}
+.sig .sig-img{height:46px;max-width:210px;object-fit:contain;display:block;margin:0 auto -6px}
+.sig .sigline{border-top:1.8px solid #222;padding-top:6px;font-weight:800;letter-spacing:1.4px;font-size:14px}
+.sig .signame{font-size:12px;color:#334155;font-weight:600;margin-top:3px;font-style:italic}
 .center-slot{width:110px;height:100px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .center-slot .stamp-img{max-width:100px;max-height:100px;object-fit:contain;opacity:.85}
-.center-slot .badge-c{width:82px;height:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(from 200deg,#1769aa,#1c7ed6,#0b2545,#1769aa);color:#fff;font-family:var(--fs);font-weight:900;font-size:11px;letter-spacing:1.4px;text-align:center;line-height:1.15;padding:8px;box-shadow:0 4px 14px rgba(11,37,69,.35);border:3px solid #fff}
+.center-slot .badge-c{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(from 200deg,#1769aa,#1c7ed6,#0b2545,#1769aa);color:#fff;font-family:var(--fs);font-weight:900;font-size:10px;letter-spacing:1.4px;text-align:center;line-height:1.15;padding:8px;box-shadow:0 4px 14px rgba(11,37,69,.35);border:3px solid #fff}
 .center-slot .badge-c small{display:block;font-size:8px;letter-spacing:1.6px;opacity:.9;font-weight:700}
-.qr-slot{position:absolute;left:54px;bottom:22px;width:78px;height:78px;background:#fff;padding:3px;border:1px solid #e2e8f0;border-radius:6px;box-shadow:0 2px 8px rgba(11,37,69,.08)}
+.qr-slot{position:absolute;left:54px;bottom:20px;width:76px;height:76px;background:#fff;padding:3px;border:1px solid #e2e8f0;border-radius:6px;box-shadow:0 2px 8px rgba(11,37,69,.08)}
 .qr-slot img{width:100%;height:100%;display:block}
 
 .cert-top-block{text-align:center;margin-bottom:6px}
-.cert-mid-row{display:grid;grid-template-columns:150px 1fr 150px;gap:20px;align-items:center;margin:10px 0 6px}
+.cert-mid-row{display:grid;grid-template-columns:150px 1fr 150px;gap:20px;align-items:center;margin:8px 0 4px}
 .cert-logo-clean{width:150px;height:150px;display:flex;align-items:center;justify-content:center}
 .cert-logo-clean img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 2px 5px rgba(11,37,69,.15))}
 .cert-logo-clean.placeholder{background:linear-gradient(135deg,#0b2545,#1769aa);color:#e6c66b;font-family:var(--fs);font-weight:900;font-size:38px;letter-spacing:1px;border-radius:50%;box-shadow:0 4px 12px rgba(11,37,69,.2)}
 .cert-photo-clean{width:150px;height:150px;display:flex;align-items:center;justify-content:center;justify-self:end;position:relative}
-.cert-photo-clean img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:14px;background:transparent;filter:drop-shadow(0 3px 8px rgba(11,37,69,.18))}
+.cert-photo-clean img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:14px;filter:drop-shadow(0 3px 8px rgba(11,37,69,.18))}
 .cert-photo-clean.placeholder{width:130px;height:150px;border-radius:14px;background:linear-gradient(180deg,#f8fafc,#eef2f7);color:#94a3b8;font-family:var(--fs);font-size:11px;letter-spacing:.8px;text-align:center;flex-direction:column;gap:6px;box-shadow:0 3px 8px rgba(11,37,69,.08),inset 0 0 0 1px rgba(11,37,69,.06)}
 .cert-photo-clean.placeholder .ico{font-size:28px;opacity:.55;font-weight:900;color:#cbd5e1}
 .cert-title-block{text-align:center;min-width:0;padding:0 6px}
 .cert-title-block .cert-title{margin:0 0 4px}
-.cert-content-pad{padding:0 40px}
 
+/* ============================================================
+   TEMPLATE 1 - CLASSIC ACADEMIC
+   ============================================================ */
 .tpl1{background:#f2a877;padding:0}
 .tpl1 .cert-green{position:absolute;inset:14px;background:linear-gradient(135deg,#3fae3f,#2f9a2f)}
 .tpl1 .cert-paper{position:absolute;inset:24px;background:#fff;padding:14px 42px 14px;overflow:hidden}
@@ -232,6 +257,9 @@ tbody tr:hover{background:#fafcfe}
 .tpl1 .competences-head{color:#e91e63}
 .tpl1 .cert-name::after{content:"";display:block;height:2px;width:76%;margin:6px auto 0;background:linear-gradient(90deg,transparent,#c8102e,transparent);border-radius:2px}
 
+/* ============================================================
+   TEMPLATE 2 - PREMIUM GOLD
+   ============================================================ */
 .tpl2{background:linear-gradient(180deg,#fffef9,#fff9ec);padding:22px}
 .tpl2 .cert-inner{position:absolute;inset:22px;border:3px solid #c89b3c;padding:14px 42px}
 .tpl2 .cert-inner::before{content:"";position:absolute;inset:8px;border:1px solid #c89b3c;pointer-events:none}
@@ -243,6 +271,9 @@ tbody tr:hover{background:#fafcfe}
 .tpl2 .competences-head{color:#a37e26}
 .tpl2 .sig .sigline{border-top-color:#8a6516}
 
+/* ============================================================
+   TEMPLATE 3 - PROFESSIONAL BLUE
+   ============================================================ */
 .tpl3{background:linear-gradient(135deg,#f9fcff 0%,#eef6fd 100%);padding:22px}
 .tpl3 .cert-inner{position:absolute;inset:22px;border:2px solid #1769aa;padding:14px 42px}
 .tpl3 .cert-inner::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:14px;background:linear-gradient(90deg,#0f4c81,#1769aa 45%,#1c7ed6 45%,#1c7ed6 70%,#0b2545 70%)}
@@ -255,6 +286,9 @@ tbody tr:hover{background:#fafcfe}
 .tpl3 .competences-head{color:#1769aa}
 .tpl3 .sig .sigline{border-top-color:#0f4c81}
 
+/* ============================================================
+   TEMPLATE 4 - MODERN INSTITUTIONAL
+   ============================================================ */
 .tpl4{background:linear-gradient(120deg,#f8fbff,#fff);padding:22px}
 .tpl4 .cert-inner{position:absolute;inset:22px;border:2px solid #0b2545;padding:14px 42px}
 .tpl4 .cert-inner::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;height:16px;background:linear-gradient(90deg,#0b2545 62%,#c89b3c 62%)}
@@ -266,6 +300,9 @@ tbody tr:hover{background:#fafcfe}
 .tpl4 .cert-name{color:#0b2545;border-bottom:2px solid #c89b3c;padding-bottom:6px}
 .tpl4 .competences-head{color:#c89b3c}
 
+/* ============================================================
+   TEMPLATE 5 - FORMAL MONOCHROME
+   ============================================================ */
 .tpl5{background:#fdfdfd;padding:22px}
 .tpl5 .cert-inner{position:absolute;inset:24px;border:3px solid #333;padding:14px 42px}
 .tpl5 .cert-inner::before{content:"";position:absolute;inset:7px;border:1px solid #777;pointer-events:none}
@@ -279,13 +316,117 @@ tbody tr:hover{background:#fafcfe}
 .tpl5 .sig .sigline{border-top-color:#333}
 .tpl5 .center-slot .badge-c{background:linear-gradient(135deg,#555,#222)!important}
 
-.img-preview{margin-top:8px;padding:8px;border:1px dashed #d5dce5;border-radius:8px;background:#f9fbfd;min-height:52px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
-.img-preview img{max-height:52px;object-fit:contain}
-.img-preview .sz{font-size:10.5px;color:#64748b;font-weight:600}
-.img-preview.empty::before{content:"No image uploaded";color:#94a3b8;font-size:11.5px}
+/* ============================================================
+   TEMPLATE 6 - TEAL HONOR OF EXCELLENCE
+   Dark teal outer with ornate white inner panel
+   ============================================================ */
+.tpl6{background:radial-gradient(circle at 50% 50%,#1a7a89,#0e5c68);padding:0}
+.tpl6 .cert-paper{position:absolute;inset:24px;background:#fff;border-radius:18px;padding:26px 46px;overflow:hidden}
+.tpl6 .cert-paper::before{content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;background:repeating-radial-gradient(circle at 50% 50%,transparent 0 58px,rgba(26,122,137,.035) 58px 60px)}
+.tpl6 .corner-swirl{position:absolute;width:78px;height:78px;pointer-events:none}
+.tpl6 .corner-swirl.tl{top:22px;left:22px}
+.tpl6 .corner-swirl.tr{top:22px;right:22px;transform:scaleX(-1)}
+.tpl6 .corner-swirl.bl{bottom:22px;left:22px;transform:scaleY(-1)}
+.tpl6 .corner-swirl.br{bottom:22px;right:22px;transform:scale(-1,-1)}
+.tpl6 .corner-swirl svg{width:100%;height:100%}
+.tpl6 .cert-school-name{color:#0e5c68;font-style:normal;font-family:var(--fs);font-size:26px;letter-spacing:1px}
+.tpl6 .cert-address{color:#0e5c68}
+.tpl6 .cert-motto{color:#0e5c68}
+.tpl6 .cert-title{color:#0e5c68;font-family:var(--ff);letter-spacing:3px;font-size:30px}
+.tpl6 .cert-name{color:#0e5c68;font-family:var(--ff);font-style:italic;text-transform:none;font-size:38px;letter-spacing:0}
+.tpl6 .competences-head{color:#0e5c68}
+.tpl6 .sig .sigline{border-top-color:#0e5c68}
+.tpl6 .center-slot .badge-c{background:linear-gradient(135deg,#1a7a89,#0e5c68)!important}
 
-@media(max-width:1180px){.cards{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:950px){.sidebar{display:none}.cards{grid-template-columns:repeat(2,1fr)}.template-grid{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.content{padding:14px}}
+/* ============================================================
+   TEMPLATE 7 - CREAM ACHIEVEMENT (gold seal, black double border)
+   ============================================================ */
+.tpl7{background:#fce4c4;padding:0}
+.tpl7 .cert-paper{position:absolute;inset:26px;background:#fce4c4;border:3px solid #111;padding:22px 42px;overflow:hidden}
+.tpl7 .cert-paper::before{content:"";position:absolute;inset:6px;border:1px solid #111;pointer-events:none}
+.tpl7 .corner-dots{position:absolute;width:90px;height:90px;pointer-events:none}
+.tpl7 .corner-dots.tl{top:38px;left:38px}
+.tpl7 .corner-dots.tr{top:38px;right:38px}
+.tpl7 .corner-dots.bl{bottom:38px;left:38px}
+.tpl7 .corner-dots.br{bottom:38px;right:38px}
+.tpl7 .corner-dots span{position:absolute;width:3px;height:3px;border-radius:50%;background:#b8862b}
+.tpl7 .top-seal{position:absolute;top:36px;left:50%;transform:translateX(-50%);width:64px;height:64px}
+.tpl7 .cert-school-name{color:#111;font-style:normal;font-family:var(--fs);font-size:20px;letter-spacing:1.5px;font-weight:700;margin-top:44px}
+.tpl7 .cert-address{color:#111;font-size:12px}
+.tpl7 .cert-motto{color:#8a6516}
+.tpl7 .cert-title{color:#111;letter-spacing:5px;font-size:28px;margin-top:2px}
+.tpl7 .cert-name{color:#111;font-family:var(--ff);font-style:italic;text-transform:none;font-size:36px;letter-spacing:0}
+.tpl7 .competences-head{color:#8a6516}
+.tpl7 .sig .sigline{border-top-color:#111}
+.tpl7 .center-slot .badge-c{background:linear-gradient(135deg,#3f9a4d,#2f7a3a)!important}
+.tpl7 .pkg-icon{background:#fff5df!important;color:#8a6516!important;border-color:#e6d5a8!important}
+
+/* ============================================================
+   TEMPLATE 8 - PURPLE MODERN
+   ============================================================ */
+.tpl8{background:linear-gradient(135deg,#6a3ab8,#3a1a68);padding:0}
+.tpl8 .cert-paper{position:absolute;inset:26px 60px;background:#fff;padding:22px 46px;overflow:hidden}
+.tpl8 .cert-paper::before{content:"";position:absolute;inset:8px;border:1.5px solid #6a3ab8;pointer-events:none;border-radius:4px}
+.tpl8 .side-tri{position:absolute;width:0;height:0;pointer-events:none}
+.tpl8 .side-tri.left{top:50%;left:0;transform:translateY(-50%);border-top:60px solid transparent;border-bottom:60px solid transparent;border-left:44px solid #4a2484}
+.tpl8 .side-tri.right{top:50%;right:0;transform:translateY(-50%);border-top:60px solid transparent;border-bottom:60px solid transparent;border-right:44px solid #4a2484}
+.tpl8 .cert-school-name{color:#4a2484;font-style:normal;font-family:var(--fs);font-size:20px;letter-spacing:1.5px;font-weight:800}
+.tpl8 .cert-address{color:#4a2484}
+.tpl8 .cert-motto{color:#6a3ab8}
+.tpl8 .cert-title{color:#1a0a30;font-family:var(--ff);letter-spacing:3px;font-size:30px}
+.tpl8 .cert-name{color:#4a2484;font-family:var(--ff);font-style:italic;text-transform:none;font-size:36px;letter-spacing:0}
+.tpl8 .competences-head{color:#4a2484}
+.tpl8 .sig .sigline{border-top-color:#4a2484}
+.tpl8 .center-slot .badge-c{background:linear-gradient(135deg,#6a3ab8,#4a2484)!important}
+.tpl8 .pkg-icon{background:#f3e8fd!important;color:#4a2484!important;border-color:#dcc8f0!important}
+
+/* ============================================================
+   TEMPLATE 9 - DIAGONAL GRADUATION (teal triangles)
+   ============================================================ */
+.tpl9{background:#fff8e8;padding:0}
+.tpl9 .cert-paper{position:absolute;inset:0;background:#fff8e8;padding:26px 56px;overflow:hidden}
+.tpl9 .cert-paper::before{content:"";position:absolute;inset:26px;border:1.5px solid #e6d5a8;pointer-events:none}
+.tpl9 .tri-tl{position:absolute;top:0;left:0;width:0;height:0;border-top:210px solid #0e5c68;border-right:380px solid transparent;pointer-events:none}
+.tpl9 .tri-br{position:absolute;bottom:0;right:0;width:0;height:0;border-bottom:210px solid #0e5c68;border-left:380px solid transparent;pointer-events:none}
+.tpl9 .tri-gold-tl{position:absolute;top:210px;left:0;width:0;height:0;border-top:6px solid #e6c66b;border-right:390px solid transparent;pointer-events:none}
+.tpl9 .tri-gold-br{position:absolute;bottom:210px;right:0;width:0;height:0;border-bottom:6px solid #e6c66b;border-left:390px solid transparent;pointer-events:none}
+.tpl9 .cert-top-block{position:relative;z-index:2}
+.tpl9 .cert-mid-row{position:relative;z-index:2}
+.tpl9 .cert-school-name{color:#0e5c68;font-style:normal;font-family:var(--fs);font-size:22px;letter-spacing:1.5px;font-weight:800}
+.tpl9 .cert-address{color:#0e5c68}
+.tpl9 .cert-motto{color:#0e5c68}
+.tpl9 .cert-title{color:#0e5c68;letter-spacing:4px;font-size:26px}
+.tpl9 .cert-name{color:#0e5c68;font-family:var(--ff);font-style:italic;text-transform:none;font-size:36px;letter-spacing:0;border-bottom:1.5px solid #0e5c68;padding-bottom:6px}
+.tpl9 .competences-head{color:#0e5c68}
+.tpl9 .sig .sigline{border-top-color:#0e5c68}
+.tpl9 .center-slot .badge-c{background:linear-gradient(135deg,#1a7a89,#0e5c68)!important}
+.tpl9 .pkg-icon{background:#e6f7f8!important;color:#0e5c68!important;border-color:#c4ebee!important}
+.tpl9 .cert-footer{position:relative;margin-top:12px;left:0;right:0;bottom:auto}
+
+/* ============================================================
+   TEMPLATE 10 - ORNATE GOLD ACADEMIC (red ribbon seal)
+   ============================================================ */
+.tpl10{background:#fff8e8;padding:0}
+.tpl10 .cert-paper{position:absolute;inset:22px;background:#fff8e8;border:3px double #c89b3c;padding:22px 42px;overflow:hidden}
+.tpl10 .cert-paper::before{content:"";position:absolute;inset:10px;border:1px solid #c89b3c;pointer-events:none}
+.tpl10 .corner-ornate{position:absolute;width:110px;height:110px;pointer-events:none}
+.tpl10 .corner-ornate.tl{top:18px;left:18px}
+.tpl10 .corner-ornate.tr{top:18px;right:18px;transform:scaleX(-1)}
+.tpl10 .corner-ornate.bl{bottom:18px;left:18px;transform:scaleY(-1)}
+.tpl10 .corner-ornate.br{bottom:18px;right:18px;transform:scale(-1,-1)}
+.tpl10 .corner-ornate svg{width:100%;height:100%}
+.tpl10 .cert-school-name{color:#8a6516;font-style:normal;font-family:var(--ff);font-size:22px;letter-spacing:2px;font-weight:800}
+.tpl10 .cert-address{color:#8a6516}
+.tpl10 .cert-motto{color:#a37e26}
+.tpl10 .cert-title{color:#8a6516;font-family:var(--ff);letter-spacing:4px;font-size:28px}
+.tpl10 .cert-name{color:#8a6516;font-family:var(--ff);text-transform:uppercase;font-size:34px;letter-spacing:2px;border-bottom:1.5px solid #c89b3c;padding-bottom:6px}
+.tpl10 .competences-head{color:#8a6516}
+.tpl10 .sig .sigline{border-top-color:#8a6516}
+.tpl10 .center-slot .badge-c{background:linear-gradient(135deg,#c89b3c,#a37524)!important}
+.tpl10 .pkg-icon{background:#fff5df!important;color:#8a6516!important;border-color:#e6d5a8!important}
+
+@media(max-width:1180px){.cards{grid-template-columns:repeat(3,1fr)}.template-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:950px){.sidebar{display:none}.cards{grid-template-columns:repeat(2,1fr)}.grid2,.grid3{grid-template-columns:1fr}.content{padding:14px}}
 @media(max-width:600px){.cards{grid-template-columns:1fr}.template-grid{grid-template-columns:1fr}.topbar{padding:0 10px}.brand-text small{display:none}.top-actions .pill{display:none}}
 
 @media print{
@@ -296,7 +437,6 @@ tbody tr:hover{background:#fafcfe}
   #printArea{position:absolute;left:0;top:0;width:297mm;height:210mm;margin:0;padding:0;background:#fff;display:block!important}
   #printArea .certificate{width:297mm;height:210mm;box-shadow:none;margin:0;page-break-after:always;page-break-inside:avoid}
   #printArea .certificate:last-child{page-break-after:auto}
-  .no-print{display:none!important}
 }
 </style>
 </head>
@@ -434,29 +574,49 @@ tbody tr:hover{background:#fafcfe}
       <section id="templates" class="page">
         <div class="page-head">
           <h1 class="page-title">Certificate Templates</h1>
-          <p class="subtitle">All designs are A4 landscape. Choose a template - a live preview follows below.</p>
+          <p class="subtitle">Ten professional A4 landscape designs. Choose a template - a live preview follows below.</p>
           <div class="rule"></div>
         </div>
         <div class="template-grid" id="templateGrid">
           <div class="template-card selected" data-template="1" onclick="selectTemplate(1)">
             <div class="template-mini mini-1"><div class="mini-title">CLASSIC</div><div class="mini-line"></div><div class="mini-sub">ACADEMIC</div></div>
-            <b>Classic Academic</b><p>Orange-green framed classic certificate matching the school's traditional design.</p>
+            <b>Classic Academic</b><p>Orange-green framed classic certificate.</p>
           </div>
           <div class="template-card" data-template="2" onclick="selectTemplate(2)">
             <div class="template-mini mini-2"><div class="mini-title">PREMIUM</div><div class="mini-line"></div><div class="mini-sub">GOLD</div></div>
-            <b>Premium Gold</b><p>Ornate gold ceremonial design with decorative framing.</p>
+            <b>Premium Gold</b><p>Ornate gold ceremonial design.</p>
           </div>
           <div class="template-card" data-template="3" onclick="selectTemplate(3)">
             <div class="template-mini mini-3"><div class="mini-title">PROFESSIONAL</div><div class="mini-line"></div><div class="mini-sub">BLUE</div></div>
-            <b>Professional Blue</b><p>Modern technology-inspired layout with clean accent bands.</p>
+            <b>Professional Blue</b><p>Modern tech-inspired blue bands.</p>
           </div>
           <div class="template-card" data-template="4" onclick="selectTemplate(4)">
             <div class="template-mini mini-4"><div class="mini-title">MODERN</div><div class="mini-line"></div><div class="mini-sub">INSTITUTIONAL</div></div>
-            <b>Modern Institutional</b><p>Strong navy &amp; gold institutional design with geometric bands.</p>
+            <b>Modern Institutional</b><p>Navy &amp; gold geometric bands.</p>
           </div>
           <div class="template-card" data-template="5" onclick="selectTemplate(5)">
             <div class="template-mini mini-5"><div class="mini-title">FORMAL</div><div class="mini-line"></div><div class="mini-sub">MONOCHROME</div></div>
-            <b>Formal Monochrome</b><p>Printer-friendly black &amp; grey elegance with minimal decoration.</p>
+            <b>Formal Monochrome</b><p>Printer-friendly black &amp; grey.</p>
+          </div>
+          <div class="template-card" data-template="6" onclick="selectTemplate(6)">
+            <div class="template-mini mini-6"><div class="mini-title">HONOR</div><div class="mini-line"></div><div class="mini-sub">OF EXCELLENCE</div></div>
+            <b>Teal Honor of Excellence</b><p>Dark teal frame with ornate corner flourishes.</p>
+          </div>
+          <div class="template-card" data-template="7" onclick="selectTemplate(7)">
+            <div class="template-mini mini-7"><div class="mini-title">ACHIEVEMENT</div><div class="mini-line"></div><div class="mini-sub">CREAM &amp; GOLD</div></div>
+            <b>Cream Achievement</b><p>Peach background, gold seal, black double frame.</p>
+          </div>
+          <div class="template-card" data-template="8" onclick="selectTemplate(8)">
+            <div class="template-mini mini-8"><div class="mini-title">PURPLE</div><div class="mini-line"></div><div class="mini-sub">MODERN</div></div>
+            <b>Purple Modern</b><p>Purple gradient with triangular side accents.</p>
+          </div>
+          <div class="template-card" data-template="9" onclick="selectTemplate(9)">
+            <div class="template-mini mini-9"><div class="mini-title">DIAGONAL</div><div class="mini-line"></div><div class="mini-sub">GRADUATION</div></div>
+            <b>Diagonal Graduation</b><p>Cream with teal diagonal triangles &amp; gold lines.</p>
+          </div>
+          <div class="template-card" data-template="10" onclick="selectTemplate(10)">
+            <div class="template-mini mini-10"><div class="mini-title">ORNATE</div><div class="mini-line"></div><div class="mini-sub">GOLD ACADEMIC</div></div>
+            <b>Ornate Gold Academic</b><p>Cream with gold ornate corners &amp; red ribbon seal.</p>
           </div>
         </div>
         <div class="panel" style="margin-top:18px">
@@ -475,9 +635,16 @@ tbody tr:hover{background:#fafcfe}
           <div class="grid3">
             <div><label>Certificate Template</label>
               <select id="genTemplate" onchange="selectTemplate(Number(this.value))">
-                <option value="1">Classic Academic</option><option value="2">Premium Gold</option>
-                <option value="3">Professional Blue</option><option value="4">Modern Institutional</option>
+                <option value="1">Classic Academic</option>
+                <option value="2">Premium Gold</option>
+                <option value="3">Professional Blue</option>
+                <option value="4">Modern Institutional</option>
                 <option value="5">Formal Monochrome</option>
+                <option value="6">Teal Honor of Excellence</option>
+                <option value="7">Cream Achievement</option>
+                <option value="8">Purple Modern</option>
+                <option value="9">Diagonal Graduation</option>
+                <option value="10">Ornate Gold Academic</option>
               </select>
             </div>
             <div><label>Preview Learner</label><select id="previewLearner" onchange="renderPreview()"></select></div>
@@ -596,12 +763,12 @@ tbody tr:hover{background:#fafcfe}
 
 <script>
 var LS = {
-  settings:'rubongiSettings_v5',
-  learners:'rubongiLearners_v5',
-  template:'rubongiTemplate_v5',
-  generated:'rubongiGenerated_v5',
-  counter:'rubongiCounter_v5',
-  auth:'rubongiAuth_v5'
+  settings:'rubongiSettings_v6',
+  learners:'rubongiLearners_v6',
+  template:'rubongiTemplate_v6',
+  generated:'rubongiGenerated_v6',
+  counter:'rubongiCounter_v6',
+  auth:'rubongiAuth_v6'
 };
 
 var DEFAULTS = {
@@ -630,9 +797,6 @@ var generatedCount = Number(localStorage.getItem(LS.generated) || 0);
 var certCounter = load(LS.counter, {S4:{}, S6:{}});
 var auth = load(LS.auth, {user:"admin", passHash: simpleHash("admin")});
 
-/* ============================================================
-   BASIC HELPERS
-   ============================================================ */
 function $(id){return document.getElementById(id)}
 function load(key, fb){
   try{
@@ -656,11 +820,6 @@ function todayLong(){ return new Date().toLocaleDateString("en-GB",{day:"numeric
 function todayISO(){ return new Date().toISOString().slice(0,10); }
 function uid(){ return 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
-/* ============================================================
-   IMAGE COMPRESSION
-   Resizes and re-encodes uploaded images so they fit easily in
-   browser storage (localStorage is limited to about 5 MB).
-   ============================================================ */
 function compressImage(file, maxW, maxH, quality){
   return new Promise(function(resolve, reject){
     if(!file) return reject(new Error('No file'));
@@ -670,51 +829,36 @@ function compressImage(file, maxW, maxH, quality){
       var img = new Image();
       img.onerror = function(){ reject(new Error('Not a valid image')); };
       img.onload = function(){
-        var w = img.width || maxW;
-        var h = img.height || maxH;
+        var w = img.width || maxW, h = img.height || maxH;
         var ratio = Math.min(maxW / w, maxH / h, 1);
         var nw = Math.max(1, Math.round(w * ratio));
         var nh = Math.max(1, Math.round(h * ratio));
         var canvas = document.createElement('canvas');
-        canvas.width = nw;
-        canvas.height = nh;
+        canvas.width = nw; canvas.height = nh;
         var ctx = canvas.getContext('2d');
-        // White background so PNG transparency does not become black in JPEG
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, nw, nh);
         ctx.drawImage(img, 0, 0, nw, nh);
-        try{
-          resolve(canvas.toDataURL('image/jpeg', quality));
-        }catch(e){ reject(e); }
+        try{ resolve(canvas.toDataURL('image/jpeg', quality)); }
+        catch(e){ reject(e); }
       };
       img.src = reader.result;
     };
     reader.readAsDataURL(file);
   });
 }
-
-/* Approximate KB size of a data-URL string when stored */
 function dataUrlKB(dataUrl){
   if(!dataUrl) return 0;
   var i = dataUrl.indexOf(',');
   var b64 = i >= 0 ? dataUrl.slice(i + 1) : dataUrl;
   return Math.round((b64.length * 3 / 4) / 1024);
 }
-
-/* ============================================================
-   QUOTA-AWARE SAVE
-   Shows a friendly message when the browser storage limit is hit.
-   ============================================================ */
 function save(key, value){
   try{
     localStorage.setItem(key, JSON.stringify(value));
     return true;
   }catch(e){
-    var isQuota = e && (
-      e.name === 'QuotaExceededError' ||
-      e.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
-      e.code === 22 || e.code === 1014
-    );
+    var isQuota = e && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED' || e.code === 22 || e.code === 1014);
     if(isQuota){
       toast('error','Browser storage is full',
         'Go to Backup & Restore and export your data. Then delete some learners or reduce photo sizes and try again.', 9000);
@@ -725,9 +869,6 @@ function save(key, value){
   }
 }
 
-/* ============================================================
-   TOAST
-   ============================================================ */
 function toast(type, title, msg, duration){
   duration = duration || 4200;
   var el = document.createElement('div');
@@ -742,9 +883,6 @@ function toast(type, title, msg, duration){
   }, duration);
 }
 
-/* ============================================================
-   MODAL
-   ============================================================ */
 function openModal(html){ $('modalBox').innerHTML = html; $('modalBackdrop').classList.add('show'); }
 function closeModal(){ $('modalBackdrop').classList.remove('show'); $('modalBox').innerHTML = ''; }
 document.getElementById('modalBackdrop').addEventListener('click', function(e){ if(e.target.id === 'modalBackdrop') closeModal(); });
@@ -757,9 +895,6 @@ function confirmDialog(title, msg, onConfirm, confirmLabel, danger){
   $('confirmBtn').onclick = function(){ closeModal(); onConfirm(); };
 }
 
-/* ============================================================
-   PROGRESS
-   ============================================================ */
 function showProgress(title, sub){
   $('progressTitle').textContent = title;
   $('progressSub').textContent = sub || 'Please wait...';
@@ -774,9 +909,6 @@ function updateProgress(done, total){
 }
 function hideProgress(){ setTimeout(function(){ $('progressOverlay').classList.remove('show'); }, 200); }
 
-/* ============================================================
-   LOGIN
-   ============================================================ */
 function attemptLogin(){
   var u = $('loginUser').value.trim();
   var p = $('loginPass').value;
@@ -826,9 +958,6 @@ function changePassword(){
   toast('success','Password updated','Your new password has been saved.');
 }
 
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
 var navBtns = document.querySelectorAll('.navbtn');
 for(var ni=0; ni<navBtns.length; ni++){
   navBtns[ni].addEventListener('click', function(){
@@ -876,9 +1005,6 @@ function refreshStats(){
   if($('learnerCount')) $('learnerCount').textContent = learners.length;
 }
 
-/* ============================================================
-   LEARNERS
-   ============================================================ */
 function addLearner(){
   var name = $('lname').value.trim();
   var cls  = $('lclass').value;
@@ -886,7 +1012,6 @@ function addLearner(){
   var file = $('lphoto').files[0];
   if(!name){ toast('warn','Name required','Please enter the learner full name.'); return; }
   if(cls !== 'S.4' && cls !== 'S.6'){ toast('warn','Invalid class','Class must be S.4 or S.6.'); return; }
-
   function store(photoData){
     var learner = { id: uid(), name: name, class: cls, index: idx, photo: photoData || '', certNo: '', createdAt: new Date().toISOString() };
     learner.certNo = assignCertNo(learner);
@@ -900,18 +1025,12 @@ function addLearner(){
       learners.pop();
     }
   }
-
   if(file){
-    // 320 x 420 at quality 0.72 -> roughly 15-30 KB per passport photo
-    compressImage(file, 320, 420, 0.72)
-      .then(store)
-      .catch(function(){
-        toast('warn','Photo skipped','Could not process the photo. Saving learner without it.');
-        store('');
-      });
-  } else {
-    store('');
-  }
+    compressImage(file, 320, 420, 0.72).then(store).catch(function(){
+      toast('warn','Photo skipped','Could not process the photo. Saving learner without it.');
+      store('');
+    });
+  } else { store(''); }
 }
 function clearLearnerForm(){ $('lname').value=''; $('lindex').value=''; $('lphoto').value=''; }
 
@@ -941,9 +1060,7 @@ function renderLearners(){
     return;
   }
   tb.innerHTML = rows.map(function(l, i){
-    var photo = l.photo
-      ? '<img class="thumb" src="'+l.photo+'" alt="">'
-      : '<div class="thumb placeholder">U</div>';
+    var photo = l.photo ? '<img class="thumb" src="'+l.photo+'" alt="">' : '<div class="thumb placeholder">U</div>';
     var sz = l.photo ? ' <span style="font-size:10px;color:#94a3b8">'+dataUrlKB(l.photo)+'KB</span>' : '';
     return '<tr><td>'+(i+1)+'</td><td>'+photo+'</td>'+
       '<td><b>'+escapeHtml(l.name)+'</b>'+sz+'</td>'+
@@ -994,12 +1111,8 @@ function uploadPhoto(id){
       if(save(LS.learners, learners)){
         renderLearners(); renderPreview();
         toast('success','Photo updated', l.name + ' - ' + dataUrlKB(dataUrl) + ' KB');
-      }else{
-        l.photo = old;
-      }
-    }).catch(function(){
-      toast('error','Photo error','Could not process that image.');
-    });
+      }else{ l.photo = old; }
+    }).catch(function(){ toast('error','Photo error','Could not process that image.'); });
   };
   input.click();
 }
@@ -1024,9 +1137,6 @@ function clearAllLearners(){
   }, 'Delete All', true);
 }
 
-/* ============================================================
-   EXCEL
-   ============================================================ */
 function downloadTemplate(){
   try{
     var rows = [
@@ -1081,9 +1191,6 @@ function importExcel(e){
   e.target.value = '';
 }
 
-/* ============================================================
-   SETTINGS
-   ============================================================ */
 function loadSettingsForm(){
   $('setSchool').value = settings.school;
   $('setAddress').value = settings.address;
@@ -1098,10 +1205,7 @@ function loadSettingsForm(){
     if(src){
       el.innerHTML = '<img src="'+src+'" alt=""><span class="sz">' + (label||'') + ' ' + dataUrlKB(src) + ' KB</span>';
       el.classList.remove('empty');
-    }else{
-      el.innerHTML = '';
-      el.classList.add('empty');
-    }
+    }else{ el.innerHTML = ''; el.classList.add('empty'); }
   }
   setPrev('prevLogo', settings.logo, 'Logo');
   setPrev('prevStamp', settings.stamp, 'Stamp');
@@ -1130,22 +1234,14 @@ function saveImageSetting(e, key){
     hodSig:  { w: 600, h: 220, q: 0.80 },
     headSig: { w: 600, h: 220, q: 0.80 }
   }[key] || { w: 500, h: 500, q: 0.80 };
-
   compressImage(f, cfg.w, cfg.h, cfg.q).then(function(dataUrl){
     var old = settings[key];
     settings[key] = dataUrl;
     if(save(LS.settings, settings)){
-      loadSettingsForm();
-      refreshBranding();
-      renderTemplatePreview();
-      renderPreview();
+      loadSettingsForm(); refreshBranding(); renderTemplatePreview(); renderPreview();
       toast('success','Image saved', key + ' - ' + dataUrlKB(dataUrl) + ' KB');
-    }else{
-      settings[key] = old;
-    }
-  }).catch(function(){
-    toast('error','Image error','Could not process that image.');
-  });
+    }else{ settings[key] = old; }
+  }).catch(function(){ toast('error','Image error','Could not process that image.'); });
   e.target.value = '';
 }
 function resetSettings(){
@@ -1157,9 +1253,6 @@ function resetSettings(){
   },'Restore',true);
 }
 
-/* ============================================================
-   TEMPLATE SELECTION
-   ============================================================ */
 function selectTemplate(n){
   selectedTemplate = Number(n);
   localStorage.setItem(LS.template, selectedTemplate);
@@ -1172,9 +1265,6 @@ function selectTemplate(n){
   renderTemplatePreview(); renderPreview();
 }
 
-/* ============================================================
-   PACKAGE ICONS
-   ============================================================ */
 function packageIconData(name){
   var b = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">';
   var icons = {
@@ -1198,22 +1288,13 @@ function packagesFor(cls){
   return p.concat(PACKAGES_TAIL);
 }
 function periodFor(cls){ return cls === 'S.4' ? '2023 - 2026' : '2024 - 2026'; }
-
-/* Body text differs for S.4 vs S.6 */
 function bodyTextFor(cls){
   if(cls === 'S.4'){
-    return 'Has successfully completed a four-year competence-based training program in ICT '+
-           '(Senior 1 to Senior 4) 2023 - 2026 and has demonstrated proficiency and '+
-           'satisfactory participation in the following core competencies.';
+    return 'Has successfully completed a four-year competence-based training program in ICT (Senior 1 to Senior 4) 2023 - 2026 and has demonstrated proficiency and satisfactory participation in the following core competencies.';
   }
-  return 'Having undergone a rigorous two-year competence-based training in Information and '+
-         'Communication Technology (2024 - 2026), the bearer has successfully demonstrated '+
-         'active participation and practical competency in the following key areas.';
+  return 'Having undergone a rigorous two-year competence-based training in Information and Communication Technology (2024 - 2026), the bearer has successfully demonstrated active participation and practical competency in the following key areas.';
 }
 
-/* ============================================================
-   QR CODE
-   ============================================================ */
 function qrDataURL(text){
   return new Promise(function(resolve, reject){
     try{
@@ -1222,8 +1303,7 @@ function qrDataURL(text){
         width: 220, margin: 1, errorCorrectionLevel: 'M',
         color: { dark: '#0b2545', light: '#ffffff' }
       }, function(err){
-        if(err) reject(err);
-        else resolve(canvas.toDataURL('image/png'));
+        if(err) reject(err); else resolve(canvas.toDataURL('image/png'));
       });
     }catch(e){ reject(e); }
   });
@@ -1240,9 +1320,99 @@ function qrTextFor(learner){
   ].join('\n');
 }
 
-/* ============================================================
-   CERTIFICATE BUILDER
-   ============================================================ */
+/* SVG decorations for new templates */
+function tealCornerSVG(){
+  return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#1a7a89" stroke-width="2.4" stroke-linecap="round">'+
+    '<path d="M8 8 Q30 8 40 20 Q45 8 58 12 Q50 26 40 26 Q45 40 30 45 Q38 55 26 62 Q18 50 20 38 Q10 40 8 28 Z"/>'+
+    '<path d="M8 8 Q28 10 36 22"/>'+
+    '<circle cx="24" cy="24" r="3" fill="#1a7a89" stroke="none"/>'+
+    '<circle cx="38" cy="38" r="2" fill="#1a7a89" stroke="none"/>'+
+    '<path d="M30 20 Q42 18 46 26"/>'+
+    '<path d="M20 30 Q18 42 26 46"/>'+
+  '</svg>';
+}
+function ornateGoldCornerSVG(){
+  return '<svg viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#c89b3c" stroke-width="1.6" stroke-linecap="round">'+
+    '<path d="M10 10 Q40 6 55 22 Q62 12 78 14 Q72 30 58 34 Q64 48 52 56 Q58 68 44 74 Q36 62 40 50 Q28 54 22 40 Q14 30 16 18 Q10 18 10 10 Z"/>'+
+    '<path d="M16 16 Q34 20 44 32"/>'+
+    '<path d="M30 12 Q34 26 28 38"/>'+
+    '<circle cx="24" cy="24" r="3" fill="#c89b3c" stroke="none"/>'+
+    '<circle cx="46" cy="46" r="2.5" fill="#c89b3c" stroke="none"/>'+
+    '<path d="M10 10 L14 22 L22 14 Z" fill="#c89b3c" stroke="none"/>'+
+    '<path d="M42 42 L48 50 L54 44 Z" fill="#c89b3c" stroke="none" opacity="0.7"/>'+
+  '</svg>';
+}
+function goldSealSVG(){
+  return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">'+
+    '<defs><radialGradient id="sealGrad" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#f5d76e"/><stop offset="60%" stop-color="#e6b400"/><stop offset="100%" stop-color="#a37524"/></radialGradient></defs>'+
+    '<path d="M35 60 L28 92 L42 84 L50 96 L58 84 L72 92 L65 60 Z" fill="#8a2018"/>'+
+    '<circle cx="50" cy="45" r="34" fill="url(#sealGrad)" stroke="#8a6516" stroke-width="2"/>'+
+    '<circle cx="50" cy="45" r="27" fill="none" stroke="#8a6516" stroke-width="1.2" opacity="0.6"/>'+
+    '<text x="50" y="52" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-weight="900" fill="#5b4616">SEAL</text>'+
+  '</svg>';
+}
+function goldSealCreamSVG(){
+  return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">'+
+    '<defs><radialGradient id="sealGrad2" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#f7e19b"/><stop offset="55%" stop-color="#e0b856"/><stop offset="100%" stop-color="#a37524"/></radialGradient></defs>'+
+    '<path d="M35 58 L25 95 L40 86 L50 98 L60 86 L75 95 L65 58 Z" fill="#a37524"/>'+
+    '<circle cx="50" cy="45" r="32" fill="url(#sealGrad2)" stroke="#8a6516" stroke-width="2"/>'+
+    '<circle cx="50" cy="45" r="25" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.7"/>'+
+    '<text x="50" y="53" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-weight="900" fill="#5b4616">SEAL</text>'+
+  '</svg>';
+}
+
+/* Template-specific decoration builder */
+function decorationsFor(tpl){
+  if(tpl === 1){
+    return '<div class="cert-green"></div><div class="cert-paper"><div class="corner-tri tl"></div><div class="corner-tri br"></div>';
+  }
+  if(tpl === 6){
+    return '<div class="cert-paper">'+
+      '<div class="corner-swirl tl">'+tealCornerSVG()+'</div>'+
+      '<div class="corner-swirl tr">'+tealCornerSVG()+'</div>'+
+      '<div class="corner-swirl bl">'+tealCornerSVG()+'</div>'+
+      '<div class="corner-swirl br">'+tealCornerSVG()+'</div>';
+  }
+  if(tpl === 7){
+    return '<div class="cert-paper">'+
+      '<div class="top-seal">'+goldSealCreamSVG()+'</div>'+
+      dotGrid('tl')+dotGrid('tr')+dotGrid('bl')+dotGrid('br');
+  }
+  if(tpl === 8){
+    return '<div class="cert-paper"><div class="side-tri left"></div><div class="side-tri right"></div>';
+  }
+  if(tpl === 9){
+    return '<div class="cert-paper">'+
+      '<div class="tri-tl"></div>'+
+      '<div class="tri-br"></div>'+
+      '<div class="tri-gold-tl"></div>'+
+      '<div class="tri-gold-br"></div>';
+  }
+  if(tpl === 10){
+    return '<div class="cert-paper">'+
+      '<div class="corner-ornate tl">'+ornateGoldCornerSVG()+'</div>'+
+      '<div class="corner-ornate tr">'+ornateGoldCornerSVG()+'</div>'+
+      '<div class="corner-ornate bl">'+ornateGoldCornerSVG()+'</div>'+
+      '<div class="corner-ornate br">'+ornateGoldCornerSVG()+'</div>';
+  }
+  return '<div class="cert-inner">';
+}
+function dotGrid(pos){
+  var html = '<div class="corner-dots '+pos+'">';
+  for(var y=0;y<5;y++){
+    for(var x=0;x<5;x++){
+      html += '<span style="top:'+(y*9)+'px;left:'+(x*9)+'px"></span>';
+    }
+  }
+  html += '</div>';
+  return html;
+}
+function sealFor(tpl){
+  if(tpl === 7) return '';
+  if(tpl === 10) return '<div class="right-seal" style="position:absolute;right:60px;bottom:120px;width:96px;height:96px">'+goldSealSVG()+'</div>';
+  return '';
+}
+
 function buildCertificateHTML(learner){
   return new Promise(function(resolve){
     var tpl = selectedTemplate;
@@ -1255,8 +1425,8 @@ function buildCertificateHTML(learner){
       ? '<div class="cert-photo-clean"><img src="'+learner.photo+'" alt="Photo"></div>'
       : '<div class="cert-photo-clean placeholder"><div class="ico">U</div><div>PHOTO</div></div>';
 
-    var hodSig = settings.hodSig ? '<img class="sig-img" src="'+settings.hodSig+'" alt="">' : '<div style="height:50px"></div>';
-    var headSig = settings.headSig ? '<img class="sig-img" src="'+settings.headSig+'" alt="">' : '<div style="height:50px"></div>';
+    var hodSig = settings.hodSig ? '<img class="sig-img" src="'+settings.hodSig+'" alt="">' : '<div style="height:46px"></div>';
+    var headSig = settings.headSig ? '<img class="sig-img" src="'+settings.headSig+'" alt="">' : '<div style="height:46px"></div>';
     var hodName = settings.hod ? '<div class="signame">'+escapeHtml(settings.hod)+'</div>' : '';
     var headName = settings.head ? '<div class="signame">'+escapeHtml(settings.head)+'</div>' : '';
 
@@ -1269,20 +1439,24 @@ function buildCertificateHTML(learner){
 
     var pkgs = packagesFor(learner.class);
     var roman = ['i','ii','iii','iv','v','vi','vii','viii','ix','x'];
-    var packageHTML = pkgs.map(function(p, i){
+    var half = Math.ceil(pkgs.length / 2);
+    var leftCol = pkgs.slice(0, half);
+    var rightCol = pkgs.slice(half);
+    function itemHTML(p, idx){
       return '<div class="package-item"><div class="pkg-icon '+packageIconClass(p)+'">'+packageIconData(p)+'</div>'+
-        '<div class="pkg-text"><span class="pkg-num">'+roman[i]+'.</span> '+escapeHtml(p)+'</div></div>';
-    }).join('');
-
-    var paperOpen = (tpl === 1)
-      ? '<div class="cert-green"></div><div class="cert-paper"><div class="corner-tri tl"></div><div class="corner-tri br"></div>'
-      : '<div class="cert-inner">';
+        '<div class="pkg-text"><span class="pkg-num">'+roman[idx]+'.</span> '+escapeHtml(p)+'</div></div>';
+    }
+    var leftHTML = leftCol.map(function(p,i){ return itemHTML(p, i); }).join('');
+    var rightHTML = rightCol.map(function(p,i){ return itemHTML(p, half + i); }).join('');
 
     var body = bodyTextFor(learner.class);
+    var decor = decorationsFor(tpl);
+    var seal = sealFor(tpl);
 
     function finish(qrImg){
       resolve(
-        '<div class="certificate tpl'+tpl+'">'+paperOpen+
+        '<div class="certificate tpl'+tpl+'">'+decor+
+        seal+
         '<div class="cert-top-block">'+
           '<div class="cert-school-name">'+escapeHtml(settings.school)+'</div>'+
           '<div class="cert-address">'+escapeHtml(settings.address)+' &nbsp;&bull;&nbsp; TEL: '+escapeHtml(settings.tel)+'</div>'+
@@ -1299,7 +1473,10 @@ function buildCertificateHTML(learner){
         '<div class="cert-name">'+escapeHtml(learner.name)+'</div>'+
         '<div class="cert-body">'+escapeHtml(body)+'</div>'+
         '<div class="competences-head">Competences achieved:-</div>'+
-        '<div class="package-grid">'+packageHTML+'</div>'+
+        '<div class="package-grid">'+
+          '<div class="package-col">'+leftHTML+'</div>'+
+          '<div class="package-col">'+rightHTML+'</div>'+
+        '</div>'+
         '<div class="cert-footer">'+
           '<div class="sig">'+hodSig+'<div class="sigline">HOD ICT</div>'+hodName+'</div>'+
           centerSlot+
@@ -1316,9 +1493,6 @@ function buildCertificateHTML(learner){
   });
 }
 
-/* ============================================================
-   PREVIEW
-   ============================================================ */
 function renderTemplatePreview(){
   var demo = learners[0] || { id:'demo', name:'ABOTH ALICE SHALOM', class:'S.4', index:'U1896/015', photo:'', certNo:'RA/ICT/S4/2026/001' };
   var target = $('templatePreview'); if(!target) return;
@@ -1360,9 +1534,6 @@ function renderGeneratePage(){
   refreshStats(); renderPreview();
 }
 
-/* ============================================================
-   RENDER TO CANVAS
-   ============================================================ */
 function renderCertificateToCanvas(learner){
   return buildCertificateHTML(learner).then(function(html){
     var holder = document.createElement('div');
@@ -1380,9 +1551,6 @@ function renderCertificateToCanvas(learner){
   });
 }
 
-/* ============================================================
-   PDF / ZIP GENERATION
-   ============================================================ */
 function generateSelectedPDF(){
   var id = $('previewLearner').value;
   var learner = learners.find(function(x){ return x.id===id; });
@@ -1414,10 +1582,7 @@ function generateAllPDF(){
       pdf.addImage(canvas.toDataURL('image/jpeg', 0.93), 'JPEG', 0, 0, 297, 210);
       ok++;
     }).catch(function(e){ console.error('Failed for', learners[i].name, e); failed++; })
-    .then(function(){
-      i++; updateProgress(i, learners.length);
-      setTimeout(step, 30);
-    });
+    .then(function(){ i++; updateProgress(i, learners.length); setTimeout(step, 30); });
   }
   function done(){
     try{
@@ -1447,10 +1612,7 @@ function generateAllZIP(){
       zip.file(idx + '_' + safe(l.name) + '_' + l.class + '.pdf', blob);
       ok++;
     }).catch(function(e){ console.error('ZIP fail', l.name, e); failed++; })
-    .then(function(){
-      i++; updateProgress(i, learners.length);
-      setTimeout(step, 30);
-    });
+    .then(function(){ i++; updateProgress(i, learners.length); setTimeout(step, 30); });
   }
   function done(){
     zip.generateAsync({type:'blob'}).then(function(zipBlob){
@@ -1467,9 +1629,6 @@ function generateAllZIP(){
   step();
 }
 
-/* ============================================================
-   PRINT
-   ============================================================ */
 function printAll(){
   if(!learners.length) return toast('warn','No learners','Add or import learners first.');
   showProgress('Preparing print','Rendering ' + learners.length + ' certificate(s)...');
@@ -1498,13 +1657,9 @@ function printAll(){
   step();
 }
 
-/* ============================================================
-   BACKUP / RESTORE
-   ============================================================ */
 function updateStorageStatus(){
   var el = $('storageStatus'); if(!el) return;
-  var usedKB = 0;
-  var detail = [];
+  var usedKB = 0, detail = [];
   try{
     for(var k in localStorage){
       if(localStorage.hasOwnProperty(k)){
@@ -1526,7 +1681,7 @@ function exportData(){
   try{
     var payload = {
       app: "Rubongi Army SS - ICT Certificate Management System",
-      exportedAt: new Date().toISOString(), version: 5,
+      exportedAt: new Date().toISOString(), version: 6,
       settings: settings, learners: learners, selectedTemplate: selectedTemplate,
       generatedCount: generatedCount, certCounter: certCounter
     };
@@ -1575,9 +1730,6 @@ function factoryReset(){
   }, 'Erase Everything', true);
 }
 
-/* ============================================================
-   BOOTSTRAP
-   ============================================================ */
 (function boot(){
   if(settings.logo) $('loginCrest').innerHTML = '<img src="'+settings.logo+'" alt="">';
   if(sessionStorage.getItem('rubongiLoggedIn') === '1') enterApp();
