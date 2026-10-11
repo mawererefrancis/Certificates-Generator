@@ -184,28 +184,36 @@ tbody tr:hover{background:#fafcfe}
 .img-preview.empty::before{content:"No image uploaded";color:#94a3b8;font-size:11.5px}
 
 /* ============================================================
-   CERTIFICATE - A4 LANDSCAPE (297 x 210 mm @ 96dpi = 1123 x 794)
+   CERTIFICATE - A4 LANDSCAPE 297 x 210 mm @ 96dpi = 1123 x 794
    ============================================================ */
 .certificate-stage{background:repeating-conic-gradient(#dfe5ec 0% 25%,#e8edf3 0% 50%) 50%/24px 24px;padding:22px;border-radius:14px;overflow:auto;border:1px solid var(--line)}
 .cert-print-wrap{display:flex;justify-content:center}
 .certificate{width:1123px;height:794px;position:relative;background:#fff;margin:auto;overflow:hidden;font-family:var(--ff);color:#1a2b3c;flex-shrink:0;box-shadow:0 14px 40px rgba(11,37,69,.22)}
 
-.cert-school-name{font-family:'Times New Roman',Georgia,serif;font-size:34px;font-weight:900;letter-spacing:1.5px;line-height:1.1;text-align:center;margin:0;font-style:italic}
+/* School name - BIG now */
+.cert-school-name{font-family:'Times New Roman',Georgia,serif;font-size:50px;font-weight:900;letter-spacing:1.5px;line-height:1.05;text-align:center;margin:0;font-style:italic}
 .cert-address{font-family:var(--fs);font-size:13px;text-align:center;letter-spacing:.6px;margin-top:6px;font-weight:700}
 .cert-motto{font-family:var(--ff);font-style:italic;font-size:15px;text-align:center;margin-top:4px;font-weight:600}
-.cert-title{font-family:var(--fs);font-size:26px;font-weight:900;letter-spacing:4px;text-align:center;text-transform:uppercase;margin:0;line-height:1.15}
+
+/* Certificate title - SMALLER now */
+.cert-title{font-family:var(--fs);font-size:20px;font-weight:800;letter-spacing:5px;text-align:center;text-transform:uppercase;margin:0;line-height:1.15}
+
 .cert-lead{font-family:var(--ff);font-style:italic;font-size:16px;text-align:center;margin:6px 0 4px;color:#334}
 .cert-name{font-family:var(--fs);font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;text-align:center;margin:4px auto;padding:2px 30px 6px;width:max-content;max-width:88%;line-height:1.1}
 .cert-body{font-family:var(--ff);font-style:italic;font-size:14px;line-height:1.5;max-width:860px;margin:6px auto 0;text-align:center;color:#26343f}
 .cert-body b{font-style:normal;font-weight:800}
-.competences-head{font-family:var(--ff);font-style:italic;font-weight:700;font-size:16px;margin:12px auto 8px;text-align:center;color:#c8102e}
-.package-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 46px;padding:0 60px;max-width:940px;margin:0 auto}
-.package-col{display:flex;flex-direction:column;gap:8px;min-width:0}
+
+/* Competences heading - centered, larger */
+.competences-head{font-family:var(--ff);font-style:italic;font-weight:700;font-size:18px;margin:16px auto 14px;text-align:center;color:#c8102e;letter-spacing:.5px}
+
+/* Package grid - centered and balanced */
+.package-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 80px;padding:0 130px;max-width:900px;margin:0 auto;justify-items:start}
+.package-col{display:flex;flex-direction:column;gap:10px;min-width:0;width:100%}
 .package-col .package-item{align-self:flex-start}
 .package-item{display:flex;align-items:center;gap:10px;min-width:0}
 .pkg-icon{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(11,37,69,.08);box-shadow:0 1px 2px rgba(11,37,69,.05)}
 .pkg-icon svg{width:16px;height:16px}
-.pkg-text{font-family:var(--fs);font-size:13px;font-weight:600;color:#1e293b;line-height:1.25}
+.pkg-text{font-family:var(--fs);font-size:13.5px;font-weight:600;color:#1e293b;line-height:1.25}
 .pkg-num{font-family:var(--ff);font-style:italic;color:#8a6516;font-weight:700;margin-right:2px}
 .pkg-icon.c1{background:linear-gradient(135deg,#e3f0fb,#c9e2f7);color:#1769aa}
 .pkg-icon.c2{background:linear-gradient(135deg,#e7f6ec,#c9ebd6);color:#137a4a}
@@ -227,8 +235,8 @@ tbody tr:hover{background:#fafcfe}
 .qr-slot{position:absolute;left:54px;bottom:20px;width:76px;height:76px;background:#fff;padding:3px;border:1px solid #e2e8f0;border-radius:6px;box-shadow:0 2px 8px rgba(11,37,69,.08)}
 .qr-slot img{width:100%;height:100%;display:block}
 
-.cert-top-block{text-align:center;margin-bottom:6px}
-.cert-mid-row{display:grid;grid-template-columns:150px 1fr 150px;gap:20px;align-items:center;margin:8px 0 4px}
+.cert-top-block{text-align:center;margin-bottom:4px}
+.cert-mid-row{display:grid;grid-template-columns:150px 1fr 150px;gap:20px;align-items:center;margin:6px 0 4px}
 .cert-logo-clean{width:150px;height:150px;display:flex;align-items:center;justify-content:center}
 .cert-logo-clean img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 2px 5px rgba(11,37,69,.15))}
 .cert-logo-clean.placeholder{background:linear-gradient(135deg,#0b2545,#1769aa);color:#e6c66b;font-family:var(--fs);font-weight:900;font-size:38px;letter-spacing:1px;border-radius:50%;box-shadow:0 4px 12px rgba(11,37,69,.2)}
@@ -252,7 +260,7 @@ tbody tr:hover{background:#fafcfe}
 .tpl1 .cert-school-name{color:#c8102e;text-shadow:1px 1px 0 rgba(255,255,255,.9),2px 2px 0 rgba(200,16,46,.15)}
 .tpl1 .cert-address{color:#111}
 .tpl1 .cert-motto{color:#e91e63}
-.tpl1 .cert-title{color:transparent;-webkit-text-stroke:1.4px #1769aa;letter-spacing:6px}
+.tpl1 .cert-title{color:transparent;-webkit-text-stroke:1.2px #1769aa;letter-spacing:6px}
 .tpl1 .cert-name{color:#c8102e}
 .tpl1 .competences-head{color:#e91e63}
 .tpl1 .cert-name::after{content:"";display:block;height:2px;width:76%;margin:6px auto 0;background:linear-gradient(90deg,transparent,#c8102e,transparent);border-radius:2px}
@@ -318,10 +326,9 @@ tbody tr:hover{background:#fafcfe}
 
 /* ============================================================
    TEMPLATE 6 - TEAL HONOR OF EXCELLENCE
-   Dark teal outer with ornate white inner panel
    ============================================================ */
 .tpl6{background:radial-gradient(circle at 50% 50%,#1a7a89,#0e5c68);padding:0}
-.tpl6 .cert-paper{position:absolute;inset:24px;background:#fff;border-radius:18px;padding:26px 46px;overflow:hidden}
+.tpl6 .cert-paper{position:absolute;inset:24px;background:#fff;border-radius:18px;padding:22px 46px;overflow:hidden}
 .tpl6 .cert-paper::before{content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;background:repeating-radial-gradient(circle at 50% 50%,transparent 0 58px,rgba(26,122,137,.035) 58px 60px)}
 .tpl6 .corner-swirl{position:absolute;width:78px;height:78px;pointer-events:none}
 .tpl6 .corner-swirl.tl{top:22px;left:22px}
@@ -329,17 +336,17 @@ tbody tr:hover{background:#fafcfe}
 .tpl6 .corner-swirl.bl{bottom:22px;left:22px;transform:scaleY(-1)}
 .tpl6 .corner-swirl.br{bottom:22px;right:22px;transform:scale(-1,-1)}
 .tpl6 .corner-swirl svg{width:100%;height:100%}
-.tpl6 .cert-school-name{color:#0e5c68;font-style:normal;font-family:var(--fs);font-size:26px;letter-spacing:1px}
+.tpl6 .cert-school-name{color:#0e5c68;font-style:normal;font-family:var(--fs);font-size:38px;letter-spacing:1px}
 .tpl6 .cert-address{color:#0e5c68}
 .tpl6 .cert-motto{color:#0e5c68}
-.tpl6 .cert-title{color:#0e5c68;font-family:var(--ff);letter-spacing:3px;font-size:30px}
+.tpl6 .cert-title{color:#0e5c68;font-family:var(--ff);letter-spacing:3px;font-size:26px}
 .tpl6 .cert-name{color:#0e5c68;font-family:var(--ff);font-style:italic;text-transform:none;font-size:38px;letter-spacing:0}
 .tpl6 .competences-head{color:#0e5c68}
 .tpl6 .sig .sigline{border-top-color:#0e5c68}
 .tpl6 .center-slot .badge-c{background:linear-gradient(135deg,#1a7a89,#0e5c68)!important}
 
 /* ============================================================
-   TEMPLATE 7 - CREAM ACHIEVEMENT (gold seal, black double border)
+   TEMPLATE 7 - CREAM ACHIEVEMENT
    ============================================================ */
 .tpl7{background:#fce4c4;padding:0}
 .tpl7 .cert-paper{position:absolute;inset:26px;background:#fce4c4;border:3px solid #111;padding:22px 42px;overflow:hidden}
@@ -350,11 +357,11 @@ tbody tr:hover{background:#fafcfe}
 .tpl7 .corner-dots.bl{bottom:38px;left:38px}
 .tpl7 .corner-dots.br{bottom:38px;right:38px}
 .tpl7 .corner-dots span{position:absolute;width:3px;height:3px;border-radius:50%;background:#b8862b}
-.tpl7 .top-seal{position:absolute;top:36px;left:50%;transform:translateX(-50%);width:64px;height:64px}
-.tpl7 .cert-school-name{color:#111;font-style:normal;font-family:var(--fs);font-size:20px;letter-spacing:1.5px;font-weight:700;margin-top:44px}
+.tpl7 .top-seal{position:absolute;top:36px;left:50%;transform:translateX(-50%);width:60px;height:60px}
+.tpl7 .cert-school-name{color:#111;font-style:normal;font-family:var(--fs);font-size:32px;letter-spacing:1.5px;font-weight:800;margin-top:52px}
 .tpl7 .cert-address{color:#111;font-size:12px}
 .tpl7 .cert-motto{color:#8a6516}
-.tpl7 .cert-title{color:#111;letter-spacing:5px;font-size:28px;margin-top:2px}
+.tpl7 .cert-title{color:#111;letter-spacing:5px;font-size:22px;margin-top:2px}
 .tpl7 .cert-name{color:#111;font-family:var(--ff);font-style:italic;text-transform:none;font-size:36px;letter-spacing:0}
 .tpl7 .competences-head{color:#8a6516}
 .tpl7 .sig .sigline{border-top-color:#111}
@@ -370,10 +377,10 @@ tbody tr:hover{background:#fafcfe}
 .tpl8 .side-tri{position:absolute;width:0;height:0;pointer-events:none}
 .tpl8 .side-tri.left{top:50%;left:0;transform:translateY(-50%);border-top:60px solid transparent;border-bottom:60px solid transparent;border-left:44px solid #4a2484}
 .tpl8 .side-tri.right{top:50%;right:0;transform:translateY(-50%);border-top:60px solid transparent;border-bottom:60px solid transparent;border-right:44px solid #4a2484}
-.tpl8 .cert-school-name{color:#4a2484;font-style:normal;font-family:var(--fs);font-size:20px;letter-spacing:1.5px;font-weight:800}
+.tpl8 .cert-school-name{color:#4a2484;font-style:normal;font-family:var(--fs);font-size:32px;letter-spacing:1.5px;font-weight:800}
 .tpl8 .cert-address{color:#4a2484}
 .tpl8 .cert-motto{color:#6a3ab8}
-.tpl8 .cert-title{color:#1a0a30;font-family:var(--ff);letter-spacing:3px;font-size:30px}
+.tpl8 .cert-title{color:#1a0a30;font-family:var(--ff);letter-spacing:3px;font-size:26px}
 .tpl8 .cert-name{color:#4a2484;font-family:var(--ff);font-style:italic;text-transform:none;font-size:36px;letter-spacing:0}
 .tpl8 .competences-head{color:#4a2484}
 .tpl8 .sig .sigline{border-top-color:#4a2484}
@@ -381,7 +388,7 @@ tbody tr:hover{background:#fafcfe}
 .tpl8 .pkg-icon{background:#f3e8fd!important;color:#4a2484!important;border-color:#dcc8f0!important}
 
 /* ============================================================
-   TEMPLATE 9 - DIAGONAL GRADUATION (teal triangles)
+   TEMPLATE 9 - DIAGONAL GRADUATION
    ============================================================ */
 .tpl9{background:#fff8e8;padding:0}
 .tpl9 .cert-paper{position:absolute;inset:0;background:#fff8e8;padding:26px 56px;overflow:hidden}
@@ -392,10 +399,10 @@ tbody tr:hover{background:#fafcfe}
 .tpl9 .tri-gold-br{position:absolute;bottom:210px;right:0;width:0;height:0;border-bottom:6px solid #e6c66b;border-left:390px solid transparent;pointer-events:none}
 .tpl9 .cert-top-block{position:relative;z-index:2}
 .tpl9 .cert-mid-row{position:relative;z-index:2}
-.tpl9 .cert-school-name{color:#0e5c68;font-style:normal;font-family:var(--fs);font-size:22px;letter-spacing:1.5px;font-weight:800}
+.tpl9 .cert-school-name{color:#0e5c68;font-style:normal;font-family:var(--fs);font-size:34px;letter-spacing:1.5px;font-weight:800}
 .tpl9 .cert-address{color:#0e5c68}
 .tpl9 .cert-motto{color:#0e5c68}
-.tpl9 .cert-title{color:#0e5c68;letter-spacing:4px;font-size:26px}
+.tpl9 .cert-title{color:#0e5c68;letter-spacing:4px;font-size:24px}
 .tpl9 .cert-name{color:#0e5c68;font-family:var(--ff);font-style:italic;text-transform:none;font-size:36px;letter-spacing:0;border-bottom:1.5px solid #0e5c68;padding-bottom:6px}
 .tpl9 .competences-head{color:#0e5c68}
 .tpl9 .sig .sigline{border-top-color:#0e5c68}
@@ -404,7 +411,7 @@ tbody tr:hover{background:#fafcfe}
 .tpl9 .cert-footer{position:relative;margin-top:12px;left:0;right:0;bottom:auto}
 
 /* ============================================================
-   TEMPLATE 10 - ORNATE GOLD ACADEMIC (red ribbon seal)
+   TEMPLATE 10 - ORNATE GOLD ACADEMIC
    ============================================================ */
 .tpl10{background:#fff8e8;padding:0}
 .tpl10 .cert-paper{position:absolute;inset:22px;background:#fff8e8;border:3px double #c89b3c;padding:22px 42px;overflow:hidden}
@@ -415,10 +422,10 @@ tbody tr:hover{background:#fafcfe}
 .tpl10 .corner-ornate.bl{bottom:18px;left:18px;transform:scaleY(-1)}
 .tpl10 .corner-ornate.br{bottom:18px;right:18px;transform:scale(-1,-1)}
 .tpl10 .corner-ornate svg{width:100%;height:100%}
-.tpl10 .cert-school-name{color:#8a6516;font-style:normal;font-family:var(--ff);font-size:22px;letter-spacing:2px;font-weight:800}
+.tpl10 .cert-school-name{color:#8a6516;font-style:normal;font-family:var(--ff);font-size:34px;letter-spacing:2px;font-weight:800}
 .tpl10 .cert-address{color:#8a6516}
 .tpl10 .cert-motto{color:#a37e26}
-.tpl10 .cert-title{color:#8a6516;font-family:var(--ff);letter-spacing:4px;font-size:28px}
+.tpl10 .cert-title{color:#8a6516;font-family:var(--ff);letter-spacing:4px;font-size:24px}
 .tpl10 .cert-name{color:#8a6516;font-family:var(--ff);text-transform:uppercase;font-size:34px;letter-spacing:2px;border-bottom:1.5px solid #c89b3c;padding-bottom:6px}
 .tpl10 .competences-head{color:#8a6516}
 .tpl10 .sig .sigline{border-top-color:#8a6516}
@@ -763,12 +770,12 @@ tbody tr:hover{background:#fafcfe}
 
 <script>
 var LS = {
-  settings:'rubongiSettings_v6',
-  learners:'rubongiLearners_v6',
-  template:'rubongiTemplate_v6',
-  generated:'rubongiGenerated_v6',
-  counter:'rubongiCounter_v6',
-  auth:'rubongiAuth_v6'
+  settings:'rubongiSettings_v7',
+  learners:'rubongiLearners_v7',
+  template:'rubongiTemplate_v7',
+  generated:'rubongiGenerated_v7',
+  counter:'rubongiCounter_v7',
+  auth:'rubongiAuth_v7'
 };
 
 var DEFAULTS = {
@@ -1320,7 +1327,6 @@ function qrTextFor(learner){
   ].join('\n');
 }
 
-/* SVG decorations for new templates */
 function tealCornerSVG(){
   return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#1a7a89" stroke-width="2.4" stroke-linecap="round">'+
     '<path d="M8 8 Q30 8 40 20 Q45 8 58 12 Q50 26 40 26 Q45 40 30 45 Q38 55 26 62 Q18 50 20 38 Q10 40 8 28 Z"/>'+
@@ -1361,7 +1367,6 @@ function goldSealCreamSVG(){
   '</svg>';
 }
 
-/* Template-specific decoration builder */
 function decorationsFor(tpl){
   if(tpl === 1){
     return '<div class="cert-green"></div><div class="cert-paper"><div class="corner-tri tl"></div><div class="corner-tri br"></div>';
@@ -1681,7 +1686,7 @@ function exportData(){
   try{
     var payload = {
       app: "Rubongi Army SS - ICT Certificate Management System",
-      exportedAt: new Date().toISOString(), version: 6,
+      exportedAt: new Date().toISOString(), version: 7,
       settings: settings, learners: learners, selectedTemplate: selectedTemplate,
       generatedCount: generatedCount, certCounter: certCounter
     };
